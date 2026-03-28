@@ -1,0 +1,614 @@
+import Image from 'next/image'
+import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
+import type { HomePage } from '@/lib/types'
+import { client, urlFor } from '@/lib/sanity.client'
+import { ownersPageQuery, homePageQuery } from '@/lib/sanity.queries'
+import { PortableText, PortableTextComponents } from '@portabletext/react'
+
+import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
+import OwnersFaq from '@/components/owners/OwnersFaq'
+
+interface PageProps {
+    params: Promise<{ locale: string }>
+}
+
+const ptHighlight: PortableTextComponents = {
+    marks: {
+        highlight: ({ children }) => (
+            <span style={{ color: '#b8e04a', fontStyle: 'italic' }}>{children}</span>
+        ),
+    },
+    block: {
+        normal: ({ children }) => <p className="own-pt__highlight">{children}</p>,
+    },
+}
+
+const ptBody: PortableTextComponents = {
+    block: {
+        normal: ({ children }) => <p className="own-pt__body">{children}</p>,
+    },
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+    const { locale } = await params
+    const data = await client.fetch(ownersPageQuery)
+    const isEs = locale === 'es'
+    return {
+        title: isEs ? data?.seoTitleEs : data?.seoTitleEn,
+        description: isEs ? data?.seoDescriptionEs : data?.seoDescriptionEn,
+    }
+}
+
+export default async function OwnersPage({ params }: PageProps) {
+    const { locale } = await params
+    if (!['es', 'en'].includes(locale)) notFound()
+
+    const [data, homeData]: [any, HomePage] = await Promise.all([
+        client.fetch(ownersPageQuery, {}, { next: { revalidate: 60 } }),
+        client.fetch(homePageQuery, {}, { next: { revalidate: 60 } }),
+    ])
+
+    const isEs = locale === 'es'
+
+    return (
+        <>
+            <style>{`
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { background: #fff; color: #0a0a0c; }
+
+        /* ── HERO ── */
+        .own-hero {
+          padding: 5rem 2.5rem 0;
+        }
+        .own-hero__inner {
+          max-width: 1100px;
+          margin: 0 auto;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 3rem;
+          align-items: start;
+          margin-bottom: 3rem;
+        }
+        .own-hero__eyebrow {
+          font-family: 'Jost', sans-serif;
+          font-size: 0.6875rem;
+          font-weight: 500;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: #999;
+          padding-top: 0.5rem;
+        }
+        .own-hero__right {}
+        .own-hero__title {
+          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-size: clamp(2rem, 4vw, 3.25rem);
+          font-weight: 400;
+          line-height: 1.15;
+          color: #0a0a0c;
+          margin: 0 0 1rem;
+        }
+        .own-hero__subtitle {
+          font-family: 'Jost', sans-serif;
+          font-size: 0.9375rem;
+          font-weight: 300;
+          line-height: 1.7;
+          color: #666;
+          margin: 0;
+        }
+        .own-hero__image {
+          position: relative;
+          width: 100%;
+          aspect-ratio: 16/8;
+          background: #e8e4dc;
+          overflow: hidden;
+        }
+        .own-hero__image img { object-fit: cover; }
+
+        /* ── DIFERENCIAL ── */
+        .own-diff {
+          padding: 6rem 2.5rem;
+          background: #fff;
+        }
+        .own-diff__inner {
+          max-width: 1100px;
+          margin: 0 auto;
+        }
+        .own-diff__header {
+          text-align: center;
+          margin-bottom: 3.5rem;
+        }
+        .own-diff__eyebrow {
+          font-family: 'Jost', sans-serif;
+          font-size: 0.6875rem;
+          font-weight: 500;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: #999;
+          margin-bottom: 1rem;
+          display: block;
+        }
+        .own-diff__title {
+          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+          font-weight: 400;
+          line-height: 1.2;
+          color: #0a0a0c;
+          margin: 0;
+          max-width: 700px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .own-diff__grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 1rem;
+        }
+        .own-diff__card {
+          background: #F0EDE3;
+          border-radius: 8px;
+          padding: 1.75rem 1.5rem;
+        }
+        .own-diff__num {
+          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-size: 2rem;
+          font-weight: 400;
+          color: #0a0a0c;
+          margin-bottom: 1rem;
+          display: block;
+          line-height: 1;
+        }
+        .own-diff__text {
+          font-family: 'Jost', sans-serif;
+          font-size: 0.875rem;
+          font-weight: 300;
+          line-height: 1.7;
+          color: #555;
+          margin: 0;
+        }
+
+        /* ── SPLIT ── */
+        .own-split {
+          padding: 6rem 2.5rem;
+          max-width: 1100px;
+          margin: 0 auto;
+          display: grid;
+          grid-template-columns: 1fr 1.2fr;
+          gap: 4rem;
+          align-items: center;
+        }
+        .own-split__image {
+          position: relative;
+          aspect-ratio: 3/4;
+          border-radius: 8px;
+          overflow: hidden;
+          background: #e8e4dc;
+        }
+        .own-split__image img { object-fit: cover; }
+        .own-split__title {
+          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-size: clamp(1.75rem, 3vw, 2.75rem);
+          font-weight: 400;
+          line-height: 1.2;
+          color: #0a0a0c;
+          margin: 0 0 1.5rem;
+        }
+        .own-pt__body {
+          font-family: 'Jost', sans-serif;
+          font-size: 0.9375rem;
+          font-weight: 300;
+          line-height: 1.8;
+          color: #555;
+          margin: 0 0 1rem;
+        }
+        .own-pt__body:last-child { margin-bottom: 0; }
+
+        /* ── FILOSOFÍA ── */
+        .own-phil {
+          padding: 5rem 2.5rem 0;
+          background: #fff;
+        }
+        .own-phil__inner {
+          max-width: 900px;
+          margin: 0 auto 4rem;
+          text-align: center;
+        }
+        .own-phil__eyebrow {
+          font-family: 'Jost', sans-serif;
+          font-size: 0.6875rem;
+          font-weight: 500;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: #999;
+          margin-bottom: 1.5rem;
+          display: block;
+        }
+        .own-phil__text {
+          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-size: clamp(1.25rem, 2.5vw, 1.875rem);
+          font-weight: 400;
+          line-height: 1.55;
+          color: #0a0a0c;
+          margin: 0;
+        }
+        .own-phil__image {
+          position: relative;
+          width: 100%;
+          aspect-ratio: 16/7;
+          background: #e8e4dc;
+          overflow: hidden;
+        }
+        .own-phil__image img { object-fit: cover; }
+
+        /* ── SERVICIOS ── */
+        .own-services {
+          padding: 6rem 2.5rem;
+        }
+        .own-services__inner {
+          max-width: 1100px;
+          margin: 0 auto;
+        }
+        .own-services__header {
+          text-align: center;
+          margin-bottom: 3.5rem;
+        }
+        .own-services__eyebrow {
+          font-family: 'Jost', sans-serif;
+          font-size: 0.6875rem;
+          font-weight: 500;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: #999;
+          margin-bottom: 1rem;
+          display: block;
+        }
+        .own-services__title {
+          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+          font-weight: 400;
+          line-height: 1.2;
+          color: #0a0a0c;
+          margin: 0 auto;
+          max-width: 600px;
+        }
+        .own-services__grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 2rem;
+        }
+        .own-services__card {}
+        .own-services__card-image {
+          position: relative;
+          aspect-ratio: 3/2;
+          border-radius: 6px;
+          overflow: hidden;
+          background: #e8e4dc;
+          margin-bottom: 1.25rem;
+        }
+        .own-services__card-image img { object-fit: cover; }
+        .own-services__card-title {
+          font-family: 'Jost', sans-serif;
+          font-size: 1rem;
+          font-weight: 500;
+          color: #0a0a0c;
+          margin: 0 0 0.375rem;
+        }
+        .own-services__card-subtitle {
+          font-family: 'Jost', sans-serif;
+          font-size: 0.875rem;
+          font-weight: 300;
+          font-style: italic;
+          color: #666;
+          margin: 0 0 0.875rem;
+        }
+        .own-services__card-desc {
+          font-family: 'Jost', sans-serif;
+          font-size: 0.875rem;
+          font-weight: 300;
+          line-height: 1.75;
+          color: #555;
+          margin: 0 0 1rem;
+        }
+        .own-services__card-link {
+          font-family: 'Jost', sans-serif;
+          font-size: 0.8125rem;
+          font-weight: 400;
+          color: #0a0a0c;
+          text-decoration: underline;
+          text-underline-offset: 3px;
+          transition: opacity 0.2s;
+        }
+        .own-services__card-link:hover { opacity: 0.6; }
+
+        /* ── SECCIÓN VERDE ── */
+        .own-green {
+          background: #1e3a2f;
+          padding: 5rem 2.5rem;
+        }
+        .own-green__inner {
+          max-width: 1100px;
+          margin: 0 auto;
+        }
+        .own-pt__highlight {
+          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-size: clamp(2rem, 4vw, 3.25rem);
+          font-weight: 300;
+          line-height: 1.3;
+          color: #fff;
+          margin: 0 0 3rem;
+        }
+        .own-green__bottom {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 3rem;
+          align-items: center;
+        }
+        .own-green__image {
+          position: relative;
+          aspect-ratio: 4/3;
+          border-radius: 8px;
+          overflow: hidden;
+          background: #2a5040;
+        }
+        .own-green__image img { object-fit: cover; }
+        .own-green__desc {
+          font-family: 'Jost', sans-serif;
+          font-size: 0.9375rem;
+          font-weight: 300;
+          line-height: 1.75;
+          color: rgba(255,255,255,0.65);
+          text-align: right;
+          margin: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+          .own-hero__inner { grid-template-columns: 1fr; gap: 1.5rem; }
+          .own-diff__grid { grid-template-columns: repeat(2, 1fr); }
+          .own-split { grid-template-columns: 1fr; gap: 2.5rem; }
+          .own-split__image { aspect-ratio: 4/3; }
+          .own-services__grid { grid-template-columns: 1fr; gap: 2.5rem; }
+          .own-green__bottom { grid-template-columns: 1fr; }
+          .own-green__desc { text-align: left; }
+        }
+        @media (max-width: 580px) {
+          .own-hero { padding: 3rem 1.25rem 0; }
+          .own-diff { padding: 4rem 1.25rem; }
+          .own-diff__grid { grid-template-columns: 1fr; }
+          .own-split { padding: 4rem 1.25rem; }
+          .own-phil { padding: 4rem 1.25rem 0; }
+          .own-services { padding: 4rem 1.25rem; }
+          .own-green { padding: 4rem 1.25rem; }
+          .own-phil__image { aspect-ratio: 4/3; }
+          .own-hero__image { aspect-ratio: 4/3; }
+        }
+      `}</style>
+
+            <Navbar locale={locale} ctaUrl={homeData?.heroCtaUrl} ctaLabel={homeData?.heroCtaLabel} variant="light" />
+
+            <main>
+
+                {/* ── HERO ── */}
+                <div className="own-hero">
+                    <div className="own-hero__inner">
+                        <div>
+                            {isEs ? data?.heroEyebrowEs : data?.heroEyebrowEn && <p className="own-hero__eyebrow">{isEs ? data.heroEyebrowEs : data.heroEyebrowEn}</p>}
+                        </div>
+                        <div className="own-hero__right">
+                            <h1 className="own-hero__title">
+                                {isEs ? data?.heroTitleEs : data?.heroTitleEn}
+                            </h1>
+                            {(isEs ? data?.heroSubtitleEs : data?.heroSubtitleEn) && (
+                                <p className="own-hero__subtitle">
+                                    {isEs ? data.heroSubtitleEs : data.heroSubtitleEn}
+                                </p>
+                            )}
+                        </div>
+                    </div>
+                    {data?.heroImage && (
+                        <div className="own-hero__image">
+                            <Image
+                                src={urlFor(data.heroImage).width(1600).height(800).fit('crop').url()}
+                                alt={isEs ? data.heroTitleEs : data.heroTitleEn}
+                                fill priority sizes="100vw"
+                            />
+                        </div>
+                    )}
+                </div>
+
+                {/* ── DIFERENCIAL ── */}
+                {data?.differentialItems?.length > 0 && (
+                    <div className="own-diff">
+                        <div className="own-diff__inner">
+                            <div className="own-diff__header">
+                                {isEs ? data.differentialEyebrowEs : data.differentialEyebrowEn && (
+                                    <span className="own-diff__eyebrow">{isEs ? data.differentialEyebrowEs : data.differentialEyebrowEn}</span>
+                                )}
+                                {(isEs ? data.differentialTitleEs : data.differentialTitleEn) && (
+                                    <h2 className="own-diff__title">
+                                        {isEs ? data.differentialTitleEs : data.differentialTitleEn}
+                                    </h2>
+                                )}
+                            </div>
+                            <div className="own-diff__grid">
+                                {data.differentialItems.map((item: any, i: number) => (
+                                    <div key={i} className="own-diff__card">
+                                        <span className="own-diff__num">
+                                            {String(i + 1).padStart(2, '0')}.
+                                        </span>
+                                        <p className="own-diff__text">
+                                            {isEs ? item.textEs : item.textEn}
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* ── SPLIT ── */}
+                {(data?.splitTitleEs || data?.splitImage) && (
+                    <div className="own-split">
+                        {data.splitImage && (
+                            <div className="own-split__image">
+                                <Image
+                                    src={urlFor(data.splitImage).width(600).height(800).fit('crop').url()}
+                                    alt="BT Homes"
+                                    fill
+                                    sizes="(max-width: 900px) 100vw, 50vw"
+                                />
+                            </div>
+                        )}
+                        <div>
+                            {(isEs ? data?.splitTitleEs : data?.splitTitleEn) && (
+                                <h2 className="own-split__title">
+                                    {isEs ? data.splitTitleEs : data.splitTitleEn}
+                                </h2>
+                            )}
+                            {(isEs ? data?.splitBodyEs : data?.splitBodyEn) && (
+                                <PortableText
+                                    value={isEs ? data.splitBodyEs : data.splitBodyEn}
+                                    components={ptBody}
+                                />
+                            )}
+                        </div>
+                    </div>
+                )}
+
+                {/* ── FILOSOFÍA ── */}
+                {(data?.philosophyTextEs || data?.philosophyImage) && (
+                    <div className="own-phil">
+                        <div className="own-phil__inner">
+                            {isEs ? data.philosophyEyebrowEs : data.philosophyEyebrowEn && (
+                                <span className="own-phil__eyebrow">{isEs ? data.philosophyEyebrowEs : data.philosophyEyebrowEn}</span>
+                            )}
+                            {(isEs ? data.philosophyTextEs : data.philosophyTextEn) && (
+                                <p className="own-phil__text">
+                                    {isEs ? data.philosophyTextEs : data.philosophyTextEn}
+                                </p>
+                            )}
+                        </div>
+                        {data.philosophyImage && (
+                            <div className="own-phil__image">
+                                <Image
+                                    src={urlFor(data.philosophyImage).width(1600).height(700).fit('crop').url()}
+                                    alt="Filosofía BT Homes"
+                                    fill
+                                    sizes="100vw"
+                                />
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {/* ── SERVICIOS ── */}
+                {data?.services?.length > 0 && (
+                    <div className="own-services">
+                        <div className="own-services__inner">
+                            <div className="own-services__header">
+                                {isEs ? data.servicesEyebrowEs : data.servicesEyebrowEn && (
+                                    <span className="own-services__eyebrow">{isEs ? data.servicesEyebrowEs : data.servicesEyebrowEn}</span>
+                                )}
+                                {(isEs ? data.servicesTitleEs : data.servicesTitleEn) && (
+                                    <h2 className="own-services__title">
+                                        {isEs ? data.servicesTitleEs : data.servicesTitleEn}
+                                    </h2>
+                                )}
+                            </div>
+                            <div className="own-services__grid">
+                                {data.services.map((svc: any, i: number) => {
+                                    const imageUrl = svc.image
+                                        ? urlFor(svc.image).width(700).height(467).fit('crop').url()
+                                        : null
+                                    return (
+                                        <div key={i} className="own-services__card">
+                                            {imageUrl && (
+                                                <div className="own-services__card-image">
+                                                    <Image src={imageUrl} alt={isEs ? svc.titleEs : svc.titleEn} fill sizes="(max-width: 900px) 100vw, 33vw" />
+                                                </div>
+                                            )}
+                                            <h3 className="own-services__card-title">
+                                                {isEs ? svc.titleEs : svc.titleEn}
+                                            </h3>
+                                            {(isEs ? svc.subtitleEs : svc.subtitleEn) && (
+                                                <p className="own-services__card-subtitle">
+                                                    {isEs ? svc.subtitleEs : svc.subtitleEn}
+                                                </p>
+                                            )}
+                                            {(isEs ? svc.descriptionEs : svc.descriptionEn) && (
+                                                <p className="own-services__card-desc">
+                                                    {isEs ? svc.descriptionEs : svc.descriptionEn}
+                                                </p>
+                                            )}
+                                            {svc.readMoreUrl && (
+                                                <a href={svc.readMoreUrl} className="own-services__card-link">
+                                                    {isEs ? (svc.readMoreLabelEs ?? 'Leer más') : (svc.readMoreLabelEn ?? 'Read more')}
+                                                </a>
+                                            )}
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* ── SECCIÓN VERDE ── */}
+                {(isEs ? data?.highlightBodyEs : data?.highlightBodyEn) && (
+                    <div className="own-green">
+                        <div className="own-green__inner">
+                            <PortableText
+                                value={isEs ? data.highlightBodyEs : data.highlightBodyEn}
+                                components={ptHighlight}
+                            />
+                            <div className="own-green__bottom">
+                                {data.highlightImage && (
+                                    <div className="own-green__image">
+                                        <Image
+                                            src={urlFor(data.highlightImage).width(700).height(525).fit('crop').url()}
+                                            alt="BT Homes"
+                                            fill
+                                            sizes="(max-width: 900px) 100vw, 50vw"
+                                        />
+                                    </div>
+                                )}
+                                {(isEs ? data.highlightDescriptionEs : data.highlightDescriptionEn) && (
+                                    <p className="own-green__desc">
+                                        {isEs ? data.highlightDescriptionEs : data.highlightDescriptionEn}
+                                    </p>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* ── FAQ ── */}
+                {data?.faqItems?.length > 0 && (
+                    <OwnersFaq
+                        title={isEs ? (data.faqTitleEs ?? 'Preguntas frecuentes') : (data.faqTitleEn ?? 'FAQ')}
+                        items={data.faqItems}
+                        locale={locale}
+                    />
+                )}
+
+            </main>
+
+            <Footer
+                bookNowLabel={isEs ? homeData?.bookNowLabelEs : homeData?.bookNowLabelEn}
+                hostifyUrl={homeData?.heroCtaUrl}
+                tagline={isEs ? homeData?.footerTaglineEs : homeData?.footerTaglineEn}
+                emailPrimary={homeData?.footerEmailPrimary}
+                emailSecondary={homeData?.footerEmailSecondary}
+                phoneArg={homeData?.footerPhoneArg}
+                phoneMex={homeData?.footerPhoneMex}
+                website={homeData?.footerWebsite}
+                siteArg={homeData?.footerSiteArg}
+                siteMex={homeData?.footerSiteMex}
+                copyright={isEs ? homeData?.footerCopyrightEs : homeData?.footerCopyrightEn}
+                locale={locale}
+            />
+        </>
+    )
+}

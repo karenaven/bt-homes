@@ -1,30 +1,20 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { client } from '@/lib/sanity.client'
-import { destinationsQuery, homePageQuery } from '@/lib/sanity.queries'
 import type { Destination, HomePage, Property } from '@/lib/types'
-import HeroSection from '@/components/HeroSection'
-import AboutSection from '@/components/AboutSection'
+import { destinationsQuery, homePageQuery, featuredPropertiesQuery } from '@/lib/sanity.queries'
+
 import Navbar from '@/components/Navbar'
-import SearchBar from '@/components/Searchbar'
-import DestinationsSection from '@/components/DestinationSection'
-import FeaturedProperties from '@/components/FeaturedProperties'
-import { featuredPropertiesQuery } from '../../lib/sanity.queries';
-import ExperienceSection from '@/components/ExperienceSection'
-import OwnersSection from '@/components/OwnersSection'
 import Footer from '@/components/Footer'
+import SearchBar from '@/components/home/Searchbar'
+import HeroSection from '@/components/home/HeroSection'
+import OwnersSection from '@/components/home/OwnersSection'
+import ExperienceSection from '@/components/home/ExperienceSection'
+import FeaturedProperties from '@/components/home/FeaturedProperties'
+import DestinationsSection from '@/components/home/DestinationSection'
 
 interface PageProps {
   params: Promise<{ locale: string }>
-}
-
-const searchBarI18n = {
-  es: {
-    allDestinationsTxt: 'Todos los destinos',
-  },
-  en: {
-    allDestinationsTxt: 'All destinations',
-  },
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -61,9 +51,6 @@ export default async function HomePage({ params }: PageProps) {
   const isEs = locale === 'es'
   const heroTitle = isEs ? data.heroTitleEs : data.heroTitleEn
   const heroSubtitle = isEs ? data.heroSubtitleEs : data.heroSubtitleEn
-  const aboutTitle = isEs ? (data.aboutTitleEs ?? 'Quiénes somos') : (data.aboutTitleEn ?? 'About us')
-  const aboutBody = isEs ? data.aboutBodyEs : data.aboutBodyEn
-  //const destination = isEs ? data.destinationEs : data.destinationEn
   const checkinTxt = isEs ? data.checkInEs : data.checkInEn
   const checkoutTxt = isEs ? data.checkOutEs : data.checkOutEn
   const guestsTxt = isEs ? data.guestsEs : data.guestsEn
@@ -133,29 +120,22 @@ export default async function HomePage({ params }: PageProps) {
           body={isEs ? data.ownersBodyEs : data.ownersBodyEn}
           images={data.ownersImages}
         />
-
-        {/* About */}
-        {/* <AboutSection
-          image={data.aboutImage}
-          title={aboutTitle}
-          body={aboutBody}
-        /> */}
-
-        <Footer
-          bookNowLabel={isEs ? data.bookNowLabelEs : data.bookNowLabelEn}
-          hostifyUrl={data.heroCtaUrl}
-          tagline={isEs ? data.footerTaglineEs : data.footerTaglineEn}
-          emailPrimary={data.footerEmailPrimary}
-          emailSecondary={data.footerEmailSecondary}
-          phoneArg={data.footerPhoneArg}
-          phoneMex={data.footerPhoneMex}
-          website={data.footerWebsite}
-          siteArg={data.footerSiteArg}
-          siteMex={data.footerSiteMex}
-          copyright={isEs ? data.footerCopyrightEs : data.footerCopyrightEn}
-          locale={locale}
-        />
       </main>
+
+      <Footer
+        bookNowLabel={isEs ? data.bookNowLabelEs : data.bookNowLabelEn}
+        hostifyUrl={data.heroCtaUrl}
+        tagline={isEs ? data.footerTaglineEs : data.footerTaglineEn}
+        emailPrimary={data.footerEmailPrimary}
+        emailSecondary={data.footerEmailSecondary}
+        phoneArg={data.footerPhoneArg}
+        phoneMex={data.footerPhoneMex}
+        website={data.footerWebsite}
+        siteArg={data.footerSiteArg}
+        siteMex={data.footerSiteMex}
+        copyright={isEs ? data.footerCopyrightEs : data.footerCopyrightEn}
+        locale={locale}
+      />
     </>
   )
 }

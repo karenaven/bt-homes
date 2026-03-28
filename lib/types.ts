@@ -9,11 +9,6 @@ export interface HomePage {
   heroSubtitleEn?: string
   heroCtaLabel?: string
   heroCtaUrl?: string
-  aboutImage?: SanityImageSource
-  aboutTitleEs?: string
-  aboutTitleEn?: string
-  aboutBodyEs?: PortableTextBlock[]
-  aboutBodyEn?: PortableTextBlock[]
   seoTitleEs?: string
   seoTitleEn?: string
   seoDescriptionEs?: string
