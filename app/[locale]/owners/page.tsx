@@ -1,11 +1,10 @@
-import Image from 'next/image'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import type { HomePage } from '@/lib/types'
+import Image from 'next/image'
+import { PortableText, PortableTextComponents } from '@portabletext/react'
 import { client, urlFor } from '@/lib/sanity.client'
 import { ownersPageQuery, homePageQuery } from '@/lib/sanity.queries'
-import { PortableText, PortableTextComponents } from '@portabletext/react'
-
+import type { HomePage } from '@/lib/types'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import OwnersFaq from '@/components/owners/OwnersFaq'
@@ -233,14 +232,156 @@ export default async function OwnersPage({ params }: PageProps) {
           color: #0a0a0c;
           margin: 0;
         }
-        .own-phil__image {
-          position: relative;
-          width: 100%;
-          aspect-ratio: 16/7;
-          background: #e8e4dc;
-          overflow: hidden;
+
+        .own-video__iframe {
+            width: 100%;
+            border-radius: 8px;
+            display: block;
+            max-height: 600px;
+            object-fit: cover;
         }
-        .own-phil__image img { object-fit: cover; }
+
+        /* ── FEATURED PROPERTY SPLIT ── */
+        .own-feat {
+          padding: 4rem 2.5rem 5rem;
+          max-width: 1100px;
+          margin: 0 auto;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 4rem;
+          align-items: start;
+        }
+        .own-feat__eyebrow {
+          font-family: 'Jost', sans-serif;
+          font-size: 0.6875rem;
+          font-weight: 500;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: #999;
+          margin-bottom: 1rem;
+          display: block;
+        }
+        .own-feat__title {
+          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+          font-weight: 400;
+          line-height: 1.2;
+          color: #0a0a0c;
+          margin: 0;
+        }
+        .own-feat__desc {
+          font-family: 'Jost', sans-serif;
+          font-size: 0.9rem;
+          font-weight: 300;
+          line-height: 1.8;
+          color: #555;
+          margin: 0;
+        }
+
+        /* ── PRICELABS ── */
+        .own-pricelabs {
+          padding: 5rem 2.5rem;
+          text-align: center;
+          border-top: 1px solid #eee;
+        }
+        .own-pricelabs__inner {
+          max-width: 900px;
+          margin: 0 auto;
+        }
+        .own-pricelabs__logo {
+          position: relative;
+          height: 40px;
+          width: 180px;
+          margin: 0 auto 2rem;
+        }
+        .own-pricelabs__logo img { object-fit: contain; }
+        .own-pricelabs__title {
+          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+          font-weight: 400;
+          line-height: 1.2;
+          color: #0a0a0c;
+          margin: 0 0 3rem;
+          max-width: 520px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .own-pricelabs__features {
+          display: flex;
+          justify-content: center;
+          gap: 3rem;
+          flex-wrap: wrap;
+        }
+        .own-pricelabs__feature {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0.875rem;
+          max-width: 140px;
+        }
+        .own-pricelabs__icon {
+          width: 56px;
+          height: 56px;
+          background: #1e3a2f;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+        }
+        .own-pricelabs__icon svg {
+          width: 24px;
+          height: 24px;
+          color: #b8e04a;
+        }
+        .own-pricelabs__label {
+          font-family: 'Jost', sans-serif;
+          font-size: 0.8rem;
+          font-weight: 300;
+          line-height: 1.5;
+          color: #555;
+          text-align: center;
+        }
+
+        /* ── REVENUE ── */
+        .own-revenue {
+          background: #F0EDE3;
+          padding: 6rem 2.5rem;
+        }
+        .own-revenue__inner {
+          max-width: 1100px;
+          margin: 0 auto;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 4rem;
+          align-items: center;
+        }
+        .own-revenue__eyebrow {
+          font-family: 'Jost', sans-serif;
+          font-size: 0.6875rem;
+          font-weight: 500;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: #999;
+          margin-bottom: 1rem;
+          display: block;
+        }
+        .own-revenue__title {
+          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-size: clamp(1.75rem, 3vw, 2.75rem);
+          font-weight: 400;
+          line-height: 1.15;
+          color: #0a0a0c;
+          margin: 0 0 1.5rem;
+        }
+        .own-revenue__image {
+          position: relative;
+          aspect-ratio: 4/3;
+          border-radius: 8px;
+          overflow: hidden;
+          background: #d8d4cc;
+        }
+        .own-revenue__image img { object-fit: cover; }
 
         /* ── SERVICIOS ── */
         .own-services {
@@ -369,6 +510,8 @@ export default async function OwnersPage({ params }: PageProps) {
           .own-diff__grid { grid-template-columns: repeat(2, 1fr); }
           .own-split { grid-template-columns: 1fr; gap: 2.5rem; }
           .own-split__image { aspect-ratio: 4/3; }
+          .own-feat { grid-template-columns: 1fr; gap: 2rem; }
+          .own-revenue__inner { grid-template-columns: 1fr; gap: 2.5rem; }
           .own-services__grid { grid-template-columns: 1fr; gap: 2.5rem; }
           .own-green__bottom { grid-template-columns: 1fr; }
           .own-green__desc { text-align: left; }
@@ -379,6 +522,11 @@ export default async function OwnersPage({ params }: PageProps) {
           .own-diff__grid { grid-template-columns: 1fr; }
           .own-split { padding: 4rem 1.25rem; }
           .own-phil { padding: 4rem 1.25rem 0; }
+          .own-video { padding: 0 1.25rem 3rem; }
+          .own-feat { padding: 3rem 1.25rem 4rem; }
+          .own-pricelabs { padding: 4rem 1.25rem; }
+          .own-pricelabs__features { gap: 1.5rem; }
+          .own-revenue { padding: 4rem 1.25rem; }
           .own-services { padding: 4rem 1.25rem; }
           .own-green { padding: 4rem 1.25rem; }
           .own-phil__image { aspect-ratio: 4/3; }
@@ -394,7 +542,7 @@ export default async function OwnersPage({ params }: PageProps) {
                 <div className="own-hero">
                     <div className="own-hero__inner">
                         <div>
-                            {isEs ? data?.heroEyebrowEs : data?.heroEyebrowEn && <p className="own-hero__eyebrow">{isEs ? data.heroEyebrowEs : data.heroEyebrowEn}</p>}
+                            {data?.heroEyebrow && <p className="own-hero__eyebrow">{data.heroEyebrow}</p>}
                         </div>
                         <div className="own-hero__right">
                             <h1 className="own-hero__title">
@@ -481,7 +629,7 @@ export default async function OwnersPage({ params }: PageProps) {
                 {(data?.philosophyTextEs || data?.philosophyImage) && (
                     <div className="own-phil">
                         <div className="own-phil__inner">
-                            {isEs ? data.philosophyEyebrowEs : data.philosophyEyebrowEn && (
+                             {isEs ? data.philosophyEyebrowEs : data.philosophyEyebrowEn && (
                                 <span className="own-phil__eyebrow">{isEs ? data.philosophyEyebrowEs : data.philosophyEyebrowEn}</span>
                             )}
                             {(isEs ? data.philosophyTextEs : data.philosophyTextEn) && (
@@ -490,16 +638,116 @@ export default async function OwnersPage({ params }: PageProps) {
                                 </p>
                             )}
                         </div>
-                        {data.philosophyImage && (
-                            <div className="own-phil__image">
-                                <Image
-                                    src={urlFor(data.philosophyImage).width(1600).height(700).fit('crop').url()}
-                                    alt="Filosofía BT Homes"
-                                    fill
-                                    sizes="100vw"
-                                />
-                            </div>
+                    </div>
+                )}
+
+                {/* ── VIDEO ── */}
+                {data?.philosophyVideo?.asset?.url && (
+                    <div className="own-video">
+                        <video
+                            className="own-video__iframe"
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                            controls
+                        >
+                            <source src={data.philosophyVideo.asset.url} type="video/mp4" />
+                        </video>
+                    </div>
+                )}
+
+                {/* ── FEATURED PROPERTY SPLIT ── */}
+                {(data?.featuredPropertyTitleEs || data?.featuredPropertyDescEs) && (
+                    <div className="own-feat">
+                        <div>                            
+                            {isEs ? data.featuredPropertyEyebrowEs : data.featuredPropertyEyebrowEn && (
+                                <span className="own-feat__eyebrow">{isEs ? data.featuredPropertyEyebrowEs : data.featuredPropertyEyebrowEn}</span>
+                            )}
+                            {(isEs ? data.featuredPropertyTitleEs : data.featuredPropertyTitleEn) && (
+                                <h2 className="own-feat__title">
+                                    {isEs ? data.featuredPropertyTitleEs : data.featuredPropertyTitleEn}
+                                </h2>
+                            )}
+                        </div>
+                        {(isEs ? data.featuredPropertyDescEs : data.featuredPropertyDescEn) && (
+                            <p className="own-feat__desc">
+                                {isEs ? data.featuredPropertyDescEs : data.featuredPropertyDescEn}
+                            </p>
                         )}
+                    </div>
+                )}
+
+                {/* ── PRICELABS ── */}
+                {(data?.pricelabsTitleEs || data?.pricelabsFeatures?.length > 0) && (
+                    <div className="own-pricelabs">
+                        <div className="own-pricelabs__inner">
+                            {data.pricelabsLogo && (
+                                <div className="own-pricelabs__logo">
+                                    <Image
+                                        src={urlFor(data.pricelabsLogo).width(360).height(80).fit('max').url()}
+                                        alt="PriceLabs"
+                                        fill
+                                    />
+                                </div>
+                            )}
+                            {(isEs ? data.pricelabsTitleEs : data.pricelabsTitleEn) && (
+                                <h2 className="own-pricelabs__title">
+                                    {isEs ? data.pricelabsTitleEs : data.pricelabsTitleEn}
+                                </h2>
+                            )}
+                            {data.pricelabsFeatures?.length > 0 && (
+                                <div className="own-pricelabs__features">
+                                    {data.pricelabsFeatures.map((f: any, i: number) => (
+                                        <div key={i} className="own-pricelabs__feature">
+                                            <div className="own-pricelabs__icon">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                                    <path d="M12 2a10 10 0 100 20A10 10 0 0012 2z" />
+                                                    <path d="M12 8v4l3 3" />
+                                                </svg>
+                                            </div>
+                                            <p className="own-pricelabs__label">
+                                                {isEs ? f.labelEs : f.labelEn}
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
+
+                {/* ── REVENUE MANAGEMENT ── */}
+                {(data?.revenueTitleEs || data?.revenueImage) && (
+                    <div className="own-revenue">
+                        <div className="own-revenue__inner">
+                            <div>
+                                {isEs ? data.revenueEyebrowEs : data.revenueEyebrowEn && (
+                                    <span className="own-revenue__eyebrow">{isEs ? data.revenueEyebrowEs : data.revenueEyebrowEn}</span>
+                                )}
+                                {(isEs ? data.revenueTitleEs : data.revenueTitleEn) && (
+                                    <h2 className="own-revenue__title">
+                                        {isEs ? data.revenueTitleEs : data.revenueTitleEn}
+                                    </h2>
+                                )}
+                                {(isEs ? data.revenueBodyEs : data.revenueBodyEn) && (
+                                    <PortableText
+                                        value={isEs ? data.revenueBodyEs : data.revenueBodyEn}
+                                        components={ptBody}
+                                    />
+                                )}
+                            </div>
+                            {data.revenueImage && (
+                                <div className="own-revenue__image">
+                                    <Image
+                                        src={urlFor(data.revenueImage).width(700).height(525).fit('crop').url()}
+                                        alt="Revenue Management"
+                                        fill
+                                        sizes="(max-width: 900px) 100vw, 50vw"
+                                    />
+                                </div>
+                            )}
+                        </div>
                     </div>
                 )}
 

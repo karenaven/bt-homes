@@ -15,18 +15,18 @@ interface FooterProps {
 
 const navLinks = {
   es: [
-    { label: 'Experiencia BTH', href: '#experiencia' },
-    { label: 'Quiénes somos', href: '#quienes-somos' },
-    { label: 'Propietarios', href: '#propietarios' },
-    { label: 'Contacto', href: '#contacto' },
-    { label: 'Blog', href: '#blog' },
+    { label: 'Experiencia BTH', href: '/es/experience' },
+    { label: 'Quiénes somos', href: '/es/about' },
+    { label: 'Propietarios', href: '/es/owners' },
+    { label: 'Contacto', href: '/es/contact' },
+    { label: 'Blog', href: '/es/blog' },
   ],
   en: [
-    { label: 'BTH Experience', href: '#experiencia' },
-    { label: 'About us', href: '#quienes-somos' },
-    { label: 'Owners', href: '#propietarios' },
-    { label: 'Contact', href: '#contacto' },
-    { label: 'Blog', href: '#blog' },
+    { label: 'BTH Experience', href: '/en/experience' },
+    { label: 'About us', href: '/en/about' },
+    { label: 'Owners', href: '/en/owners' },
+    { label: 'Contact', href: '/en/contact' },
+    { label: 'Blog', href: '/en/blog' },
   ],
 }
 

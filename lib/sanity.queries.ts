@@ -192,7 +192,24 @@ export const ownersPageQuery = groq`
     philosophyEyebrowEn,
     philosophyTextEs, 
     philosophyTextEn,
-    philosophyImage,
+    philosophyVideo { asset->{ url } },
+    featuredPropertyEyebrowEs,
+    featuredPropertyEyebrowEn,
+    featuredPropertyTitleEs, 
+    featuredPropertyTitleEn,
+    featuredPropertyDescEs, 
+    featuredPropertyDescEn,
+    pricelabsLogo,
+    pricelabsTitleEs, 
+    pricelabsTitleEn,
+    pricelabsFeatures[] { labelEs, labelEn },
+    revenueEyebrowEs,
+    revenueEyebrowEn,
+    revenueTitleEs, 
+    revenueTitleEn,
+    revenueBodyEs, 
+    revenueBodyEn,
+    revenueImage,
     servicesEyebrowEs,
     servicesEyebrowEn,
     servicesTitleEs, 
@@ -210,5 +227,92 @@ export const ownersPageQuery = groq`
     seoTitleEn,
     seoDescriptionEs, 
     seoDescriptionEn,
+  }
+`
+
+export const destinationBySlugQuery = groq`
+  *[_type == "destination" && slug.current == $slug][0] {
+    nameEs,
+    nameEn,
+    slug,
+    cityId,
+    heroImage,
+    descriptionEs,
+    descriptionEn,
+    separatorImage,
+    propertiesTitleEs,
+    propertiesTitleEn,
+    otherDestinationsTitleEs,
+    otherDestinationsTitleEn,
+  }
+`
+ 
+export const propertiesByDestinationQuery = groq`
+  *[_type == "property" && destination->slug.current == $slug] | order(_createdAt asc) {
+    nameEs,
+    nameEn,
+    slug,
+    locationEs,
+    locationEn,
+    beds,
+    baths,
+    pricePerNight,
+    rating,
+    hostifyUrl,
+    "mainImage": images[0],
+  }
+`
+ 
+export const otherDestinationsQuery = groq`
+  *[_type == "destination" && slug.current != $slug] | order(order asc) {
+    nameEs,
+    nameEn,
+    slug,
+    image,
+  }
+
+`
+ 
+export const blogPageConfigQuery = groq`
+  *[_type == "blogPage"][0] {
+    titleEs, titleEn,
+    descriptionEs, descriptionEn,
+    readMoreLabelEs, readMoreLabelEn,
+  }
+`
+ 
+export const blogPostsQuery = groq`
+  *[_type == "blogPost"] | order(publishedAt desc) {
+    titleEs, titleEn,
+    slug,
+    categoryEs, categoryEn,
+    coverImage,
+    excerptEs, excerptEn,
+    publishedAt,
+    featured,
+  }
+`
+ 
+export const blogPostBySlugQuery = groq`
+  *[_type == "blogPost" && slug.current == $slug][0] {
+    titleEs, titleEn,
+    slug,
+    categoryEs, categoryEn,
+    coverImage,
+    excerptEs, excerptEn,
+    bodyEs, bodyEn,
+    publishedAt,
+    seoTitleEs, seoTitleEn,
+    seoDescriptionEs, seoDescriptionEn,
+  }
+`
+ 
+export const relatedPostsQuery = groq`
+  *[_type == "blogPost" && slug.current != $slug] | order(publishedAt desc) [0..2] {
+    titleEs, titleEn,
+    slug,
+    categoryEs, categoryEn,
+    coverImage,
+    publishedAt,
   }
 `

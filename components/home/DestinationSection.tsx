@@ -184,7 +184,7 @@ export default function DestinationsSection({
             <div className="destinations__grid">
                 {destinations.map((dest) => {
                     const name = locale === 'es' ? dest.nameEs : dest.nameEn
-                    const href = `/${locale}/destinos/${dest.slug?.current}`
+                    const href = `/${locale}/destinations/${dest.slug?.current}`
                     const imageUrl = dest.image
                         ? urlFor(dest.image).width(800).height(980).fit('crop').url()
                         : null
