@@ -3,7 +3,7 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import type { HomePage } from '@/lib/types'
 import { client, urlFor } from '@/lib/sanity.client'
-import { aboutPageQuery, homePageQuery } from '@/lib/sanity.queries'
+import { aboutPageQuery, commonTranslationsQuery, homePageQuery } from '@/lib/sanity.queries'
 import { PortableText, PortableTextComponents } from '@portabletext/react'
 
 import Navbar from '@/components/Navbar'
@@ -45,9 +45,10 @@ export default async function AboutPage({ params }: PageProps) {
   const { locale } = await params
   if (!['es', 'en'].includes(locale)) notFound()
 
-  const [data, homeData]: [any, HomePage] = await Promise.all([
+  const [data, homeData, commonTranslations]: [any, HomePage, any] = await Promise.all([
     client.fetch(aboutPageQuery, {}, { next: { revalidate: 60 } }),
     client.fetch(homePageQuery, {}, { next: { revalidate: 60 } }),
+    client.fetch(commonTranslationsQuery, {}, { next: { revalidate: 60 } }),
   ])
 
   const isEs = locale === 'es'
@@ -64,6 +65,16 @@ export default async function AboutPage({ params }: PageProps) {
   const differentialImageUrl = data?.differentialImage
     ? urlFor(data.differentialImage).width(700).height(560).fit('crop').url()
     : null
+
+  const bookNowLabel = isEs ? commonTranslations.bookNowEs : commonTranslations.bookNowEn
+  const experienceLabel = isEs ? commonTranslations.experienceEs : commonTranslations.experienceEn
+  const ownerLabel = isEs ? commonTranslations.ownersEs : commonTranslations.ownersEn
+  const contactLabel = isEs ? commonTranslations.contactEs : commonTranslations.contactEn
+  const blogLabel = isEs ? commonTranslations.blogEs : commonTranslations.blogEn
+  const aboutUsLabel = isEs ? commonTranslations.aboutUsEs : commonTranslations.aboutUsEn
+  const socialLabel = isEs ? commonTranslations.socialEs : commonTranslations.socialEn
+  const differentialEyebrow = isEs ? commonTranslations.ourDifferentiatorEs : commonTranslations.ourDifferentiatorEn
+  const bookLabel = isEs ? commonTranslations?.bookLabelEs : commonTranslations?.bookLabelEn
 
   return (
     <>
@@ -310,7 +321,17 @@ export default async function AboutPage({ params }: PageProps) {
         }
       `}</style>
 
-      <Navbar locale={locale} ctaUrl={homeData?.heroCtaUrl} ctaLabel={homeData?.heroCtaLabel} variant="light" />
+      <Navbar
+        aboutUsTxt={aboutUsLabel}
+        blogTxt={blogLabel}
+        contactTxt={contactLabel}
+        experienceTxt={experienceLabel}
+        ownerTxt={ownerLabel}
+        locale={locale}
+        ctaUrl={homeData?.heroCtaUrl}
+        ctaLabel={bookLabel}
+        variant="light"
+      />
 
       <main>
 
@@ -413,9 +434,8 @@ export default async function AboutPage({ params }: PageProps) {
         {(data?.differentialTitleEs || data?.differentialTitleEn) && (
           <div className="ab-diff">
             <div>
-              {data.differentialEyebrow && (
-                <p className="ab-diff__eyebrow">{isEs ? data.differentialEyebrowEs : data.differentialEyebrowEn}</p>
-              )}
+              <p className="ab-diff__eyebrow">{differentialEyebrow}</p>
+
               <h2 className="ab-diff__title">
                 {isEs ? data.differentialTitleEs : data.differentialTitleEn}
               </h2>
@@ -442,7 +462,13 @@ export default async function AboutPage({ params }: PageProps) {
       </main>
 
       <Footer
-        bookNowLabel={isEs ? homeData?.bookNowLabelEs : homeData?.bookNowLabelEn}
+        bookNowLabel={bookNowLabel}
+        experienceTxt={experienceLabel}
+        aboutUsTxt={aboutUsLabel}
+        ownerTxt={ownerLabel}
+        contactTxt={contactLabel}
+        blogTxt={blogLabel}
+        socialTxt={socialLabel}
         hostifyUrl={homeData?.heroCtaUrl}
         tagline={isEs ? homeData?.footerTaglineEs : homeData?.footerTaglineEn}
         emailPrimary={homeData?.footerEmailPrimary}

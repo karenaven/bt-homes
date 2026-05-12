@@ -1,68 +1,98 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
-import Link from 'next/link'
 import { client, urlFor } from '@/lib/sanity.client'
-import { destinationBySlugQuery, propertiesByDestinationQuery, otherDestinationsQuery, homePageQuery } from '@/lib/sanity.queries'
+import { destinationBySlugQuery, otherDestinationsQuery, homePageQuery, commonTranslationsQuery, propertiesByDestinationQuery } from '@/lib/sanity.queries'
+import { hostifyClient, ListingCard } from '@/lib/hostify/client'
 import type { HomePage } from '@/lib/types'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import OtherDestinationsCarousel from '@/components/destinations/OtherDestinationsCarousel'
 
 interface PageProps {
-    params: Promise<{ locale: string; slug: string }>
+  params: Promise<{ locale: string; slug: string }>
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-    const { locale, slug } = await params
-    const dest = await client.fetch(destinationBySlugQuery, { slug })
-    if (!dest) return {}
-    const isEs = locale === 'es'
-    return {
-        title: `${isEs ? dest.nameEs : dest.nameEn} — BT Homes`,
-        description: isEs ? dest.descriptionEs : dest.descriptionEn,
-    }
+  const { locale, slug } = await params
+  const dest = await client.fetch(destinationBySlugQuery, { slug })
+  if (!dest) return {}
+  const isEs = locale === 'es'
+  return {
+    title: `${isEs ? dest.nameEs : dest.nameEn} — BT Homes`,
+    description: isEs ? dest.descriptionEs : dest.descriptionEn,
+  }
 }
 
 export default async function DestinationPage({ params }: PageProps) {
-    const { locale, slug } = await params
-    if (!['es', 'en'].includes(locale)) notFound()
+  const { locale, slug } = await params
+  if (!['es', 'en'].includes(locale)) notFound()
 
-    const [dest, properties, otherDests, homeData]: [any, any[], any[], HomePage] =
-        await Promise.all([
-            client.fetch(destinationBySlugQuery, { slug }, { next: { revalidate: 60 } }),
-            client.fetch(propertiesByDestinationQuery, { slug }, { next: { revalidate: 60 } }),
-            client.fetch(otherDestinationsQuery, { slug }, { next: { revalidate: 60 } }),
-            client.fetch(homePageQuery, {}, { next: { revalidate: 60 } }),
-        ])
+  const isEs = locale === 'es'
+  let dest = null
+  let properties: ListingCard[] = []
+  let otherDests: any[] = []
+  let homeData = null
+  let commonTranslations = null
+
+  try {
+    const [destData, propertiesData, otherDestsData, homeDataRes, commonTranslationsRes] = await Promise.all([
+      client.fetch(destinationBySlugQuery, { slug }, { next: { revalidate: 60 } }),
+      client.fetch(propertiesByDestinationQuery, { slug }, { next: { revalidate: 60 } }),
+      client.fetch(otherDestinationsQuery, { slug }, { next: { revalidate: 60 } }),
+      client.fetch(homePageQuery, {}, { next: { revalidate: 60 } }),
+      client.fetch(commonTranslationsQuery, {}, { next: { revalidate: 60 } }),
+    ])
+
+    dest = destData
+    properties = propertiesData
+    otherDests = otherDestsData
+    homeData = homeDataRes
+    commonTranslations = commonTranslationsRes
 
     if (!dest) notFound()
 
-    const isEs = locale === 'es'
-    const name = isEs ? dest.nameEs : dest.nameEn
-    const description = isEs ? dest.descriptionEs : dest.descriptionEn
-    const propertiesTitle = isEs
-        ? dest.propertiesTitleEs ?? `Encontrá la propiedad ideal en ${name}`
-        : dest.propertiesTitleEn ?? `Find your ideal property in ${name}`
-    const otherDestinationsTitle = isEs
-        ? dest.otherDestinationsTitleEs
-        : dest.otherDestinationsTitleEn
-    const bookNowLabel = isEs ? 'Book now' : 'Book now'
-    const bedsLabel = isEs ? 'camas' : 'beds'
-    const nightLabel = isEs ? 'noche' : 'night'
-    const exploreLabel = isEs
-        ? (homeData?.destinationsExploreLabelEs ?? 'Explorar')
-        : (homeData?.destinationsExploreLabelEn ?? 'Explore')
+    // Fetch properties from Hostify using cityId
+    //   const listingsData = await hostifyClient.listingsAvailable({
+    //     city_id: dest.cityId,
+    //     lang: isEs ? 'es' : 'en',
+    //     per_page: 20,
+    //   })
+    //   properties = listingsData?.listings || []
+  } catch (error) {
+    console.error('Failed to fetch destination data:', error)
+    if (!dest) notFound()
+  }
 
-    const heroImageUrl = dest.heroImage
-        ? urlFor(dest.heroImage).width(1600).height(800).fit('crop').url()
-        : null
-    const separatorImageUrl = dest.separatorImage
-        ? urlFor(dest.separatorImage).width(1600).height(700).fit('crop').url()
-        : null
+  if (!dest) notFound()
 
-    return (
-        <>
-            <style>{`
+  const name = isEs ? dest.nameEs : dest.nameEn
+  const description = isEs ? dest.descriptionEs : dest.descriptionEn
+  const propertiesTitle = isEs ? dest.propertiesTitleEs ?? `Encontrá la propiedad ideal en ${name}` : dest.propertiesTitleEn ?? `Find your ideal property in ${name}`
+  const otherDestinationsTitle = isEs ? dest.otherDestinationsTitleEs : dest.otherDestinationsTitleEn
+  const bookNowLabel = isEs ? commonTranslations?.bookNowEs : commonTranslations?.bookNowEn
+  const bedsLabel = isEs ? commonTranslations?.bedsEs : commonTranslations?.bedsEn
+  const nightLabel = isEs ? commonTranslations?.nightEs : commonTranslations?.nightEn
+  const exploreLabel = isEs ? (homeData?.destinationsExploreLabelEs ?? 'Explorar') : (homeData?.destinationsExploreLabelEn ?? 'Explore')
+  const destinationsEyebrow = isEs ? commonTranslations?.destinationsEs : commonTranslations?.destinationsEn
+  const experienceLabel = isEs ? commonTranslations?.experienceEs : commonTranslations?.experienceEn
+  const ownerLabel = isEs ? commonTranslations?.ownersEs : commonTranslations?.ownersEn
+  const contactLabel = isEs ? commonTranslations?.contactEs : commonTranslations?.contactEn
+  const blogLabel = isEs ? commonTranslations?.blogEs : commonTranslations?.blogEn
+  const aboutUsLabel = isEs ? commonTranslations?.aboutUsEs : commonTranslations?.aboutUsEn
+  const socialLabel = isEs ? commonTranslations?.socialEs : commonTranslations?.socialEn
+  const bookLabel = isEs ? commonTranslations?.bookLabelEs : commonTranslations?.bookLabelEn
+
+  const heroImageUrl = dest.heroImage
+    ? urlFor(dest.heroImage).width(1600).height(800).fit('crop').url()
+    : null
+  const separatorImageUrl = dest.separatorImage
+    ? urlFor(dest.separatorImage).width(1600).height(700).fit('crop').url()
+    : null
+
+  return (
+    <>
+      <style>{`
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
         body { background: #fff; color: #0a0a0c; }
@@ -212,124 +242,56 @@ export default async function DestinationPage({ params }: PageProps) {
           padding: 0.2rem 0.625rem;
           border-radius: 20px;
         }
-        .dest-card__footer {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-top: auto;
-        }
         .dest-card__price {
           font-family: 'Jost', sans-serif;
-          font-size: 0.9375rem;
-          font-weight: 500;
+          font-size: 1rem;
+          font-weight: 600;
           color: #0a0a0c;
+          margin: 0.5rem 0 0;
+          line-height: 1;
         }
         .dest-card__price span {
-          font-weight: 300;
-          color: #888;
-          font-size: 0.8125rem;
+          font-weight: 400;
+          font-size: 0.85rem;
+          color: #555;
+        }
+        .dest-card__footer {
+          display: flex;
+          align-items: flex-end;
+          justify-content: space-between;
+          gap: 1rem;
+          margin-top: auto;
         }
         .dest-card__btn {
           font-family: 'Jost', sans-serif;
           font-size: 0.75rem;
           font-weight: 500;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-          color: #fff;
+          padding: 0.625rem 1.25rem;
           background: #0a0a0c;
-          padding: 0.5rem 1.25rem;
+          color: #fff;
+          border: none;
+          border-radius: 4px;
           text-decoration: none;
-          border-radius: 2px;
+          cursor: pointer;
           transition: background 0.2s;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
           white-space: nowrap;
         }
-        .dest-card__btn:hover { background: #2a2a2e; }
+        .dest-card__btn:hover {
+          background: #333;
+        }
 
-        /* ── SEPARATOR IMAGE ── */
+        /* Separator */
         .dest-separator {
           position: relative;
           width: 100%;
-          aspect-ratio: 16/6;
-          background: #e8e4dc;
+          aspect-ratio: 16/8;
           overflow: hidden;
+          margin: 4rem 0 0;
         }
-        .dest-separator img { object-fit: cover; }
-
-        /* ── OTHER DESTINATIONS ── */
-        .dest-others {
-          padding: 5rem 2.5rem 6rem;
-          max-width: 1100px;
-          margin: 0 auto;
-        }
-        .dest-others__header {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 2rem;
-          align-items: start;
-          margin-bottom: 3rem;
-        }
-        .dest-others__eyebrow {
-          font-family: 'Jost', sans-serif;
-          font-size: 0.6875rem;
-          font-weight: 500;
-          letter-spacing: 0.2em;
-          text-transform: uppercase;
-          color: #999;
-          padding-top: 0.25rem;
-        }
-        .dest-others__title {
-          font-family: 'Cormorant Garamond', Georgia, serif;
-          font-size: clamp(1.5rem, 2.5vw, 2.25rem);
-          font-weight: 400;
-          color: #0a0a0c;
-          margin: 0;
-          line-height: 1.25;
-        }
-        .dest-others__grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 1.25rem;
-        }
-        .dest-others__card {
-          display: flex;
-          flex-direction: column;
-          text-decoration: none;
-          color: inherit;
-        }
-        .dest-others__image {
-          position: relative;
-          aspect-ratio: 9/11;
-          overflow: hidden;
-          border-radius: 6px;
-          background: #e8e4dc;
-          margin-bottom: 0.875rem;
-        }
-        .dest-others__image img {
+        .dest-separator img {
           object-fit: cover;
-          transition: transform 0.5s ease;
-        }
-        .dest-others__card:hover .dest-others__image img {
-          transform: scale(1.04);
-        }
-        .dest-others__footer {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-        }
-        .dest-others__name {
-          font-family: 'Jost', sans-serif;
-          font-size: 0.9375rem;
-          font-weight: 400;
-          color: #0a0a0c;
-        }
-        .dest-others__arrow {
-          width: 16px;
-          height: 16px;
-          color: #0a0a0c;
-          transition: transform 0.2s;
-        }
-        .dest-others__card:hover .dest-others__arrow {
-          transform: translateX(3px);
         }
 
         /* Empty state */
@@ -346,8 +308,6 @@ export default async function DestinationPage({ params }: PageProps) {
         @media (max-width: 900px) {
           .dest-intro { grid-template-columns: 1fr; gap: 1.5rem; }
           .dest-props__grid { grid-template-columns: repeat(2, 1fr); }
-          .dest-others__header { grid-template-columns: 1fr; gap: 1rem; }
-          .dest-others__grid { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 580px) {
           .dest-hero { aspect-ratio: 4/3; }
@@ -355,176 +315,171 @@ export default async function DestinationPage({ params }: PageProps) {
           .dest-intro { padding: 3rem 1.25rem; }
           .dest-props { padding: 3rem 1.25rem 4rem; }
           .dest-props__grid { grid-template-columns: 1fr; }
-          .dest-others { padding: 4rem 1.25rem 5rem; }
-          .dest-others__grid { grid-template-columns: 1fr; }
           .dest-separator { aspect-ratio: 4/3; }
         }
       `}</style>
 
-            <Navbar locale={locale} ctaUrl={homeData?.heroCtaUrl} ctaLabel={homeData?.heroCtaLabel} variant="light" />
+      <Navbar
+        aboutUsTxt={aboutUsLabel}
+        blogTxt={blogLabel}
+        contactTxt={contactLabel}
+        experienceTxt={experienceLabel}
+        ownerTxt={ownerLabel}
+        locale={locale}
+        ctaUrl={homeData?.heroCtaUrl}
+        ctaLabel={bookLabel}
+        variant="light"
+      />
 
-            <main>
+      <main>
 
-                {/* ── HERO ── */}
-                <div className="dest-hero">
-                    {heroImageUrl && (
-                        <Image src={heroImageUrl} alt={name} fill priority sizes="100vw" />
+        {/* ── HERO ── */}
+        <div className="dest-hero">
+          {heroImageUrl && (
+            <Image src={heroImageUrl} alt={name} fill priority sizes="100vw" />
+          )}
+          <h1 className="dest-hero__name">{name}</h1>
+        </div>
+
+        {/* ── INTRO ── */}
+        <div className="dest-intro">
+          <span className="dest-intro__eyebrow">
+            {destinationsEyebrow}
+          </span>
+          {description && (
+            <p className="dest-intro__desc">{description}</p>
+          )}
+        </div>
+
+        <hr className="dest-divider" />
+
+        {/* ── PROPERTIES GRID ── */}
+        <div className="dest-props">
+          <h2 className="dest-props__title">{propertiesTitle}</h2>
+          <div className="dest-props__grid">
+            {properties.length === 0 && (
+              <p className="dest-empty">
+                {isEs ? 'Próximamente propiedades en este destino.' : 'Properties coming soon.'}
+              </p>
+            )}
+            {/* {properties.map((prop) => {
+              const photoUrls = prop.photos?.split(',') || []
+              const baseImageUrl = photoUrls[0]?.trim()
+              const imageUrl = baseImageUrl
+                ?.replace('-md.jpg', '-lg.jpg')
+                ?.replace('-md.', '-lg.') || prop.thumbnail_file || null */}
+            {properties.map((prop: any) => {
+              const propName = isEs ? prop.nameEs : prop.nameEn
+              const location = isEs ? prop.locationEs : prop.locationEn
+              const imageUrl = prop.mainImage
+                ? urlFor(prop.mainImage).width(600).height(450).fit('crop').url()
+                : null
+
+              return (
+                <div key={prop.slug?.current} className="dest-card">
+                  {/* <div key={prop.id} className="dest-card"> */}
+                  {/* Imagen */}
+                  <div className="dest-card__image">
+                    {imageUrl && (
+                      <Image src={imageUrl} alt={propName} fill sizes="(max-width: 580px) 100vw, (max-width: 900px) 50vw, 33vw" />
+                      // <Image src={imageUrl} alt={prop.name} fill sizes="(max-width: 580px) 100vw, (max-width: 900px) 50vw, 33vw" />
                     )}
-                    <h1 className="dest-hero__name">{name}</h1>
-                </div>
+                  </div>
 
-                {/* ── INTRO ── */}
-                <div className="dest-intro">
-                    <span className="dest-intro__eyebrow">
-                        {isEs ? 'Destinos' : 'Destinations'}
-                    </span>
-                    {description && (
-                        <p className="dest-intro__desc">{description}</p>
+                  {/* Nombre + rating */}
+                  <div className="dest-card__header">
+                    <h3 className="dest-card__name">{propName}</h3>
+                    {/* <h3 className="dest-card__name">{prop.name}</h3> */}
+                    {prop.rating && (
+                      <div className="dest-card__rating">
+                        <span className="dest-card__star">★</span>
+                        {prop.rating}
+                        {/* {prop.rating.toFixed(1)} */}
+                      </div>
                     )}
+                  </div>
+
+                  {/* Ubicación */}
+                  {location && (
+                    <p className="dest-card__location">{location}</p>
+                  )}
+
+                  {/* Pills (camas / baños) */}
+                  <div className="dest-card__meta">
+                    {prop.beds && (
+                      <span className="dest-card__pill">
+                        {prop.beds} {bedsLabel}
+                      </span>
+                    )}
+                    {prop.baths && (
+                      <span className="dest-card__pill">
+                        {prop.baths} {isEs ? 'baños' : 'baths'}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Precio + Book now */}
+                  <div className="dest-card__footer">
+                    {prop.pricePerNight && (
+                      <p className="dest-card__price">
+                        ${prop.pricePerNight} <span>/{nightLabel}</span>
+                      </p>
+                    )}
+                    <a
+                      href={prop.hostifyUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="dest-card__btn"
+                    >
+                      {bookNowLabel}
+                    </a>
+                  </div>
                 </div>
+              )
+            })}
+          </div>
+        </div>
 
-                <hr className="dest-divider" />
+        {/* ── SEPARATOR IMAGE ── */}
+        {separatorImageUrl && (
+          <div className="dest-separator">
+            <Image src={separatorImageUrl} alt={name} fill sizes="100vw" />
+          </div>
+        )}
 
-                {/* ── PROPERTIES GRID ── */}
-                <div className="dest-props">
-                    <h2 className="dest-props__title">{propertiesTitle}</h2>
-                    <div className="dest-props__grid">
-                        {properties.length === 0 && (
-                            <p className="dest-empty">
-                                {isEs ? 'Próximamente propiedades en este destino.' : 'Properties coming soon.'}
-                            </p>
-                        )}
-                        {properties.map((prop: any) => {
-                            const propName = isEs ? prop.nameEs : prop.nameEn
-                            const location = isEs ? prop.locationEs : prop.locationEn
-                            const imageUrl = prop.mainImage
-                                ? urlFor(prop.mainImage).width(600).height(450).fit('crop').url()
-                                : null
+        {/* ── OTHER DESTINATIONS CAROUSEL ── */}
+        {otherDests.length > 0 && (
+          <OtherDestinationsCarousel
+            eyebrow={destinationsEyebrow}
+            title={otherDestinationsTitle}
+            exploreLabel={exploreLabel}
+            otherDestinations={otherDests}
+            locale={locale}
+          />
+        )}
 
-                            return (
-                                <div key={prop.slug?.current} className="dest-card">
-                                    {/* Imagen */}
-                                    <div className="dest-card__image">
-                                        {imageUrl && (
-                                            <Image src={imageUrl} alt={propName} fill sizes="(max-width: 580px) 100vw, (max-width: 900px) 50vw, 33vw" />
-                                        )}
-                                    </div>
+      </main>
 
-                                    {/* Nombre + rating */}
-                                    <div className="dest-card__header">
-                                        <h3 className="dest-card__name">{propName}</h3>
-                                        {prop.rating && (
-                                            <div className="dest-card__rating">
-                                                <span className="dest-card__star">★</span>
-                                                {prop.rating}
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    {/* Ubicación */}
-                                    {location && (
-                                        <p className="dest-card__location">{location}</p>
-                                    )}
-
-                                    {/* Pills (camas / baños) */}
-                                    <div className="dest-card__meta">
-                                        {prop.beds && (
-                                            <span className="dest-card__pill">
-                                                {prop.beds} {bedsLabel}
-                                            </span>
-                                        )}
-                                        {prop.baths && (
-                                            <span className="dest-card__pill">
-                                                {prop.baths} {isEs ? 'baños' : 'baths'}
-                                            </span>
-                                        )}
-                                    </div>
-
-                                    {/* Precio + Book now */}
-                                    <div className="dest-card__footer">
-                                        {prop.pricePerNight && (
-                                            <p className="dest-card__price">
-                                                ${prop.pricePerNight} <span>/{nightLabel}</span>
-                                            </p>
-                                        )}
-                                        <a
-                                            href={prop.hostifyUrl}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="dest-card__btn"
-                                        >
-                                            {bookNowLabel}
-                                        </a>
-                                    </div>
-                                </div>
-                            )
-                        })}
-                    </div>
-                </div>
-
-                {/* ── SEPARATOR IMAGE ── */}
-                {separatorImageUrl && (
-                    <div className="dest-separator">
-                        <Image src={separatorImageUrl} alt={name} fill sizes="100vw" />
-                    </div>
-                )}
-
-                {/* ── OTHER DESTINATIONS ── */}
-                {otherDests.length > 0 && (
-                    <div className="dest-others">
-                        <div className="dest-others__header">
-                            <span className="dest-others__eyebrow">
-                                {isEs ? 'Destinos' : 'Destinations'}
-                            </span>
-                            {otherDestinationsTitle && (
-                                <h2 className="dest-others__title">{otherDestinationsTitle}</h2>
-                            )}
-                        </div>
-                        <div className="dest-others__grid">
-                            {otherDests.slice(0, 3).map((other: any) => {
-                                const otherName = isEs ? other.nameEs : other.nameEn
-                                const otherHref = `/${locale}/destinos/${other.slug?.current}`
-                                const otherImageUrl = other.image
-                                    ? urlFor(other.image).width(500).height(610).fit('crop').url()
-                                    : null
-                                return (
-                                    <Link key={other.slug?.current} href={otherHref} className="dest-others__card">
-                                        <div className="dest-others__image">
-                                            {otherImageUrl && (
-                                                <Image src={otherImageUrl} alt={otherName} fill sizes="(max-width: 580px) 100vw, 33vw" />
-                                            )}
-                                        </div>
-                                        <div className="dest-others__footer">
-                                            <span className="dest-others__name">
-                                                {exploreLabel} {otherName}
-                                            </span>
-                                            <svg className="dest-others__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                                                <path d="M9 18l6-6-6-6" />
-                                            </svg>
-                                        </div>
-                                    </Link>
-                                )
-                            })}
-                        </div>
-                    </div>
-                )}
-
-            </main>
-
-            <Footer
-                bookNowLabel={isEs ? homeData?.bookNowLabelEs : homeData?.bookNowLabelEn}
-                hostifyUrl={homeData?.heroCtaUrl}
-                tagline={isEs ? homeData?.footerTaglineEs : homeData?.footerTaglineEn}
-                emailPrimary={homeData?.footerEmailPrimary}
-                emailSecondary={homeData?.footerEmailSecondary}
-                phoneArg={homeData?.footerPhoneArg}
-                phoneMex={homeData?.footerPhoneMex}
-                website={homeData?.footerWebsite}
-                siteArg={homeData?.footerSiteArg}
-                siteMex={homeData?.footerSiteMex}
-                copyright={isEs ? homeData?.footerCopyrightEs : homeData?.footerCopyrightEn}
-                locale={locale}
-            />
-        </>
-    )
+      <Footer
+        bookNowLabel={bookNowLabel}
+        experienceTxt={experienceLabel}
+        aboutUsTxt={aboutUsLabel}
+        ownerTxt={ownerLabel}
+        contactTxt={contactLabel}
+        blogTxt={blogLabel}
+        socialTxt={socialLabel}
+        hostifyUrl={homeData?.heroCtaUrl}
+        tagline={isEs ? homeData?.footerTaglineEs : homeData?.footerTaglineEn}
+        emailPrimary={homeData?.footerEmailPrimary}
+        emailSecondary={homeData?.footerEmailSecondary}
+        phoneArg={homeData?.footerPhoneArg}
+        phoneMex={homeData?.footerPhoneMex}
+        website={homeData?.footerWebsite}
+        siteArg={homeData?.footerSiteArg}
+        siteMex={homeData?.footerSiteMex}
+        copyright={isEs ? homeData?.footerCopyrightEs : homeData?.footerCopyrightEn}
+        locale={locale}
+      />
+    </>
+  )
 }

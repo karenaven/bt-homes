@@ -33,30 +33,12 @@ export const homePageQuery = groq`
     heroSubtitleEn,
     heroCtaLabel,
     heroCtaUrl,
-    destinationEs,
-    destinationEn,
-    checkInEs,
-    checkInEn,
-    checkOutEs,
-    checkOutEn,
-    guestsEs,
-    guestsEn,
-    searchEs,
-    searchEn,
-    destinationsEyebrowEs,
-    destinationsEyebrowEn,
     destinationsTitleEs,
     destinationsTitleEn,
     destinationsExploreLabelEs,
     destinationsExploreLabelEn,
     destinationsFooterLabelEs,
     destinationsFooterLabelEn,
-    featuredEyebrowEs,
-    featuredEyebrowEn,
-    featuredReserveLabelEs,
-    featuredReserveLabelEn, 
-    experienceEyebrowEs,
-    experienceEyebrowEn,
     experienceTitleEs,
     experienceTitleEn,
     experienceCells[] {
@@ -72,8 +54,6 @@ export const homePageQuery = groq`
     ownersBodyEn,
     ownersImages,
     ownersImages,
-    bookNowLabelEs,
-    bookNowLabelEn,
     footerTaglineEs,
     footerTaglineEn,
     footerEmailPrimary,
@@ -134,7 +114,7 @@ export const experiencePageQuery = groq`
     seoDescriptionEs, 
     seoDescriptionEn,
   }
-` 
+`
 
 export const aboutPageQuery = groq`
   *[_type == "aboutPage"][0] {
@@ -155,8 +135,6 @@ export const aboutPageQuery = groq`
     servicesImage,
     highlightBodyEs, 
     highlightBodyEn,
-    differentialEyebrowEs,
-    differentialEyebrowEn,
     differentialTitleEs, 
     differentialTitleEn,
     differentialBodyEs, 
@@ -171,15 +149,11 @@ export const aboutPageQuery = groq`
 
 export const ownersPageQuery = groq`
   *[_type == "ownersPage"][0] {
-    heroEyebrowEs,
-    heroEyebrowEn,
     heroTitleEs, 
     heroTitleEn,
     heroSubtitleEs, 
     heroSubtitleEn,
     heroImage,
-    differentialEyebrowEs,
-    differentialEyebrowEn,
     differentialTitleEs, 
     differentialTitleEn,
     differentialItems[] { textEs, textEn },
@@ -188,13 +162,9 @@ export const ownersPageQuery = groq`
     splitTitleEn,
     splitBodyEs, 
     splitBodyEn,
-    philosophyEyebrowEs,
-    philosophyEyebrowEn,
     philosophyTextEs, 
     philosophyTextEn,
     philosophyVideo { asset->{ url } },
-    featuredPropertyEyebrowEs,
-    featuredPropertyEyebrowEn,
     featuredPropertyTitleEs, 
     featuredPropertyTitleEn,
     featuredPropertyDescEs, 
@@ -203,18 +173,14 @@ export const ownersPageQuery = groq`
     pricelabsTitleEs, 
     pricelabsTitleEn,
     pricelabsFeatures[] { labelEs, labelEn },
-    revenueEyebrowEs,
-    revenueEyebrowEn,
     revenueTitleEs, 
     revenueTitleEn,
     revenueBodyEs, 
     revenueBodyEn,
     revenueImage,
-    servicesEyebrowEs,
-    servicesEyebrowEn,
     servicesTitleEs, 
     servicesTitleEn,
-    services[] { image, titleEs, titleEn, subtitleEs, subtitleEn, descriptionEs, descriptionEn, readMoreLabelEs, readMoreLabelEn, readMoreUrl },
+    services[] { image, titleEs, titleEn, subtitleEs, subtitleEn, descriptionEs, descriptionEn, readMoreUrl },
     highlightBodyEs, 
     highlightBodyEn,
     highlightImage,
@@ -246,7 +212,7 @@ export const destinationBySlugQuery = groq`
     otherDestinationsTitleEn,
   }
 `
- 
+
 export const propertiesByDestinationQuery = groq`
   *[_type == "property" && destination->slug.current == $slug] | order(_createdAt asc) {
     nameEs,
@@ -262,7 +228,7 @@ export const propertiesByDestinationQuery = groq`
     "mainImage": images[0],
   }
 `
- 
+
 export const otherDestinationsQuery = groq`
   *[_type == "destination" && slug.current != $slug] | order(order asc) {
     nameEs,
@@ -272,15 +238,16 @@ export const otherDestinationsQuery = groq`
   }
 
 `
- 
+
 export const blogPageConfigQuery = groq`
   *[_type == "blogPage"][0] {
-    titleEs, titleEn,
-    descriptionEs, descriptionEn,
-    readMoreLabelEs, readMoreLabelEn,
+    titleEs, 
+    titleEn,
+    descriptionEs, 
+    descriptionEn
   }
 `
- 
+
 export const blogPostsQuery = groq`
   *[_type == "blogPost"] | order(publishedAt desc) {
     titleEs, titleEn,
@@ -292,7 +259,7 @@ export const blogPostsQuery = groq`
     featured,
   }
 `
- 
+
 export const blogPostBySlugQuery = groq`
   *[_type == "blogPost" && slug.current == $slug][0] {
     titleEs, titleEn,
@@ -306,7 +273,7 @@ export const blogPostBySlugQuery = groq`
     seoDescriptionEs, seoDescriptionEn,
   }
 `
- 
+
 export const relatedPostsQuery = groq`
   *[_type == "blogPost" && slug.current != $slug] | order(publishedAt desc) [0..2] {
     titleEs, titleEn,
@@ -314,5 +281,63 @@ export const relatedPostsQuery = groq`
     categoryEs, categoryEn,
     coverImage,
     publishedAt,
+  }
+`
+
+export const commonTranslationsQuery = groq`
+  *[_type == "commonTranslations"][0] {
+    aboutUsEs,
+    aboutUsEn,
+    contactEs,
+    contactEn,
+    socialEs,
+    socialEn,
+    blogEs,
+    blogEn,
+    ourDifferentiatorEs,  
+    ourDifferentiatorEn,
+    featuredPropertiesEs,
+    featuredPropertiesEn,
+    featuredReserveLabelEs,
+    featuredReserveLabelEn,
+    bookLabelEs,
+    bookLabelEn,
+    ownersEs,
+    ownersEn,
+    ourPhilosophyEs,
+    ourPhilosophyEn,
+    activeRevenueManagementEs,
+    activeRevenueManagementEn,
+    servicesEs,
+    servicesEn,
+    readMoreEs,
+    readMoreEn,
+    destinationsEs,
+    destinationsEn,
+    destinationEs,
+    destinationEn,
+    checkInEs,
+    checkInEn,
+    checkOutEs,
+    checkOutEn,
+    guestsEs,
+    guestsEn,
+    searchEs,
+    searchEn,
+    bedsEs,
+    bedsEn,
+    bathsEs,
+    bathsEn,
+    nightEs,
+    nightEn,
+    adultsEs,
+    adultsEn,
+    childrenEs,
+    childrenEn,
+    experienceEs,
+    experienceEn,
+    bookNowEs,
+    bookNowEn,
+    hostifyBookingUrl
   }
 `

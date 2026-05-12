@@ -149,7 +149,7 @@ export default function ExperienceTestimonials({
       {/* Testimonio */}
       <div className="etesti__body">
         <div className="etesti__inner">
-          {eyebrow && <p className="etesti__eyebrow">{eyebrow}</p>}
+          <p className="etesti__eyebrow">{eyebrow}</p>
           {t?.quote && <blockquote className="etesti__quote">"{t.quote}"</blockquote>}
           <div className="etesti__author">
             {avatarUrl && (

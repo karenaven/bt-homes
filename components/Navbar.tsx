@@ -1,37 +1,60 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
 
 interface NavbarProps {
   locale: string
+  experienceTxt: string
+  aboutUsTxt: string
+  ownerTxt: string
+  contactTxt: string
+  blogTxt: string
   ctaUrl?: string
   ctaLabel?: string
   variant?: 'dark' | 'light'  // dark = sobre hero oscuro, light = página interior blanca
 }
 
-const navLinks = {
-  es: [
-    { label: 'Experiencia BTH', href: '/es/experience' },
-    { label: 'Quiénes somos', href: '/es/about' },
-    { label: 'Propietarios', href: '/es/owners' },
-    { label: 'Contacto', href: '/es/contact' },
-    { label: 'Blog', href: '/es/blog' },
-  ],
-  en: [
-    { label: 'BTH Experience', href: '/en/experience' },
-    { label: 'About us', href: '/en/about' },
-    { label: 'Owners', href: '/en/owners' },
-    { label: 'Contact', href: '/en/contact' },
-    { label: 'Blog', href: '/en/blog' },
-  ],
-}
-
-export default function Navbar({ locale, ctaUrl, ctaLabel, variant = 'dark' }: NavbarProps) {
+export default function Navbar({
+  locale,
+  ctaUrl,
+  ctaLabel,
+  experienceTxt,
+  aboutUsTxt,
+  ownerTxt,
+  contactTxt,
+  blogTxt,
+  variant = 'dark' }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false)
+  const navLinks = {
+    es: [
+      { label: experienceTxt, href: `/${locale}/experiencia` },
+      { label: aboutUsTxt, href: `/${locale}/quienes-somos` },
+      { label: ownerTxt, href: `/${locale}/propietarios` },
+      { label: contactTxt, href: `/${locale}/contacto` },
+      { label: blogTxt, href: `/${locale}/blog` },
+    ],
+    en: [
+      { label: experienceTxt, href: `/${locale}/experience` },
+      { label: aboutUsTxt, href: `/${locale}/about` },
+      { label: ownerTxt, href: `/${locale}/owners` },
+      { label: contactTxt, href: `/${locale}/contact` },
+      { label: blogTxt, href: `/${locale}/blog` },
+    ],
+  }
+
   const links = navLinks[locale as 'es' | 'en'] ?? navLinks.es
   const otherLocale = locale === 'es' ? 'en' : 'es'
   const isLight = variant === 'light'
+
+  // Logo dinámico según variant
+  const logoSrc = isLight ? '/images/logos/isotipo-bth-black.png' : '/images/logos/isotipo-bth-white.png'
+
+  // Handle CTA button click - redirect to properties search page
+  // const handleCTAClick = () => {
+  //   window.location.href = `/${locale}/properties`
+  // }
 
   return (
     <nav className={`navbar navbar--${variant} ${menuOpen ? 'navbar--open' : ''}`}>
@@ -52,16 +75,20 @@ export default function Navbar({ locale, ctaUrl, ctaLabel, variant = 'dark' }: N
           background: #fff;
         }
 
-        .navbar__logo {
-          font-family: 'Cormorant Garamond', Georgia, serif;
-          font-size: 1.75rem;
-          font-weight: 600;
-          text-decoration: none;
-          letter-spacing: 0.02em;
-          line-height: 1;
+        .navbar__logo-container {
+          width: 44px;
+          height: 44px;
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
-        .navbar--dark .navbar__logo { color: #fff; }
-        .navbar--light .navbar__logo { color: #0a0a0c; }
+
+        .navbar__logo-img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
 
         .navbar__links {
           display: flex;
@@ -120,6 +147,7 @@ export default function Navbar({ locale, ctaUrl, ctaLabel, variant = 'dark' }: N
           text-decoration: none;
           transition: background 0.2s, color 0.2s;
           white-space: nowrap;
+          display: inline-block;
         }
         .navbar--dark .navbar__cta { color: #0a0a0c; background: #fff; }
         .navbar--dark .navbar__cta:hover { background: #e8e4dc; }
@@ -161,11 +189,19 @@ export default function Navbar({ locale, ctaUrl, ctaLabel, variant = 'dark' }: N
         }
         @media (max-width: 480px) {
           .navbar { padding: 0 1.25rem; }
+          .navbar__logo-container { width: 40px; height: 40px; }
         }
       `}</style>
 
-      <Link href={`/${locale}`} className="navbar__logo">
-        &#x0042;&#x200A;&#x0054;
+      <Link href={`/${locale}`} className="navbar__logo-container">
+        <Image
+          src={logoSrc}
+          alt="BT Homes"
+          width={44}
+          height={44}
+          className="navbar__logo-img"
+          priority
+        />
       </Link>
 
       <ul className="navbar__links">
@@ -180,9 +216,14 @@ export default function Navbar({ locale, ctaUrl, ctaLabel, variant = 'dark' }: N
         <Link href={`/${otherLocale}`} className="navbar__locale">
           {otherLocale.toUpperCase()}
         </Link>
+        {/* {ctaLabel && (
+          <button onClick={handleCTAClick} className="navbar__cta">
+            {ctaLabel}
+          </button>
+        )} */}
         {ctaUrl && (
           <a href={ctaUrl} target="_blank" rel="noopener noreferrer" className="navbar__cta">
-            {ctaLabel ?? 'Reservar'}
+            {ctaLabel}
           </a>
         )}
         <button className="navbar__burger" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">

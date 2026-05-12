@@ -13,37 +13,18 @@ export interface HomePage {
   seoTitleEn?: string
   seoDescriptionEs?: string
   seoDescriptionEn?: string
-  destination?: string
-  checkInEs?: string
-  checkInEn?: string
-  checkOutEs?: string
-  checkOutEn?: string
-  guestsEs?: string
-  guestsEn?: string
-  searchEs?: string
-  searchEn?: string
-  destinationsEyebrowEs?: string
-  destinationsEyebrowEn?: string
   destinationsTitleEs?: string
   destinationsTitleEn?: string
   destinationsExploreLabelEs?: string
   destinationsExploreLabelEn?: string
   destinationsFooterLabelEs?: string
   destinationsFooterLabelEn?: string
-  featuredEyebrowEs?: string
-  featuredEyebrowEn?: string
-  featuredReserveLabelEs?: string
-  featuredReserveLabelEn?: string
-  experienceEyebrowEs?: string
-  experienceEyebrowEn?: string
   experienceTitleEs?: string
   experienceTitleEn?: string
   experienceCells?: ExperienceCell[]
   ownersBodyEs?: PortableTextBlock[]
   ownersBodyEn?: PortableTextBlock[]
   ownersImages?: SanityImageSource[]
-  bookNowLabelEs?: string
-  bookNowLabelEn?: string
   footerTaglineEs?: string
   footerTaglineEn?: string
   footerEmailPrimary?: string

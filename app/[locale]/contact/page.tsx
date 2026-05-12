@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import { client, urlFor } from '@/lib/sanity.client'
-import { homePageQuery } from '@/lib/sanity.queries'
+import { commonTranslationsQuery, homePageQuery } from '@/lib/sanity.queries'
 import { groq } from 'next-sanity'
 import type { HomePage } from '@/lib/types'
 import Navbar from '@/components/Navbar'
@@ -41,15 +41,24 @@ export default async function ContactPage({ params }: PageProps) {
   const { locale } = await params
   if (!['es', 'en'].includes(locale)) notFound()
 
-  const [data, homeData]: [any, HomePage] = await Promise.all([
+  const [data, homeData, commonTranslations]: [any, HomePage, any] = await Promise.all([
     client.fetch(contactPageQuery, {}, { next: { revalidate: 60 } }),
     client.fetch(homePageQuery, {}, { next: { revalidate: 60 } }),
+    client.fetch(commonTranslationsQuery, {}, { next: { revalidate: 60 } }),
   ])
 
   const isEs = locale === 'es'
   const imageUrl = data?.image
     ? urlFor(data.image).width(700).height(600).fit('crop').url()
     : null
+  const bookNowLabel = isEs ? commonTranslations.bookNowEs : commonTranslations.bookNowEn
+  const experienceLabel = isEs ? commonTranslations.experienceEs : commonTranslations.experienceEn
+  const ownerLabel = isEs ? commonTranslations.ownersEs : commonTranslations.ownersEn
+  const contactLabel = isEs ? commonTranslations.contactEs : commonTranslations.contactEn
+  const blogLabel = isEs ? commonTranslations.blogEs : commonTranslations.blogEn
+  const aboutUsLabel = isEs ? commonTranslations.aboutUsEs : commonTranslations.aboutUsEn
+  const socialLabel = isEs ? commonTranslations.socialEs : commonTranslations.socialEn
+  const bookLabel = isEs ? commonTranslations?.bookLabelEs : commonTranslations?.bookLabelEn
 
   return (
     <>
@@ -115,7 +124,17 @@ export default async function ContactPage({ params }: PageProps) {
         }
       `}</style>
 
-      <Navbar locale={locale} ctaUrl={homeData?.heroCtaUrl} ctaLabel={homeData?.heroCtaLabel} variant="light" />
+      <Navbar      
+        aboutUsTxt={aboutUsLabel}
+        blogTxt={blogLabel}
+        contactTxt={contactLabel}
+        experienceTxt={experienceLabel}
+        ownerTxt={ownerLabel}
+        locale={locale}
+        ctaUrl={homeData?.heroCtaUrl}
+        ctaLabel={bookLabel}
+        variant="light"
+      />
 
       <main>
 
@@ -161,7 +180,13 @@ export default async function ContactPage({ params }: PageProps) {
       </main>
 
       <Footer
-        bookNowLabel={isEs ? homeData?.bookNowLabelEs : homeData?.bookNowLabelEn}
+        bookNowLabel={bookNowLabel}
+        experienceTxt={experienceLabel}
+        aboutUsTxt={aboutUsLabel}
+        ownerTxt={ownerLabel}
+        contactTxt={contactLabel}
+        blogTxt={blogLabel}
+        socialTxt={socialLabel}
         hostifyUrl={homeData?.heroCtaUrl}
         tagline={isEs ? homeData?.footerTaglineEs : homeData?.footerTaglineEn}
         emailPrimary={homeData?.footerEmailPrimary}

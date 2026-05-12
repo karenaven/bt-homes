@@ -28,7 +28,8 @@ export default function FeaturedProperties({
     const name = locale === 'es' ? prop.nameEs : prop.nameEn
     const description = locale === 'es' ? prop.descriptionEs : prop.descriptionEn
     const imageUrl = prop.images?.[0] ? urlFor(prop.images[0]).width(1200).height(680).fit('crop').url() : null
-    const href = `/${locale}/propiedades/${prop.slug?.current}`
+    //const href = `/${locale}/propiedades/${prop.slug?.current}`
+    const href = prop.hostifyUrl
 
     function prev() {
         setCurrent((c) => (c === 0 ? properties.length - 1 : c - 1))

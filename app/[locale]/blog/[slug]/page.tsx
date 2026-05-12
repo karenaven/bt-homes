@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { PortableText, PortableTextComponents } from '@portabletext/react'
 import { client, urlFor } from '@/lib/sanity.client'
-import { blogPostBySlugQuery, relatedPostsQuery, homePageQuery, blogPageConfigQuery } from '@/lib/sanity.queries'
+import { blogPostBySlugQuery, relatedPostsQuery, homePageQuery, blogPageConfigQuery, commonTranslationsQuery } from '@/lib/sanity.queries'
 import type { HomePage } from '@/lib/types'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
@@ -89,12 +89,13 @@ export default async function BlogPostPage({ params }: PageProps) {
   const { locale, slug } = await params
   if (!['es', 'en'].includes(locale)) notFound()
 
-  const [post, relatedPosts, homeData, blogConfig]: [any, any[], HomePage, any] =
+  const [post, relatedPosts, homeData, blogConfig, commonTranslations]: [any, any[], HomePage, any, any] =
     await Promise.all([
       client.fetch(blogPostBySlugQuery, { slug }, { next: { revalidate: 60 } }),
       client.fetch(relatedPostsQuery, { slug }, { next: { revalidate: 60 } }),
       client.fetch(homePageQuery, {}, { next: { revalidate: 60 } }),
       client.fetch(blogPageConfigQuery, {}, { next: { revalidate: 60 } }),
+      client.fetch(commonTranslationsQuery, {}, { next: { revalidate: 60 } }),
     ])
 
   if (!post) notFound()
@@ -106,6 +107,14 @@ export default async function BlogPostPage({ params }: PageProps) {
   const minutes = readingTime(body ?? [])
   const minLabel = isEs ? 'min de lectura' : 'min read'
   const byLabel = isEs ? 'Por BT Homes' : 'By BT Homes'
+  const bookNowLabel = isEs ? commonTranslations.bookNowEs : commonTranslations.bookNowEn
+  const experienceLabel = isEs ? commonTranslations.experienceEs : commonTranslations.experienceEn
+  const ownerLabel = isEs ? commonTranslations.ownersEs : commonTranslations.ownersEn
+  const contactLabel = isEs ? commonTranslations.contactEs : commonTranslations.contactEn
+  const blogLabel = isEs ? commonTranslations.blogEs : commonTranslations.blogEn
+  const aboutUsLabel = isEs ? commonTranslations.aboutUsEs : commonTranslations.aboutUsEn
+  const socialLabel = isEs ? commonTranslations.socialEs : commonTranslations.socialEn
+  const bookLabel = isEs ? commonTranslations?.bookLabelEs : commonTranslations?.bookLabelEn
 
   const coverImageUrl = post.coverImage
     ? urlFor(post.coverImage).width(1100).height(580).fit('crop').url()
@@ -349,7 +358,17 @@ export default async function BlogPostPage({ params }: PageProps) {
         }
       `}</style>
 
-      <Navbar locale={locale} ctaUrl={homeData?.heroCtaUrl} ctaLabel={homeData?.heroCtaLabel} variant="light" />
+      <Navbar
+        aboutUsTxt={aboutUsLabel}
+        blogTxt={blogLabel}
+        contactTxt={contactLabel}
+        experienceTxt={experienceLabel}
+        ownerTxt={ownerLabel}
+        locale={locale}
+        ctaUrl={homeData?.heroCtaUrl}
+        ctaLabel={bookLabel}
+        variant="light"
+      />
 
       <main>
         <article className="bp-article">
@@ -438,7 +457,13 @@ export default async function BlogPostPage({ params }: PageProps) {
       </main>
 
       <Footer
-        bookNowLabel={isEs ? homeData?.bookNowLabelEs : homeData?.bookNowLabelEn}
+        bookNowLabel={bookNowLabel}
+        experienceTxt={experienceLabel}
+        aboutUsTxt={aboutUsLabel}
+        ownerTxt={ownerLabel}
+        contactTxt={contactLabel}
+        blogTxt={blogLabel}
+        socialTxt={socialLabel}
         hostifyUrl={homeData?.heroCtaUrl}
         tagline={isEs ? homeData?.footerTaglineEs : homeData?.footerTaglineEn}
         emailPrimary={homeData?.footerEmailPrimary}

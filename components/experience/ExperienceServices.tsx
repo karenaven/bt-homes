@@ -148,7 +148,7 @@ export default function ExperienceServices({
       `}</style>
 
       <div className="esvc__header">
-        {eyebrow && <p className="esvc__eyebrow">{eyebrow}</p>}
+        <p className="esvc__eyebrow">{eyebrow}</p>
         {title && <h2 className="esvc__title">{title}</h2>}
       </div>
 

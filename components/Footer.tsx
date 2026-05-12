@@ -1,4 +1,14 @@
+import Image from 'next/image'
+import { client } from "@/lib/sanity.client"
+import { commonTranslationsQuery } from "@/lib/sanity.queries"
+
 interface FooterProps {
+  experienceTxt: string
+  aboutUsTxt: string
+  ownerTxt: string
+  contactTxt: string
+  blogTxt: string
+  socialTxt: string
   bookNowLabel?: string
   hostifyUrl?: string
   tagline?: string
@@ -13,25 +23,14 @@ interface FooterProps {
   locale?: string
 }
 
-const navLinks = {
-  es: [
-    { label: 'Experiencia BTH', href: '/es/experience' },
-    { label: 'Quiénes somos', href: '/es/about' },
-    { label: 'Propietarios', href: '/es/owners' },
-    { label: 'Contacto', href: '/es/contact' },
-    { label: 'Blog', href: '/es/blog' },
-  ],
-  en: [
-    { label: 'BTH Experience', href: '/en/experience' },
-    { label: 'About us', href: '/en/about' },
-    { label: 'Owners', href: '/en/owners' },
-    { label: 'Contact', href: '/en/contact' },
-    { label: 'Blog', href: '/en/blog' },
-  ],
-}
-
 export default function Footer({
   bookNowLabel = 'BOOK NOW',
+  experienceTxt,
+  aboutUsTxt,
+  ownerTxt,
+  contactTxt,
+  blogTxt,
+  socialTxt,
   hostifyUrl,
   tagline,
   emailPrimary,
@@ -44,10 +43,28 @@ export default function Footer({
   copyright,
   locale = 'es',
 }: FooterProps) {
+
+  const navLinks = {
+    es: [
+      { label: experienceTxt, href: '/es/experience' },
+      { label: aboutUsTxt, href: '/es/about' },
+      { label: ownerTxt, href: '/es/owners' },
+      { label: contactTxt, href: '/es/contact' },
+      { label: blogTxt, href: '/es/blog' },
+    ],
+    en: [
+      { label: experienceTxt, href: '/en/experience' },
+      { label: aboutUsTxt, href: '/en/about' },
+      { label: ownerTxt, href: '/en/owners' },
+      { label: contactTxt, href: '/en/contact' },
+      { label: blogTxt, href: '/en/blog' },
+    ],
+  }
+
   const links = navLinks[locale as 'es' | 'en'] ?? navLinks.es
   const menuLabel = locale === 'es' ? 'MENÚ' : 'MENU'
-  const contactLabel = 'CONTACTO'
-  const socialLabel = 'SOCIAL'
+  const contactLabel = contactTxt
+  const socialLabel = socialTxt
 
   return (
     <>
@@ -55,43 +72,38 @@ export default function Footer({
         /* ── BOOK NOW ── */
         .booknow {
           background: #fff;
-          padding: 3rem 2.5rem 3.5rem;
+          padding: 0;
           display: flex;
           align-items: center;
-          justify-content: space-between;
+          justify-content: center;
           border-top: 1px solid #e8e4dc;
           cursor: pointer;
           text-decoration: none;
           transition: background 0.2s;
-          gap: 1.5rem;
+          width: 100%;
+          height: 150px;
         }
         .booknow:hover { background: #f8f6f1; }
-        .booknow__label {
-          font-family: 'Cormorant Garamond', Georgia, serif;
-          font-size: clamp(3.5rem, 10vw, 8rem);
-          font-weight: 600;
-          line-height: 1;
-          color: #0a0a0c;
-          letter-spacing: -0.02em;
-          margin: 0;
-        }
-        .booknow__arrow {
+        .booknow:hover .booknow__image { transform: scale(1.03); }
+        
+        .booknow__image-container {
           flex-shrink: 0;
-          width: clamp(60px, 8vw, 100px);
-          height: clamp(60px, 8vw, 100px);
-          border: 2px solid #0a0a0c;
-          border-radius: 50%;
+          width: 100%;
+          height: 100%;
+          position: relative;
+          overflow: hidden;
           display: flex;
           align-items: center;
           justify-content: center;
-          transition: transform 0.3s;
+          max-width: 1400px;
+          padding: 0 2.5rem;
         }
-        .booknow:hover .booknow__arrow {
-          transform: translateX(6px);
-        }
-        .booknow__arrow svg {
-          width: clamp(24px, 3.5vw, 40px);
-          height: clamp(24px, 3.5vw, 40px);
+        
+        .booknow__image {
+          width: auto;
+          height: 100%;
+          object-fit: contain;
+          transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         /* ── FOOTER ── */
@@ -112,14 +124,16 @@ export default function Footer({
 
         /* Logo + tagline */
         .footer__brand {}
-        .footer__logo {
-          font-family: 'Cormorant Garamond', Georgia, serif;
-          font-size: 2rem;
-          font-weight: 600;
-          color: #fff;
-          line-height: 1;
+        .footer__logo-container {
+          width: 50px;
+          height: 50px;
+          position: relative;
           margin-bottom: 0.75rem;
-          display: block;
+        }
+        .footer__logo-img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
         }
         .footer__brand-name {
           font-family: 'Jost', sans-serif;
@@ -231,9 +245,20 @@ export default function Footer({
             gap: 2.5rem;
           }
           .footer__brand { grid-column: 1 / 3; }
+          .booknow {
+            height: 120px;
+          }
+          .booknow__image-container {
+            padding: 0 2rem;
+          }
         }
         @media (max-width: 580px) {
-          .booknow { padding: 2rem 1.25rem 2.5rem; }
+          .booknow { 
+            height: 100px;
+          }
+          .booknow__image-container {
+            padding: 0 1.25rem;
+          }
           .footer { padding: 3rem 1.25rem 0; }
           .footer__grid {
             grid-template-columns: 1fr;
@@ -250,11 +275,14 @@ export default function Footer({
         rel="noopener noreferrer"
         className="booknow"
       >
-        <h2 className="booknow__label">{bookNowLabel}</h2>
-        <div className="booknow__arrow">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M5 12h14M12 5l7 7-7 7" />
-          </svg>
+        <div className="booknow__image-container">
+          <Image
+            src="/images/logos/booknow.png"
+            alt="Book Now"
+            fill
+            className="booknow__image"
+            priority
+          />
         </div>
       </a>
 
@@ -265,7 +293,15 @@ export default function Footer({
 
             {/* Brand */}
             <div className="footer__brand">
-              <span className="footer__logo">&#x0042;&#x200A;&#x0054;</span>
+              <div className="footer__logo-container">
+                <Image
+                  src="/images/logos/isotipo-bth-white.png"
+                  alt="BT Homes"
+                  fill
+                  className="footer__logo-img"
+                  priority
+                />
+              </div>
               <p className="footer__brand-name">Better Together Homes</p>
               {tagline && <p className="footer__tagline">{tagline}</p>}
             </div>

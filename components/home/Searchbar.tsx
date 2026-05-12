@@ -9,19 +9,15 @@ interface SearchBarProps {
   checkoutTxt?: string,
   guestsTxt?: string,
   search?: string,
+  hostifyUrl: string,
   allDestinationsTxt?: string
   locale?: string
   destinations?: Destination[]
 }
 
-const HOSTIFY_BASE = 'https://bthomes.hostify.club/listings'
-//const CITY_ID = '3684'
-
 function formatDate(date: string): string {
-  // input: YYYY-MM-DD → output: DD-MM-YYYY
-  if (!date) return ''
-  const [y, m, d] = date.split('-')
-  return `${d}-${m}-${y}`
+  // input: YYYY-MM-DD → output: YYYY-MM-DD (no conversion)
+  return date
 }
 
 export default function SearchBar({
@@ -33,6 +29,7 @@ export default function SearchBar({
   allDestinationsTxt = 'Todos los destinos',
   locale = 'es',
   destinations = [],
+  hostifyUrl
 }: SearchBarProps) {
 
   const today = new Date()
@@ -62,19 +59,30 @@ export default function SearchBar({
   }, [])
 
   function handleSearch() {
-    const cityId = selectedDestination?.cityId ?? destinations[0]?.cityId ?? '3684'
+    // Convertir YYYY-MM-DD a DD-MM-YYYY
+    const formatDateForHostify = (dateStr: string) => {
+      const [year, month, day] = dateStr.split('-')
+      return `${day}-${month}-${year}`
+    }
+
+    const cityId = selectedDestination?.cityId
+
     const params = new URLSearchParams({
       'long-term-mode': '',
-      city_id: cityId,
-      start_date: formatDate(checkin),
-      end_date: formatDate(checkout),
+      start_date: formatDateForHostify(checkin),
+      end_date: formatDateForHostify(checkout),
       guests: String(guests),
       adults: String(guests),
       children: '0',
       infants: '0',
       pets: '0',
     })
-    window.open(`${HOSTIFY_BASE}?${params.toString()}`, '_blank')
+
+    if (cityId) {
+      params.set('city_id', String(cityId))
+    }
+
+    window.location.href = `${hostifyUrl}?${params.toString()}`
   }
 
   const destinationLabel = selectedDestination
