@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation'
 import type { HomePage } from '@/lib/types'
 import { client } from '@/lib/sanity.client'
 import { urlFor } from '@/lib/sanity.client'
-import { experiencePageQuery, homePageQuery } from '@/lib/sanity.queries'
+import { commonTranslationsQuery, experiencePageQuery, homePageQuery } from '@/lib/sanity.queries'
 
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
@@ -30,9 +30,10 @@ export default async function ExperiencePage({ params }: PageProps) {
     const { locale } = await params
     if (!['es', 'en'].includes(locale)) notFound()
 
-    const [data, homeData]: [any, HomePage] = await Promise.all([
+    const [data, homeData, commonTranslations]: [any, HomePage, any] = await Promise.all([
         client.fetch(experiencePageQuery, {}, { next: { revalidate: 60 } }),
         client.fetch(homePageQuery, {}, { next: { revalidate: 60 } }),
+        client.fetch(commonTranslationsQuery, {}, { next: { revalidate: 60 } }),
     ])
 
     const isEs = locale === 'es'
@@ -41,6 +42,18 @@ export default async function ExperiencePage({ params }: PageProps) {
     const heroSubtitle = isEs ? data?.heroSubtitleEs : data?.heroSubtitleEn
     const heroImageUrl = data?.heroImage ? urlFor(data.heroImage).width(1600).height(900).fit('crop').url() : null
     const statsImageUrl = data?.statsImage ? urlFor(data.statsImage).width(1200).height(700).fit('crop').url() : null
+    const statsEyebrow = isEs ? data?.statsEyebrowEs : data?.statsEyebrowEn
+    const includesEyebrow = isEs ? data?.includesEyebrowEs : data?.includesEyebrowEn
+    const servicesEyebrow = isEs ? data?.servicesEyebrowEs : data?.servicesEyebrowEn
+    const testimonialsEyebrow = isEs ? data?.testimonialsEyebrowEs : data?.testimonialsEyebrowEn
+    const bookNowLabel = isEs ? commonTranslations.bookNowEs : commonTranslations.bookNowEn
+    const experienceEyebrow = isEs ? commonTranslations.experienceEs : commonTranslations.experienceEn
+    const ownerLabel = isEs ? commonTranslations.ownersEs : commonTranslations.ownersEn
+    const contactLabel = isEs ? commonTranslations.contactEs : commonTranslations.contactEn
+    const blogLabel = isEs ? commonTranslations.blogEs : commonTranslations.blogEn
+    const aboutUsLabel = isEs ? commonTranslations.aboutUsEs : commonTranslations.aboutUsEn
+    const socialLabel = isEs ? commonTranslations.socialEs : commonTranslations.socialEn
+    const bookLabel = isEs ? commonTranslations?.bookLabelEs : commonTranslations?.bookLabelEn
 
     return (
         <>
@@ -244,12 +257,24 @@ export default async function ExperiencePage({ params }: PageProps) {
 
             {/* Navbar — sobre fondo blanco */}
 
-            <Navbar locale={locale} ctaUrl={homeData?.heroCtaUrl} ctaLabel={homeData?.heroCtaLabel} variant="light" />
+            <Navbar
+                locale={locale}
+                ctaUrl={homeData?.heroCtaUrl}
+                ctaLabel={bookLabel}
+                variant="light"
+                experienceTxt={experienceEyebrow}
+                aboutUsTxt={aboutUsLabel}
+                ownerTxt={ownerLabel}
+                contactTxt={contactLabel}
+                blogTxt={blogLabel}
+            />
 
             <main>
                 {/* ── HERO ── */}
                 <div className="exp-hero">
-                    <div>{data?.heroEyebrow && <p className="exp-hero__eyebrow">{data.heroEyebrow}</p>}</div>
+                    <div>
+                        <p className="exp-hero__eyebrow">{experienceEyebrow}</p>
+                    </div>
                     <div className="exp-hero__right">
                         {heroTitle && <h1 className="exp-hero__title">{heroTitle}</h1>}
                         {heroSubtitle && <p className="exp-hero__subtitle">{heroSubtitle}</p>}
@@ -266,7 +291,7 @@ export default async function ExperiencePage({ params }: PageProps) {
                 {/* ── STATS ── */}
                 {data?.stats?.length > 0 && (
                     <div className="exp-stats">
-                        {data.statsEyebrow && <p className="exp-stats__eyebrow">{data.statsEyebrow}</p>}
+                        <p className="exp-stats__eyebrow">{statsEyebrow}</p>
                         {(isEs ? data.statsBodyEs : data.statsBodyEn) && (
                             <p className="exp-stats__body">{isEs ? data.statsBodyEs : data.statsBodyEn}</p>
                         )}
@@ -288,7 +313,7 @@ export default async function ExperiencePage({ params }: PageProps) {
                     <div className="exp-includes">
                         {/* Columna izquierda */}
                         <div>
-                            {data.includesEyebrow && <p className="exp-includes__eyebrow">{data.includesEyebrow}</p>}
+                            <p className="exp-includes__eyebrow">{includesEyebrow}</p>
                             {(isEs ? data.includesTitleEs : data.includesTitleEn) && (
                                 <h2 className="exp-includes__title">
                                     {isEs ? data.includesTitleEs : data.includesTitleEn}
@@ -330,7 +355,7 @@ export default async function ExperiencePage({ params }: PageProps) {
                 {/* ── SERVICIOS ADICIONALES ── */}
                 {data?.services?.length > 0 && (
                     <ExperienceServices
-                        eyebrow={data.servicesEyebrow}
+                        eyebrow={servicesEyebrow}
                         title={isEs ? data.servicesTitleEs : data.servicesTitleEn}
                         services={data.services}
                         locale={locale}
@@ -340,7 +365,7 @@ export default async function ExperiencePage({ params }: PageProps) {
                 {/* ── TESTIMONIOS ── */}
                 {data?.testimonials?.length > 0 && (
                     <ExperienceTestimonials
-                        eyebrow={data.testimonialsEyebrow}
+                        eyebrow={testimonialsEyebrow}
                         image={data.testimonialsImage}
                         testimonials={data.testimonials}
                     />
@@ -380,7 +405,13 @@ export default async function ExperiencePage({ params }: PageProps) {
             </main>
 
             <Footer
-                bookNowLabel={isEs ? homeData?.bookNowLabelEs : homeData?.bookNowLabelEn}
+                bookNowLabel={bookNowLabel}
+                experienceTxt={experienceEyebrow}
+                aboutUsTxt={aboutUsLabel}
+                ownerTxt={ownerLabel}
+                contactTxt={contactLabel}
+                blogTxt={blogLabel}
+                socialTxt={socialLabel}
                 hostifyUrl={homeData?.heroCtaUrl}
                 tagline={isEs ? homeData?.footerTaglineEs : homeData?.footerTaglineEn}
                 emailPrimary={homeData?.footerEmailPrimary}

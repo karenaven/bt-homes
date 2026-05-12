@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import { PortableText, PortableTextComponents } from '@portabletext/react'
 import { client, urlFor } from '@/lib/sanity.client'
-import { ownersPageQuery, homePageQuery } from '@/lib/sanity.queries'
+import { ownersPageQuery, homePageQuery, commonTranslationsQuery } from '@/lib/sanity.queries'
 import type { HomePage } from '@/lib/types'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
@@ -44,12 +44,27 @@ export default async function OwnersPage({ params }: PageProps) {
     const { locale } = await params
     if (!['es', 'en'].includes(locale)) notFound()
 
-    const [data, homeData]: [any, HomePage] = await Promise.all([
+    const [data, homeData, commonTranslations]: [any, HomePage, any] = await Promise.all([
         client.fetch(ownersPageQuery, {}, { next: { revalidate: 60 } }),
         client.fetch(homePageQuery, {}, { next: { revalidate: 60 } }),
+        client.fetch(commonTranslationsQuery, {}, { next: { revalidate: 60 } }),
     ])
 
     const isEs = locale === 'es'
+    const differentialEyebrow = isEs ? commonTranslations.ourDifferentiatorEs : commonTranslations.ourDifferentiatorEn
+    const ownersEyebrow = isEs ? commonTranslations.ownersEs : commonTranslations.ownersEn
+    const ourPhilosophyEyebrow = isEs ? commonTranslations.ourPhilosophyEs : commonTranslations.ourPhilosophyEn
+    const featuredPropertiesEyebrow = isEs ? commonTranslations.featuredPropertiesEs : commonTranslations.featuredPropertiesEn
+    const activeRevenueManagementEyebrow = isEs ? commonTranslations.activeRevenueManagementEs : commonTranslations.activeRevenueManagementEn
+    const servicesEyebrow = isEs ? commonTranslations.experienceServicesEs : commonTranslations.experienceServicesEn
+    const bookNowLabel = isEs ? commonTranslations.bookNowEs : commonTranslations.bookNowEn
+    const experienceLabel = isEs ? commonTranslations.experienceEs : commonTranslations.experienceEn
+    const ownerLabel = isEs ? commonTranslations.ownersEs : commonTranslations.ownersEn
+    const contactLabel = isEs ? commonTranslations.contactEs : commonTranslations.contactEn
+    const blogLabel = isEs ? commonTranslations.blogEs : commonTranslations.blogEn
+    const aboutUsLabel = isEs ? commonTranslations.aboutUsEs : commonTranslations.aboutUsEn
+    const socialLabel = isEs ? commonTranslations.socialEs : commonTranslations.socialEn
+    const bookLabel = isEs ? commonTranslations?.bookLabelEs : commonTranslations?.bookLabelEn
 
     return (
         <>
@@ -534,7 +549,17 @@ export default async function OwnersPage({ params }: PageProps) {
         }
       `}</style>
 
-            <Navbar locale={locale} ctaUrl={homeData?.heroCtaUrl} ctaLabel={homeData?.heroCtaLabel} variant="light" />
+            <Navbar
+                locale={locale}
+                ctaUrl={homeData?.heroCtaUrl}
+                ctaLabel={bookLabel}
+                variant="light"
+                experienceTxt={experienceLabel}
+                aboutUsTxt={aboutUsLabel}
+                ownerTxt={ownerLabel}
+                contactTxt={contactLabel}
+                blogTxt={blogLabel}
+            />
 
             <main>
 
@@ -542,7 +567,9 @@ export default async function OwnersPage({ params }: PageProps) {
                 <div className="own-hero">
                     <div className="own-hero__inner">
                         <div>
-                            {data?.heroEyebrow && <p className="own-hero__eyebrow">{data.heroEyebrow}</p>}
+                            <p className="own-hero__eyebrow">
+                                {ownersEyebrow}
+                            </p>
                         </div>
                         <div className="own-hero__right">
                             <h1 className="own-hero__title">
@@ -571,9 +598,9 @@ export default async function OwnersPage({ params }: PageProps) {
                     <div className="own-diff">
                         <div className="own-diff__inner">
                             <div className="own-diff__header">
-                                {isEs ? data.differentialEyebrowEs : data.differentialEyebrowEn && (
-                                    <span className="own-diff__eyebrow">{isEs ? data.differentialEyebrowEs : data.differentialEyebrowEn}</span>
-                                )}
+                                <span className="own-diff__eyebrow">
+                                    {differentialEyebrow}
+                                </span>
                                 {(isEs ? data.differentialTitleEs : data.differentialTitleEn) && (
                                     <h2 className="own-diff__title">
                                         {isEs ? data.differentialTitleEs : data.differentialTitleEn}
@@ -629,9 +656,9 @@ export default async function OwnersPage({ params }: PageProps) {
                 {(data?.philosophyTextEs || data?.philosophyImage) && (
                     <div className="own-phil">
                         <div className="own-phil__inner">
-                             {isEs ? data.philosophyEyebrowEs : data.philosophyEyebrowEn && (
-                                <span className="own-phil__eyebrow">{isEs ? data.philosophyEyebrowEs : data.philosophyEyebrowEn}</span>
-                            )}
+                            <span className="own-phil__eyebrow">
+                                {ourPhilosophyEyebrow}
+                            </span>
                             {(isEs ? data.philosophyTextEs : data.philosophyTextEn) && (
                                 <p className="own-phil__text">
                                     {isEs ? data.philosophyTextEs : data.philosophyTextEn}
@@ -660,10 +687,10 @@ export default async function OwnersPage({ params }: PageProps) {
                 {/* ── FEATURED PROPERTY SPLIT ── */}
                 {(data?.featuredPropertyTitleEs || data?.featuredPropertyDescEs) && (
                     <div className="own-feat">
-                        <div>                            
-                            {isEs ? data.featuredPropertyEyebrowEs : data.featuredPropertyEyebrowEn && (
-                                <span className="own-feat__eyebrow">{isEs ? data.featuredPropertyEyebrowEs : data.featuredPropertyEyebrowEn}</span>
-                            )}
+                        <div>
+                            <span className="own-feat__eyebrow">
+                                {featuredPropertiesEyebrow}
+                            </span>
                             {(isEs ? data.featuredPropertyTitleEs : data.featuredPropertyTitleEn) && (
                                 <h2 className="own-feat__title">
                                     {isEs ? data.featuredPropertyTitleEs : data.featuredPropertyTitleEn}
@@ -722,9 +749,9 @@ export default async function OwnersPage({ params }: PageProps) {
                     <div className="own-revenue">
                         <div className="own-revenue__inner">
                             <div>
-                                {isEs ? data.revenueEyebrowEs : data.revenueEyebrowEn && (
-                                    <span className="own-revenue__eyebrow">{isEs ? data.revenueEyebrowEs : data.revenueEyebrowEn}</span>
-                                )}
+                                <span className="own-revenue__eyebrow">
+                                    {activeRevenueManagementEyebrow}
+                                </span>
                                 {(isEs ? data.revenueTitleEs : data.revenueTitleEn) && (
                                     <h2 className="own-revenue__title">
                                         {isEs ? data.revenueTitleEs : data.revenueTitleEn}
@@ -756,9 +783,9 @@ export default async function OwnersPage({ params }: PageProps) {
                     <div className="own-services">
                         <div className="own-services__inner">
                             <div className="own-services__header">
-                                {isEs ? data.servicesEyebrowEs : data.servicesEyebrowEn && (
-                                    <span className="own-services__eyebrow">{isEs ? data.servicesEyebrowEs : data.servicesEyebrowEn}</span>
-                                )}
+                                <span className="own-services__eyebrow">
+                                    {servicesEyebrow}
+                                </span>
                                 {(isEs ? data.servicesTitleEs : data.servicesTitleEn) && (
                                     <h2 className="own-services__title">
                                         {isEs ? data.servicesTitleEs : data.servicesTitleEn}
@@ -844,7 +871,13 @@ export default async function OwnersPage({ params }: PageProps) {
             </main>
 
             <Footer
-                bookNowLabel={isEs ? homeData?.bookNowLabelEs : homeData?.bookNowLabelEn}
+                bookNowLabel={bookNowLabel}
+                experienceTxt={experienceLabel}
+                aboutUsTxt={aboutUsLabel}
+                ownerTxt={ownerLabel}
+                contactTxt={contactLabel}
+                blogTxt={blogLabel}
+                socialTxt={socialLabel}
                 hostifyUrl={homeData?.heroCtaUrl}
                 tagline={isEs ? homeData?.footerTaglineEs : homeData?.footerTaglineEn}
                 emailPrimary={homeData?.footerEmailPrimary}

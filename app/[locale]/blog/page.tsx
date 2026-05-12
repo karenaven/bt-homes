@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { client, urlFor } from '@/lib/sanity.client'
-import { blogPageConfigQuery, blogPostsQuery, homePageQuery } from '@/lib/sanity.queries'
+import { blogPageConfigQuery, blogPostsQuery, commonTranslationsQuery, homePageQuery } from '@/lib/sanity.queries'
 import type { HomePage } from '@/lib/types'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
@@ -34,16 +34,23 @@ export default async function BlogPage({ params }: PageProps) {
   const { locale } = await params
   if (!['es', 'en'].includes(locale)) notFound()
 
-  const [config, posts, homeData]: [any, any[], HomePage] = await Promise.all([
+  const [config, posts, homeData, commonTranslations]: [any, any[], HomePage, any] = await Promise.all([
     client.fetch(blogPageConfigQuery, {}, { next: { revalidate: 60 } }),
     client.fetch(blogPostsQuery, {}, { next: { revalidate: 60 } }),
     client.fetch(homePageQuery, {}, { next: { revalidate: 60 } }),
+    client.fetch(commonTranslationsQuery, {}, { next: { revalidate: 60 } }),
   ])
 
   const isEs = locale === 'es'
-  const readMoreLabel = isEs
-    ? (config?.readMoreLabelEs ?? 'Leer más')
-    : (config?.readMoreLabelEn ?? 'Read more')
+  const readMoreLabel = isEs ? (commonTranslations.readMoreEs) : (commonTranslations.readMoreEn)
+  const bookNowLabel = isEs ? commonTranslations.bookNowEs : commonTranslations.bookNowEn
+  const experienceLabel = isEs ? commonTranslations.experienceEs : commonTranslations.experienceEn
+  const ownerLabel = isEs ? commonTranslations.ownersEs : commonTranslations.ownersEn
+  const contactLabel = isEs ? commonTranslations.contactEs : commonTranslations.contactEn
+  const blogLabel = isEs ? commonTranslations.blogEs : commonTranslations.blogEn
+  const aboutUsLabel = isEs ? commonTranslations.aboutUsEs : commonTranslations.aboutUsEn
+  const socialLabel = isEs ? commonTranslations.socialEs : commonTranslations.socialEn
+  const bookLabel = isEs ? commonTranslations?.bookLabelEs : commonTranslations?.bookLabelEn
 
   // Artículo destacado = el marcado como featured, o el primero
   const featured = posts.find((p: any) => p.featured) ?? posts[0]
@@ -253,7 +260,17 @@ export default async function BlogPage({ params }: PageProps) {
         }
       `}</style>
 
-      <Navbar locale={locale} ctaUrl={homeData?.heroCtaUrl} ctaLabel={homeData?.heroCtaLabel} variant="light" />
+      <Navbar
+        aboutUsTxt={aboutUsLabel}
+        blogTxt={blogLabel}
+        contactTxt={contactLabel}
+        experienceTxt={experienceLabel}
+        ownerTxt={ownerLabel}
+        locale={locale}
+        ctaUrl={homeData?.heroCtaUrl}
+        ctaLabel={bookLabel}
+        variant="light"
+      />
 
       <main>
 
@@ -341,7 +358,13 @@ export default async function BlogPage({ params }: PageProps) {
       </main>
 
       <Footer
-        bookNowLabel={isEs ? homeData?.bookNowLabelEs : homeData?.bookNowLabelEn}
+        bookNowLabel={bookNowLabel}
+        experienceTxt={experienceLabel}
+        aboutUsTxt={aboutUsLabel}
+        ownerTxt={ownerLabel}
+        contactTxt={contactLabel}
+        blogTxt={blogLabel}
+        socialTxt={socialLabel}
         hostifyUrl={homeData?.heroCtaUrl}
         tagline={isEs ? homeData?.footerTaglineEs : homeData?.footerTaglineEn}
         emailPrimary={homeData?.footerEmailPrimary}
