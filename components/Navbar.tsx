@@ -29,10 +29,10 @@ export default function Navbar({
   const [menuOpen, setMenuOpen] = useState(false)
   const navLinks = {
     es: [
-      { label: experienceTxt, href: `/${locale}/experiencia` },
-      { label: aboutUsTxt, href: `/${locale}/quienes-somos` },
-      { label: ownerTxt, href: `/${locale}/propietarios` },
-      { label: contactTxt, href: `/${locale}/contacto` },
+      { label: experienceTxt, href: `/${locale}/experience` },
+      { label: aboutUsTxt, href: `/${locale}/about` },
+      { label: ownerTxt, href: `/${locale}/owners` },
+      { label: contactTxt, href: `/${locale}/contact` },
       { label: blogTxt, href: `/${locale}/blog` },
     ],
     en: [
