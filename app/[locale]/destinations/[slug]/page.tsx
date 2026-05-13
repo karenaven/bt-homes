@@ -3,8 +3,6 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import { client, urlFor } from '@/lib/sanity.client'
 import { destinationBySlugQuery, otherDestinationsQuery, homePageQuery, commonTranslationsQuery, propertiesByDestinationQuery } from '@/lib/sanity.queries'
-import { hostifyClient, ListingCard } from '@/lib/hostify/client'
-import type { HomePage } from '@/lib/types'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import OtherDestinationsCarousel from '@/components/destinations/OtherDestinationsCarousel'
@@ -30,7 +28,7 @@ export default async function DestinationPage({ params }: PageProps) {
 
   const isEs = locale === 'es'
   let dest = null
-  let properties: ListingCard[] = []
+  let properties: any[] = []
   let otherDests: any[] = []
   let homeData = null
   let commonTranslations = null

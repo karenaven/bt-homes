@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { client } from '@/lib/sanity.client'
 import type { Destination, HomePage, Property } from '@/lib/types'
 import { destinationsQuery, homePageQuery, commonTranslationsQuery, featuredPropertiesQuery } from '@/lib/sanity.queries'
-import { hostifyClient, ListingCard } from '@/lib/hostify/client'
+
 
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
