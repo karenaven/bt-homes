@@ -1,6 +1,4 @@
 import Image from 'next/image'
-import { client } from "@/lib/sanity.client"
-import { commonTranslationsQuery } from "@/lib/sanity.queries"
 
 interface FooterProps {
   experienceTxt: string
@@ -72,19 +70,16 @@ export default function Footer({
         /* ── BOOK NOW ── */
         .booknow {
           background: #fff;
-          padding: 0;
+          padding: 0 2.5rem;
           display: flex;
           align-items: center;
           justify-content: center;
-          border-top: 1px solid #e8e4dc;
           cursor: pointer;
           text-decoration: none;
           transition: background 0.2s;
           width: 100%;
-          height: 150px;
+          height: 280px;
         }
-        .booknow:hover { background: #f8f6f1; }
-        .booknow:hover .booknow__image { transform: scale(1.03); }
         
         .booknow__image-container {
           flex-shrink: 0;
@@ -94,9 +89,10 @@ export default function Footer({
           overflow: hidden;
           display: flex;
           align-items: center;
-          justify-content: center;
+          justify-content: start;
           max-width: 1400px;
           padding: 0 2.5rem;
+
         }
         
         .booknow__image {
@@ -128,7 +124,7 @@ export default function Footer({
           width: 50px;
           height: 50px;
           position: relative;
-          margin-bottom: 0.75rem;
+          margin-bottom: 1rem;
         }
         .footer__logo-img {
           width: 100%;
@@ -136,30 +132,30 @@ export default function Footer({
           object-fit: contain;
         }
         .footer__brand-name {
-          font-family: 'Jost', sans-serif;
-          font-size: 0.875rem;
-          font-weight: 500;
+          font-family: 'Inter', sans-serif;
+          font-size: 1.2rem;
+          font-weight: 400;
           color: #fff;
           margin: 0 0 1rem;
         }
         .footer__tagline {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.8125rem;
           font-weight: 300;
           line-height: 1.7;
-          color: rgba(255,255,255,0.5);
+          color: #fff;
           margin: 0;
-          max-width: 220px;
+          max-width: 300px;
         }
 
         /* Columnas */
         .footer__col-title {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.625rem;
           font-weight: 500;
           letter-spacing: 0.2em;
           text-transform: uppercase;
-          color: rgba(255,255,255,0.4);
+          color: #fff;
           margin: 0 0 1.5rem;
         }
         .footer__nav {
@@ -171,10 +167,10 @@ export default function Footer({
           gap: 0.875rem;
         }
         .footer__nav a {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.875rem;
           font-weight: 300;
-          color: rgba(255,255,255,0.75);
+          color: #fff;
           text-decoration: none;
           transition: color 0.2s;
         }
@@ -187,10 +183,10 @@ export default function Footer({
           gap: 0.5rem;
         }
         .footer__contact-item {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.875rem;
           font-weight: 300;
-          color: rgba(255,255,255,0.75);
+          color: #fff;
           text-decoration: none;
           transition: color 0.2s;
         }
@@ -209,13 +205,13 @@ export default function Footer({
           display: flex;
           align-items: center;
           gap: 0.625rem;
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.875rem;
           font-weight: 300;
-          color: rgba(255,255,255,0.75);
+          color: #fff;
         }
         .footer__social-sep {
-          color: rgba(255,255,255,0.25);
+          color: #fff;
         }
         .footer__social a {
           color: inherit;
@@ -226,15 +222,15 @@ export default function Footer({
 
         /* Copyright */
         .footer__bottom {
-          border-top: 1px solid rgba(255,255,255,0.1);
+          border-top: 1px solid #fff;
           padding: 1.5rem 0;
           text-align: center;
         }
         .footer__copyright {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.75rem;
           font-weight: 300;
-          color: rgba(255,255,255,0.35);
+          color: #fff;
           margin: 0;
         }
 
@@ -253,8 +249,8 @@ export default function Footer({
           }
         }
         @media (max-width: 580px) {
-          .booknow { 
-            height: 100px;
+          a.booknow { 
+            padding: 0 1.25rem;
           }
           .booknow__image-container {
             padding: 0 1.25rem;

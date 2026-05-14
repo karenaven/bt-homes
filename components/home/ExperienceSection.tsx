@@ -32,7 +32,7 @@ export default function ExperienceSection({
           padding: 6rem 2.5rem;
         }
         .experience__inner {
-          max-width: 1100px;
+          max-width: 1400px;
           margin: 0 auto;
         }
 
@@ -42,18 +42,18 @@ export default function ExperienceSection({
           margin-bottom: 3.5rem;
         }
         .experience__eyebrow {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.6875rem;
           font-weight: 500;
-          letter-spacing: 0.2em;
+          letter-spacing: 0.18em;
           text-transform: uppercase;
-          color: #999;
+          color: #444;
           display: block;
           margin-bottom: 1rem;
         }
         .experience__title {
-          font-family: 'Cormorant Garamond', Georgia, serif;
-          font-size: clamp(2rem, 3.5vw, 3rem);
+          font-family: 'Helvetica', Georgia, serif;
+          font-size: clamp(1.75rem, 3vw, 2.75rem);
           font-weight: 400;
           line-height: 1.2;
           color: #0a0a0c;
@@ -101,7 +101,7 @@ export default function ExperienceSection({
         .experience__cell {
           border-radius: 8px;
           overflow: hidden;
-          min-height: 220px;
+          min-height: 400px;
         }
 
         /* Celda imagen */
@@ -129,7 +129,7 @@ export default function ExperienceSection({
           color: #fff;
         }
         .experience__cell--text-dark .experience__cell-body {
-          color: rgba(255,255,255,0.65);
+          color: #fff;
         }
 
         /* Celda texto claro (crema) */
@@ -144,21 +144,21 @@ export default function ExperienceSection({
           color: #0a0a0c;
         }
         .experience__cell--text-light .experience__cell-body {
-          color: #666;
+          color: #444;
         }
 
         .experience__cell-title {
-          font-family: 'Jost', sans-serif;
-          font-size: 1rem;
+          font-family: 'Helvetica', Georgia, serif;
+          font-size: 1.2rem;
           font-weight: 500;
           line-height: 1.4;
           margin: 0 0 0.625rem;
         }
         .experience__cell-body {
-          font-family: 'Jost', sans-serif;
-          font-size: 0.875rem;
+          font-family: 'Inter', sans-serif;
+          font-size: 0.9375rem;
           font-weight: 300;
-          line-height: 1.7;
+          line-height: 1.5;
           margin: 0;
         }
 

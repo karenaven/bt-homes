@@ -4,7 +4,6 @@ import { client } from '@/lib/sanity.client'
 import type { Destination, HomePage, Property } from '@/lib/types'
 import { destinationsQuery, homePageQuery, commonTranslationsQuery, featuredPropertiesQuery } from '@/lib/sanity.queries'
 
-
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import SearchBar from '@/components/home/Searchbar'
@@ -41,25 +40,9 @@ export default async function HomePage({ params }: PageProps) {
     client.fetch(commonTranslationsQuery, {}, { next: { revalidate: 60 } }),
   ])
 
-  // Fetch featured properties from Hostify
-  // let featuredProperties: ListingCard[] = []
-  // try {
-  //   const listingsData = await hostifyClient.listingsAvailable({
-  //     lang: isEs ? 'es' : 'en',
-  //     per_page: 10,
-  //     guests: 1,
-  //     with_photos: true,
-  //   })
-  //   featuredProperties = listingsData?.listings?.slice(0, 5) || []
-
-  //   console.log('Fetched featured properties from Hostify:', featuredProperties)
-  // } catch (error) {
-  //   console.error('Failed to fetch featured properties:', error)
-  // }
-
   if (!data) {
     return (
-      <main style={{ background: '#0a0a0c', minHeight: '100vh', display: 'grid', placeItems: 'center' }}>
+      <main style={{ background: '#0a0a0c', minHeight: '100vh', display: 'grid', placeItems: 'center', paddingTop: '72px' }}>
         <p style={{ color: 'rgba(255,255,255,0.4)', fontFamily: 'sans-serif' }}>
           Agregá contenido en Sanity Studio para ver el home.
         </p>
@@ -138,16 +121,6 @@ export default async function HomePage({ params }: PageProps) {
           locale={locale}
           footerLabel={isEs ? data.destinationsFooterLabelEs : data.destinationsFooterLabelEn}
         />
-
-        {/* {featuredProperties.length > 0 && (
-          <FeaturedProperties
-            eyebrow={featuredPropertiesEyebrow}
-            reserveLabel={featuredReserveLabel}
-            properties={featuredProperties}
-            locale={locale}
-            hostifyBookingUrl={hostifyBookingUrl}
-          />
-        )} */}
 
         {featuredProperties.length > 0 && (
           <FeaturedProperties

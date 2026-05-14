@@ -61,10 +61,10 @@ export default function ContactForm({
         .cf__input,
         .cf__textarea {
           width: 100%;
-          font-family: 'Jost', sans-serif;
-          font-size: 0.9rem;
+          font-family: 'Inter', sans-serif;
+          font-size: 0.9375rem;
           font-weight: 300;
-          color: #0a0a0c;
+          color: #444;
           background: transparent;
           border: none;
           border-bottom: 1px solid #d0cdc5;
@@ -74,13 +74,13 @@ export default function ContactForm({
           resize: none;
         }
         .cf__input::placeholder,
-        .cf__textarea::placeholder { color: #aaa; }
+        .cf__textarea::placeholder { color: #444; }
         .cf__input:focus,
         .cf__textarea:focus { border-color: #0a0a0c; }
         .cf__textarea { min-height: 90px; }
         .cf__btn {
           align-self: flex-start;
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.8125rem;
           font-weight: 500;
           letter-spacing: 0.08em;
@@ -88,6 +88,7 @@ export default function ContactForm({
           color: #fff;
           background: #0a0a0c;
           border: none;
+          border-radius: 4px;
           padding: 0.875rem 2rem;
           cursor: pointer;
           transition: background 0.2s;

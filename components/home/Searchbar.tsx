@@ -93,8 +93,8 @@ export default function SearchBar({
     <section className="searchbar-section">
       <style>{`
         .searchbar-section {
-          background: #F0EDE3;
-          padding: 2.75rem 2.5rem;
+          background: #F1F3E5;
+          padding: 6rem 2.5rem;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -132,18 +132,18 @@ export default function SearchBar({
           gap: 1px;
         }
         .searchbar__label {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.625rem;
           font-weight: 500;
           letter-spacing: 0.1em;
           text-transform: uppercase;
-          color: #999;
+          color: #444;
         }
         .searchbar__input {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.9rem;
           font-weight: 400;
-          color: #1a1a1a;
+          color: #444;
           border: none;
           outline: none;
           background: transparent;
@@ -161,7 +161,7 @@ export default function SearchBar({
           cursor: pointer;
         }
         .searchbar__dest-btn {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.9rem;
           font-weight: 400;
           color: #1a1a1a;
@@ -177,11 +177,11 @@ export default function SearchBar({
           justify-content: space-between;
           gap: 0.5rem;
         }
-        .searchbar__dest-btn--placeholder { color: #bbb; }
+        .searchbar__dest-btn--placeholder { color: #444; }
         .searchbar__dest-chevron {
           width: 12px;
           height: 12px;
-          color: #999;
+          color: #444;
           flex-shrink: 0;
           transition: transform 0.2s;
         }
@@ -198,10 +198,10 @@ export default function SearchBar({
           overflow: hidden;
         }
         .searchbar__dropdown-item {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.875rem;
           font-weight: 400;
-          color: #1a1a1a;
+          color: #444;
           padding: 0.75rem 1.25rem;
           cursor: pointer;
           transition: background 0.15s;
@@ -235,14 +235,14 @@ export default function SearchBar({
         }
         .searchbar__guests-btn:hover { border-color: #333; }
         .searchbar__guests-count {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.9rem;
           color: #1a1a1a;
           min-width: 16px;
           text-align: center;
         }
         .searchbar__btn {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.8125rem;
           font-weight: 500;
           letter-spacing: 0.1em;
@@ -263,7 +263,7 @@ export default function SearchBar({
           .searchbar__btn { min-height: 52px; }
         }
         @media (max-width: 480px) {
-          .searchbar-section { padding: 2rem 1rem; }
+          .searchbar-section { padding: 4rem 1rem; }
         }
       `}</style>
 

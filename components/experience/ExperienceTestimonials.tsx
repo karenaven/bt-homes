@@ -51,28 +51,27 @@ export default function ExperienceTestimonials({
         /* Bloque testimonio */
         .etesti__body {
           background: #F0EDE3;
-          padding: 5rem 2.5rem;
+          padding: 6rem 2.5rem;
         }
         .etesti__inner {
-          max-width: 700px;
+          max-width: 900px;
           margin: 0 auto;
           position: relative;
         }
         .etesti__eyebrow {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.6875rem;
           font-weight: 500;
           letter-spacing: 0.2em;
           text-transform: uppercase;
-          color: #999;
+          color: #444;
           margin-bottom: 2rem;
         }
         .etesti__quote {
-          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-family: 'Helvetica', Georgia, serif;
           font-size: clamp(1.25rem, 2.5vw, 1.75rem);
           font-weight: 300;
-          font-style: italic;
-          line-height: 1.55;
+          line-height: 1.5;
           color: #0a0a0c;
           margin: 0 0 2.5rem;
         }
@@ -92,17 +91,17 @@ export default function ExperienceTestimonials({
         }
         .etesti__avatar img { object-fit: cover; }
         .etesti__name {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.9375rem;
           font-weight: 500;
           color: #0a0a0c;
           margin: 0 0 0.2rem;
         }
         .etesti__role {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.8125rem;
           font-weight: 300;
-          color: #888;
+          color: #444;
           margin: 0;
         }
 
@@ -124,8 +123,8 @@ export default function ExperienceTestimonials({
           color: #0a0a0c;
           transition: border-color 0.2s;
         }
-        .etesti__prev { left: -4rem; }
-        .etesti__next { right: -4rem; }
+        .etesti__prev { left: -8rem; }
+        .etesti__next { right: -8rem; }
         .etesti__prev:hover,
         .etesti__next:hover { border-color: #0a0a0c; }
         .etesti__prev svg,

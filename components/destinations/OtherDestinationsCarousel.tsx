@@ -49,10 +49,8 @@ export default function OtherDestinationsCarousel({
 
         const threshold = 50
         if (dragOffset > threshold) {
-            // Deslizar hacia la derecha = slide anterior
             setCurrentIndex((prev) => (prev === 0 ? totalSlides - 1 : prev - 1))
         } else if (dragOffset < -threshold) {
-            // Deslizar hacia la izquierda = siguiente slide
             setCurrentIndex((prev) => (prev === totalSlides - 1 ? 0 : prev + 1))
         }
 
@@ -84,6 +82,14 @@ export default function OtherDestinationsCarousel({
         setDragOffset(0)
     }
 
+    const handlePrev = () => {
+        setCurrentIndex((prev) => (prev === 0 ? totalSlides - 1 : prev - 1))
+    }
+
+    const handleNext = () => {
+        setCurrentIndex((prev) => (prev === totalSlides - 1 ? 0 : prev + 1))
+    }
+
     const startIndex = currentIndex * itemsPerSlide
     const visibleDestinations = otherDestinations.slice(startIndex, startIndex + itemsPerSlide)
 
@@ -92,7 +98,7 @@ export default function OtherDestinationsCarousel({
             <style>{`
         .dest-others {
           padding: 4rem 2.5rem 5rem;
-          max-width: 1100px;
+          max-width: 1400px;
           margin: 0 auto;
         }
 
@@ -106,17 +112,17 @@ export default function OtherDestinationsCarousel({
         }
 
         .dest-others__eyebrow {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.6875rem;
           font-weight: 500;
           letter-spacing: 0.2em;
           text-transform: uppercase;
-          color: #999;
+          color: #444;
           padding-top: 0.25rem;
         }
 
         .dest-others__title {
-          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-family: 'Helvetica', Georgia, serif;
           font-size: clamp(1.75rem, 3vw, 2.5rem);
           font-weight: 400;
           color: #0a0a0c;
@@ -129,10 +135,51 @@ export default function OtherDestinationsCarousel({
           position: relative;
           cursor: grab;
           user-select: none;
+          margin-bottom: 4rem;
         }
 
         .dest-others__carousel-wrapper.dragging {
           cursor: grabbing;
+        }
+
+        /* Botones de navegación */
+        .dest-others__nav {
+          position: absolute;
+          bottom: -3rem;
+          right: 0;
+          display: flex;
+          gap: 0.75rem;
+        }
+
+        .dest-others__nav-btn {
+          width: 44px;
+          height: 44px;
+          border: 1px solid #0a0a0c;
+          background: #fff;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.2s ease;
+          padding: 0;
+          border-radius: 0;
+        }
+
+        .dest-others__nav-btn:hover {
+          background: #0a0a0c;
+        }
+
+        .dest-others__nav-btn:hover svg {
+          stroke: #fff;
+        }
+
+        .dest-others__nav-btn svg {
+          width: 18px;
+          height: 18px;
+          stroke: #0a0a0c;
+          fill: none;
+          stroke-width: 1.5;
+          transition: stroke 0.2s;
         }
 
         /* Grid de cards */
@@ -184,7 +231,7 @@ export default function OtherDestinationsCarousel({
         }
 
         .dest-others__name {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 1rem;
           font-weight: 400;
           color: #0a0a0c;
@@ -213,6 +260,9 @@ export default function OtherDestinationsCarousel({
           .dest-others__grid {
             grid-template-columns: repeat(2, 1fr);
           }
+          .dest-others__nav {
+            bottom: -2.5rem;
+          }
         }
 
         @media (max-width: 580px) {
@@ -225,6 +275,13 @@ export default function OtherDestinationsCarousel({
           }
           .dest-others__image {
             aspect-ratio: 4/3;
+          }
+          .dest-others__nav {
+            bottom: -2rem;
+          }
+          .dest-others__nav-btn {
+            width: 40px;
+            height: 40px;
           }
         }
       `}</style>
@@ -300,6 +357,32 @@ export default function OtherDestinationsCarousel({
                         )
                     })}
                 </div>
+
+                {/* Botones de navegación */}
+                {totalSlides > 1 && (
+                    <div className="dest-others__nav">
+                        <button
+                            className="dest-others__nav-btn"
+                            onClick={handlePrev}
+                            aria-label="Slide anterior"
+                            type="button"
+                        >
+                            <svg viewBox="0 0 24 24">
+                                <path d="M15 18l-6-6 6-6" />
+                            </svg>
+                        </button>
+                        <button
+                            className="dest-others__nav-btn"
+                            onClick={handleNext}
+                            aria-label="Siguiente slide"
+                            type="button"
+                        >
+                            <svg viewBox="0 0 24 24">
+                                <path d="M9 18l6-6-6-6" />
+                            </svg>
+                        </button>
+                    </div>
+                )}
             </div>
         </div>
     )

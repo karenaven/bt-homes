@@ -105,13 +105,12 @@ export default async function DestinationPage({ params }: PageProps) {
         }
         .dest-hero img { object-fit: cover; filter: brightness(0.75); }
         .dest-hero__name {
-          position: absolute;
           bottom: 2.5rem;
           left: 2.5rem;
-          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-family: 'Helvetica', Georgia, serif;
           font-size: clamp(3rem, 8vw, 7rem);
           font-weight: 400;
-          color: #fff;
+          color: #0a0a0c;
           line-height: 1;
           letter-spacing: -0.02em;
           margin: 0;
@@ -119,46 +118,57 @@ export default async function DestinationPage({ params }: PageProps) {
 
         /* ── INTRO ── */
         .dest-intro {
-          padding: 4rem 2.5rem;
-          max-width: 1100px;
+          max-width: 1400px;
+          display: flex;
+          flex-direction: column;
+          align-items: start;
+          gap: 6rem;
+          padding: 6rem 2.5rem;
           margin: 0 auto;
+        }
+
+        .container-dest-intro {
+          max-width: 1400px;
           display: grid;
           grid-template-columns: 1fr 1.5fr;
           gap: 4rem;
           align-items: start;
         }
+
         .dest-intro__eyebrow {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.6875rem;
           font-weight: 500;
           letter-spacing: 0.2em;
           text-transform: uppercase;
-          color: #999;
+          color: #444;
           padding-top: 0.25rem;
         }
+
         .dest-intro__desc {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.9375rem;
           font-weight: 300;
-          line-height: 1.8;
+          line-height: 1.5;
           color: #444;
           margin: 0;
         }
-        .dest-divider {
-          border: none;
-          border-top: 1px solid #e8e4dc;
-          margin: 0 2.5rem;
-          max-width: calc(1100px - 0px);
-        }
+        
 
         /* ── PROPERTIES GRID ── */
+        .container-dest-props {
+        background: #ecebe9;
+        width: 100%;
+        }
+
         .dest-props {
-          padding: 4rem 2.5rem 5rem;
-          max-width: 1100px;
+          padding: 6rem 2.5rem;
+          max-width: 1400px;
           margin: 0 auto;
         }
+
         .dest-props__title {
-          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-family: 'Helvetica', Georgia, serif;
           font-size: clamp(1.75rem, 3vw, 2.5rem);
           font-weight: 400;
           color: #0a0a0c;
@@ -198,7 +208,7 @@ export default async function DestinationPage({ params }: PageProps) {
           margin-bottom: 0.25rem;
         }
         .dest-card__name {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.9375rem;
           font-weight: 500;
           color: #0a0a0c;
@@ -209,7 +219,7 @@ export default async function DestinationPage({ params }: PageProps) {
           display: flex;
           align-items: center;
           gap: 0.25rem;
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.8125rem;
           font-weight: 400;
           color: #0a0a0c;
@@ -220,7 +230,7 @@ export default async function DestinationPage({ params }: PageProps) {
           font-size: 0.75rem;
         }
         .dest-card__location {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.8125rem;
           font-weight: 300;
           color: #888;
@@ -232,7 +242,7 @@ export default async function DestinationPage({ params }: PageProps) {
           margin-bottom: 0.875rem;
         }
         .dest-card__pill {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.75rem;
           font-weight: 400;
           color: #555;
@@ -241,7 +251,7 @@ export default async function DestinationPage({ params }: PageProps) {
           border-radius: 20px;
         }
         .dest-card__price {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 1rem;
           font-weight: 600;
           color: #0a0a0c;
@@ -261,7 +271,7 @@ export default async function DestinationPage({ params }: PageProps) {
           margin-top: auto;
         }
         .dest-card__btn {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.75rem;
           font-weight: 500;
           padding: 0.625rem 1.25rem;
@@ -286,7 +296,7 @@ export default async function DestinationPage({ params }: PageProps) {
           width: 100%;
           aspect-ratio: 16/8;
           overflow: hidden;
-          margin: 4rem 0 0;
+          margin: 0;
         }
         .dest-separator img {
           object-fit: cover;
@@ -302,6 +312,10 @@ export default async function DestinationPage({ params }: PageProps) {
           grid-column: 1 / -1;
         }
 
+        .dest-others {
+        padding: 6rem 2.5rem !important;
+        }
+
         /* Responsive */
         @media (max-width: 900px) {
           .dest-intro { grid-template-columns: 1fr; gap: 1.5rem; }
@@ -310,10 +324,12 @@ export default async function DestinationPage({ params }: PageProps) {
         @media (max-width: 580px) {
           .dest-hero { aspect-ratio: 4/3; }
           .dest-hero__name { font-size: clamp(2.5rem, 12vw, 4rem); left: 1.25rem; bottom: 1.5rem; }
+          .container-dest-intro { grid-template-columns: 1fr; gap: 1.5rem;}
           .dest-intro { padding: 3rem 1.25rem; }
           .dest-props { padding: 3rem 1.25rem 4rem; }
           .dest-props__grid { grid-template-columns: 1fr; }
           .dest-separator { aspect-ratio: 4/3; }
+          .dest-others { padding: 4rem 1.25rem !important; }
         }
       `}</style>
 
@@ -336,23 +352,26 @@ export default async function DestinationPage({ params }: PageProps) {
           {heroImageUrl && (
             <Image src={heroImageUrl} alt={name} fill priority sizes="100vw" />
           )}
-          <h1 className="dest-hero__name">{name}</h1>
         </div>
 
         {/* ── INTRO ── */}
         <div className="dest-intro">
-          <span className="dest-intro__eyebrow">
-            {destinationsEyebrow}
+          <h1 className="dest-hero__name">{name}</h1>
+
+          <div className="container-dest-intro">
+            <span className="dest-intro__eyebrow">
+              {destinationsEyebrow}
           </span>
-          {description && (
-            <p className="dest-intro__desc">{description}</p>
-          )}
+            {description && (
+              <p className="dest-intro__desc">{description}</p>
+            )}
+          </div>
         </div>
 
-        <hr className="dest-divider" />
 
         {/* ── PROPERTIES GRID ── */}
-        <div className="dest-props">
+        <div className="container-dest-props">
+          <div className="dest-props">
           <h2 className="dest-props__title">{propertiesTitle}</h2>
           <div className="dest-props__grid">
             {properties.length === 0 && (
@@ -437,6 +456,8 @@ export default async function DestinationPage({ params }: PageProps) {
             })}
           </div>
         </div>
+        </div>
+        
 
         {/* ── SEPARATOR IMAGE ── */}
         {separatorImageUrl && (

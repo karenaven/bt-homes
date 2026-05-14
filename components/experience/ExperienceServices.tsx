@@ -39,113 +39,216 @@ export default function ExperienceServices({
   return (
     <section className="esvc">
       <style>{`
-        .esvc {
-          background: #F0EDE3;
-          padding: 6rem 2.5rem;
-        }
-        .esvc__header {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 2rem;
-          align-items: start;
-          max-width: 1100px;
-          margin: 0 auto 2.5rem;
-        }
-        .esvc__eyebrow {
-          font-family: 'Jost', sans-serif;
-          font-size: 0.6875rem;
-          font-weight: 500;
-          letter-spacing: 0.2em;
-          text-transform: uppercase;
-          color: #888;
-          padding-top: 0.25rem;
-        }
-        .esvc__title {
-          font-family: 'Cormorant Garamond', Georgia, serif;
-          font-size: clamp(1.75rem, 3vw, 2.75rem);
-          font-weight: 400;
-          line-height: 1.2;
-          color: #0a0a0c;
-          margin: 0;
-        }
+  .esvc {
+    background: #F0EDE3;
 
-        /* Carrusel */
-        .esvc__carousel {
-          position: relative;
-          max-width: 1100px;
-          margin: 0 auto;
-          border-radius: 10px;
-          overflow: hidden;
-          background: #e0ddd6;
-          aspect-ratio: 16/9;
-        }
-        .esvc__img { object-fit: cover; }
+    padding:
+      var(--section-space-desktop)
+      var(--gutter-desktop);
+  }
 
-        /* Overlay degradado inferior */
-        .esvc__carousel::after {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(to top, rgba(5,5,7,0.65) 0%, transparent 55%);
-          pointer-events: none;
-          z-index: 1;
-        }
+  /* ─────────────────────────────
+     HEADER
+  ───────────────────────────── */
 
-        /* Flechas y texto sobre la foto */
-        .esvc__overlay {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          z-index: 2;
-          padding: 2rem 2rem 2.25rem;
-        }
-        .esvc__nav {
-          display: flex;
-          gap: 0.5rem;
-          margin-bottom: 1.25rem;
-        }
-        .esvc__nav-btn {
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          border: 1px solid rgba(255,255,255,0.4);
-          background: transparent;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: #fff;
-          transition: border-color 0.2s, background 0.2s;
-        }
-        .esvc__nav-btn:hover {
-          border-color: #fff;
-          background: rgba(255,255,255,0.1);
-        }
-        .esvc__nav-btn svg { width: 16px; height: 16px; }
-        .esvc__svc-title {
-          font-family: 'Cormorant Garamond', Georgia, serif;
-          font-size: clamp(1.25rem, 2.5vw, 1.875rem);
-          font-weight: 400;
-          color: #fff;
-          margin: 0 0 0.625rem;
-        }
-        .esvc__svc-desc {
-          font-family: 'Jost', sans-serif;
-          font-size: 0.875rem;
-          font-weight: 300;
-          line-height: 1.7;
-          color: rgba(255,255,255,0.75);
-          margin: 0;
-          max-width: 520px;
-        }
+  .esvc__header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
 
-        @media (max-width: 768px) {
-          .esvc { padding: 4rem 1.25rem; }
-          .esvc__header { grid-template-columns: 1fr; gap: 1rem; }
-          .esvc__carousel { aspect-ratio: 4/3; }
-        }
-      `}</style>
+    max-width: var(--container-max);
+    margin: 0 auto 2.5rem;
+  }
+
+  .esvc__eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #444;
+
+    padding-top: 0.25rem;
+  }
+
+  .esvc__title {
+    font-family: 'Helvetica', Georgia, serif;
+    font-size: clamp(1.75rem, 3vw, 2.75rem);
+    font-weight: 400;
+    line-height: 1.2;
+    color: #0a0a0c;
+
+    margin: 0;
+  }
+
+  /* ─────────────────────────────
+     CAROUSEL
+  ───────────────────────────── */
+
+  .esvc__carousel {
+    position: relative;
+
+    max-width: var(--container-max);
+    margin: 0 auto;
+
+    border-radius: 10px;
+    overflow: hidden;
+
+    background: #e0ddd6;
+    aspect-ratio: 16/9;
+  }
+
+  .esvc__img {
+    object-fit: cover;
+  }
+
+  /* Overlay */
+
+  .esvc__carousel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+
+    background:
+      linear-gradient(
+        to top,
+        rgba(5,5,7,0.65) 0%,
+        transparent 55%
+      );
+
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ─────────────────────────────
+     OVERLAY CONTENT
+  ───────────────────────────── */
+
+  .esvc__overlay {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 2;
+
+    padding: 2rem 2rem 2.25rem;
+  }
+
+  .esvc__nav {
+    display: flex;
+    gap: 0.5rem;
+
+    margin-bottom: 1.25rem;
+  }
+
+  .esvc__nav-btn {
+    width: 40px;
+    height: 40px;
+
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.4);
+
+    background: transparent;
+    color: #fff;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition:
+      border-color 0.2s,
+      background 0.2s;
+  }
+
+  .esvc__nav-btn:hover {
+    border-color: #fff;
+    background: rgba(255,255,255,0.1);
+  }
+
+  .esvc__nav-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .esvc__svc-title {
+    font-family: 'Helvetica', Georgia, serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #fff;
+
+    margin: 0 0 0.625rem;
+  }
+
+  .esvc__svc-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 300;
+    line-height: 1.5;
+    color: #fff;
+
+    max-width: 700px;
+    margin: 0;
+  }
+
+  /* ─────────────────────────────
+     TABLET
+  ───────────────────────────── */
+
+  @media (max-width: 900px) {
+
+    .esvc {
+      padding:
+        var(--section-space-tablet)
+        var(--gutter-tablet);
+    }
+
+    .esvc__header {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .esvc__carousel {
+      aspect-ratio: 4/3;
+    }
+
+    .esvc__overlay {
+      padding: 1.75rem;
+    }
+  }
+
+  /* ─────────────────────────────
+     MOBILE
+  ───────────────────────────── */
+
+  @media (max-width: 580px) {
+
+    .esvc {
+      padding:
+        var(--section-space-mobile)
+        var(--gutter-mobile);
+    }
+
+    .esvc__header {
+      gap: 1.25rem;
+
+      margin-bottom: 1.5rem;
+    }
+
+    .esvc__overlay {
+      padding: 1.25rem;
+    }
+
+    .esvc__svc-title {
+      font-size: 1.05rem;
+    }
+
+    .esvc__svc-desc {
+      font-size: 0.875rem;
+    }
+  }
+`}</style>
 
       <div className="esvc__header">
         <p className="esvc__eyebrow">{eyebrow}</p>

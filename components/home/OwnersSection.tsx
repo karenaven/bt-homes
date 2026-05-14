@@ -57,102 +57,138 @@ export default function OwnersSection({ body, images = [] }: OwnersSectionProps)
     <section className="owners" id="propietarios">
       <style>{`
         .owners {
-          background: #1e3a2f;
-          overflow: hidden;
-        }
+  overflow: hidden;
+}
 
-        /* Bloque de texto */
-        .owners__content {
-          padding: 6rem 2.5rem 5rem;
-          max-width: 900px;
-          margin: 0 auto;
-          text-align: center;
-        }
-        .owners__text {
-          font-family: 'Cormorant Garamond', Georgia, serif;
-          font-size: clamp(1.75rem, 3.5vw, 3rem);
-          font-weight: 300;
-          line-height: 1.35;
-          color: #fff;
-          margin: 0;
-        }
-        .owners__highlight {
-          color: #b8e04a;
-          font-style: italic;
-        }
+/* ── CONTENT ── */
 
-        /* Carrusel */
-        .owners__carousel {
-          position: relative;
-          width: 100%;
-          aspect-ratio: 16/9;
-          background: #0f2318;
-          overflow: hidden;
-        }
-        @media (max-width: 768px) {
-          .owners__carousel { aspect-ratio: 4/3; }
-        }
+.owners__content {
+  width: 100%;
+  background: #1e3a2f;
+  padding: 10rem 2.5rem;
+}
 
-        .owners__slide {
-          position: absolute;
-          inset: 0;
-          opacity: 0;
-          transition: opacity 0.8s ease;
-        }
-        .owners__slide--active {
-          opacity: 1;
-        }
-        .owners__slide img {
-          object-fit: cover;
-        }
+.container-owners__content {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
 
-        /* Gradiente inferior para los dots */
-        .owners__carousel::after {
-          content: '';
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          height: 120px;
-          background: linear-gradient(to top, rgba(10,10,12,0.55), transparent);
-          pointer-events: none;
-          z-index: 1;
-        }
+/* ── TEXT ── */
 
-        /* Dots sobre la foto */
-        .owners__dots {
-          position: absolute;
-          bottom: 1.5rem;
-          left: 50%;
-          transform: translateX(-50%);
-          display: flex;
-          gap: 8px;
-          z-index: 2;
-        }
-        .owners__dot {
-          width: 7px;
-          height: 7px;
-          border-radius: 50%;
-          background: rgba(255,255,255,0.4);
-          border: none;
-          cursor: pointer;
-          padding: 0;
-          transition: background 0.25s, transform 0.25s;
-        }
-        .owners__dot--active {
-          background: #fff;
-          transform: scale(1.25);
-        }
+.owners__text {
+  font-family: 'Helvetica', Georgia, serif;
+  font-size: clamp(2rem, 4.5vw, 4.5rem);
+  text-transform: uppercase;
+  font-weight: 300;
+  line-height: 1.2;
+  color: #fff;
+  margin: 0;
+}
 
-        @media (max-width: 580px) {
-          .owners__content { padding: 4rem 1.25rem 3.5rem; }
-        }
+.owners__highlight {
+  color: #b8e04a;
+}
+
+/* ── CAROUSEL ── */
+
+.owners__carousel {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #0f2318;
+  overflow: hidden;
+}
+
+.owners__slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.owners__slide--active {
+  opacity: 1;
+}
+
+.owners__slide img {
+  object-fit: cover;
+}
+
+/* Overlay */
+
+.owners__carousel::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(to top, rgba(10,10,12,0.55), transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Dots */
+
+.owners__dots {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 2;
+}
+
+.owners__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.4);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.25s, transform 0.25s;
+}
+
+.owners__dot--active {
+  background: #fff;
+  transform: scale(1.25);
+}
+
+/* ── TABLET ── */
+
+@media (max-width: 900px) {
+  .owners__content {
+    padding: 5rem 2rem;
+  }
+
+  .owners__carousel {
+    aspect-ratio: 4/3;
+  }
+}
+
+/* ── MOBILE ── */
+
+@media (max-width: 580px) {
+  .owners__content {
+    padding: 4rem 1.25rem;
+  }
+
+  .owners__dots {
+    bottom: 1rem;
+  }
+}
+}
       `}</style>
 
       {/* Texto con highlights */}
       {body && (
         <div className="owners__content">
-          <PortableText value={body} components={ptComponents} />
+          <div className="container-owners__content">
+            <PortableText value={body} components={ptComponents} />
+          </div>
         </div>
       )}
 

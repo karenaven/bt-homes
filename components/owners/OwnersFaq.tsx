@@ -23,7 +23,7 @@ export default function OwnersFaq({ title, items, locale }: OwnersFaqProps) {
       <style>{`
         .faq {
           padding: 6rem 2.5rem;
-          max-width: 1100px;
+          max-width: 1400px;
           margin: 0 auto;
           display: grid;
           grid-template-columns: 1fr 1.6fr;
@@ -31,7 +31,7 @@ export default function OwnersFaq({ title, items, locale }: OwnersFaqProps) {
           align-items: start;
         }
         .faq__title {
-          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-family: 'Helvetica', Georgia, serif;
           font-size: clamp(1.75rem, 3vw, 2.75rem);
           font-weight: 400;
           line-height: 1.2;
@@ -63,8 +63,8 @@ export default function OwnersFaq({ title, items, locale }: OwnersFaqProps) {
           text-align: left;
         }
         .faq__question {
-          font-family: 'Jost', sans-serif;
-          font-size: 0.9375rem;
+          font-family: 'Inter', sans-serif;
+          font-size: 1.2rem;
           font-weight: 400;
           color: #0a0a0c;
           line-height: 1.5;
@@ -91,11 +91,11 @@ export default function OwnersFaq({ title, items, locale }: OwnersFaqProps) {
           overflow: hidden;
         }
         .faq__answer {
-          font-family: 'Jost', sans-serif;
-          font-size: 0.875rem;
+          font-family: 'Inter', sans-serif;
+          font-size: 0.9375rem;
           font-weight: 300;
-          line-height: 1.8;
-          color: #666;
+          line-height: 1.7;
+          color: #444;
           padding-bottom: 1.375rem;
           margin: 0;
         }

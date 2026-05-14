@@ -43,10 +43,10 @@ export default function FeaturedProperties({
             <style>{`
         .featured {
           background: #F0EDE3;
-          padding: 5rem 2.5rem 6rem;
+          padding: 6rem 2.5rem;
         }
         .featured__inner {
-          max-width: 1100px;
+          max-width: 1400px;
           margin: 0 auto;
         }
 
@@ -58,12 +58,12 @@ export default function FeaturedProperties({
           margin-bottom: 1.75rem;
         }
         .featured__eyebrow {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.6875rem;
           font-weight: 500;
-          letter-spacing: 0.2em;
+          letter-spacing: 0.18em;
           text-transform: uppercase;
-          color: #888;
+          color: #444;
         }
         .featured__nav {
           display: flex;
@@ -73,7 +73,7 @@ export default function FeaturedProperties({
           width: 44px;
           height: 44px;
           border-radius: 50%;
-          border: 1px solid rgba(10,10,12,0.2);
+          border: 1px solid #0a0a0c;
           background: transparent;
           cursor: pointer;
           display: flex;
@@ -104,21 +104,21 @@ export default function FeaturedProperties({
           margin-bottom: 2rem;
         }
         .featured__name {
-          font-family: 'Cormorant Garamond', Georgia, serif;
-          font-size: clamp(2rem, 3.5vw, 3rem);
+          font-family: 'Helvetica', Georgia, serif;
+          font-size: clamp(1.5rem, 2.5vw, 2.25rem);
           font-weight: 400;
           line-height: 1.15;
           color: #0a0a0c;
           margin: 0;
           transition: opacity 0.2s;
         }
-        .featured__name:hover { opacity: 0.7; }
+        
         .featured__description {
-          font-family: 'Helvetica';
+          font-family: 'Inter', sans-serif;
           font-size: 0.9375rem;
           font-weight: 300;
-          line-height: 1.75;
-          color: #555;
+          line-height: 1.5;
+          color: #444;
           padding-top: 0.25rem;
         }
         .featured__description p { margin: 0; }
@@ -177,11 +177,12 @@ export default function FeaturedProperties({
           color: #fff;
           background: #0a0a0c;
           border: none;
-          padding: 1rem 2.75rem;
+          padding: 1rem 2rem;
           text-decoration: none;
           display: inline-block;
           transition: background 0.2s;
           cursor: pointer;
+          border-radius: 4px;
         }
         .featured__cta:hover { background: #2a2a2e; }
 

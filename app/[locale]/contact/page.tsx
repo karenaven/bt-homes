@@ -63,65 +63,176 @@ export default async function ContactPage({ params }: PageProps) {
   return (
     <>
       <style>{`
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; }
-        body { background: #fff; color: #0a0a0c; }
+        *, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-        /* ── MAIN SECTION ── */
-        .contact-main {
-          padding: 5rem 2.5rem 4rem;
-          max-width: 1100px;
-          margin: 0 auto;
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 5rem;
-          align-items: start;
-        }
-        .contact-main__left {}
-        .contact-main__title {
-          font-family: 'Cormorant Garamond', Georgia, serif;
-          font-size: clamp(2.25rem, 5vw, 3.75rem);
-          font-weight: 400;
-          line-height: 1.1;
-          color: #0a0a0c;
-          margin: 0 0 1.25rem;
-        }
-        .contact-main__desc {
-          font-family: 'Jost', sans-serif;
-          font-size: 0.9rem;
-          font-weight: 300;
-          line-height: 1.8;
-          color: #666;
-          margin: 0;
-        }
-        .contact-main__image {
-          position: relative;
-          aspect-ratio: 3/4;
-          border-radius: 6px;
-          overflow: hidden;
-          background: #e8e4dc;
-        }
-        .contact-main__image img { object-fit: cover; }
+html {
+  scroll-behavior: smooth;
+}
 
-        /* ── MAPA ── */
-        .contact-map {
-          width: 100%;
-          height: 320px;
-          border: none;
-          display: block;
-          filter: grayscale(15%);
-        }
+body {
+  background: #fff;
+  color: #0a0a0c;
+}
 
-        /* Responsive */
-        @media (max-width: 768px) {
-          .contact-main {
-            grid-template-columns: 1fr;
-            gap: 3rem;
-            padding: 3.5rem 1.25rem 3rem;
-          }
-          .contact-main__image { aspect-ratio: 4/3; }
-          .contact-map { height: 240px; }
-        }
+/* ─────────────────────────────
+   GLOBAL SPACING SYSTEM
+───────────────────────────── */
+
+:root {
+  --container-width: 1400px;
+
+  /* Desktop */
+  --space-section: 6rem;
+  --space-container: 2.5rem;
+
+  /* Tablet */
+  --space-section-tablet: 5rem;
+  --space-container-tablet: 2rem;
+
+  /* Mobile */
+  --space-section-mobile: 4rem;
+  --space-container-mobile: 1.25rem;
+}
+
+/* ─────────────────────────────
+   GLOBAL CONTAINER
+───────────────────────────── */
+
+.contact-container {
+  width: 100%;
+  max-width: calc(var(--container-width) + (var(--space-container) * 2));
+  margin: 0 auto;
+  padding-inline: var(--space-container);
+}
+
+/* ─────────────────────────────
+   HERO / CONTACT
+───────────────────────────── */
+
+.contact-main {
+  padding-block:
+    10rem
+    var(--space-section);
+}
+
+.contact-main__grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.contact-main__title {
+  font-family: 'Helvetica', sans-serif;
+  font-size: clamp(2.25rem, 4vw, 3.5rem);
+  font-weight: 400;
+  line-height: 1.1;
+  color: #0a0a0c;
+  margin: 0 0 1.25rem;
+  max-width: 900px;
+}
+
+.contact-main__desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 300;
+  line-height: 1.7;
+  color: #444;
+  margin: 0 0 2.5rem;
+  max-width: 700px;
+}
+
+.contact-main__image {
+  position: relative;
+  aspect-ratio: 3/4;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #e8e4dc;
+}
+
+.contact-main__image img {
+  object-fit: cover;
+}
+
+/* ─────────────────────────────
+   MAP
+───────────────────────────── */
+
+.contact-map-section {
+  padding-bottom: var(--space-section);
+}
+
+.contact-map {
+  width: 100%;
+  height: 320px;
+  border: none;
+  display: block;
+  filter: grayscale(15%);
+  border-radius: 10px;
+}
+
+/* ─────────────────────────────
+   TABLET
+───────────────────────────── */
+
+@media (max-width: 900px) {
+
+  .contact-container {
+    padding-inline: var(--space-container-tablet);
+  }
+
+  .contact-main {
+    padding-block:
+      8rem
+      var(--space-section-tablet);
+  }
+
+  .contact-main__grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .contact-main__image {
+    aspect-ratio: 4/3;
+  }
+
+  .contact-map-section {
+    padding-bottom: var(--space-section-tablet);
+  }
+}
+
+/* ─────────────────────────────
+   MOBILE
+───────────────────────────── */
+
+@media (max-width: 580px) {
+
+  .contact-container {
+    padding-inline: var(--space-container-mobile);
+  }
+
+  .contact-main {
+    padding-block:
+      7rem
+      var(--space-section-mobile);
+  }
+
+  .contact-main__grid {
+    gap: 2.5rem;
+  }
+
+  .contact-map {
+    height: 240px;
+  }
+
+  .contact-map-section {
+    padding-bottom: var(--space-section-mobile);
+  }
+}
       `}</style>
 
       <Navbar      
@@ -138,35 +249,88 @@ export default async function ContactPage({ params }: PageProps) {
 
       <main>
 
-        {/* ── FORMULARIO + FOTO ── */}
-        <div className="contact-main">
-          <div className="contact-main__left">
-            <h1 className="contact-main__title">
-              {isEs ? (data?.titleEs ?? '¡Hablemos!') : (data?.titleEn ?? "Let's talk!")}
-            </h1>
-            {(isEs ? data?.descriptionEs : data?.descriptionEn) && (
-              <p className="contact-main__desc">
-                {isEs ? data.descriptionEs : data.descriptionEn}
-              </p>
-            )}
-            <ContactForm
-              nameLabel={isEs ? (data?.nameLabelEs ?? 'Nombre') : (data?.nameLabelEn ?? 'Name')}
-              emailLabel={isEs ? (data?.emailLabelEs ?? 'Email') : (data?.emailLabelEn ?? 'Email')}
-              messageLabel={isEs ? (data?.messageLabelEs ?? 'Mensaje') : (data?.messageLabelEn ?? 'Message')}
-              submitLabel={isEs ? (data?.submitLabelEs ?? 'Enviar') : (data?.submitLabelEn ?? 'Send')}
-              successMessage={isEs ? (data?.successMessageEs ?? '¡Mensaje enviado!') : (data?.successMessageEn ?? 'Message sent!')}
-            />
-          </div>
+  {/* ── HERO / CONTACT ── */}
+  <section className="contact-hero">
 
-          {imageUrl && (
-            <div className="contact-main__image">
-              <Image src={imageUrl} alt="BT Homes Contacto" fill sizes="(max-width: 768px) 100vw, 50vw" />
-            </div>
+  <div className="contact-container">
+
+    <div className="contact-main">
+
+      <div className="contact-main__grid">
+
+        <div className="contact-main__left">
+
+          <h1 className="contact-main__title">
+            {isEs
+              ? (data?.titleEs ?? '¡Hablemos!')
+              : (data?.titleEn ?? "Let's talk!")}
+          </h1>
+
+          {(isEs ? data?.descriptionEs : data?.descriptionEn) && (
+            <p className="contact-main__desc">
+              {isEs
+                ? data.descriptionEs
+                : data.descriptionEn}
+            </p>
           )}
+
+          <ContactForm
+            nameLabel={
+              isEs
+                ? (data?.nameLabelEs ?? 'Nombre')
+                : (data?.nameLabelEn ?? 'Name')
+            }
+            emailLabel={
+              isEs
+                ? (data?.emailLabelEs ?? 'Email')
+                : (data?.emailLabelEn ?? 'Email')
+            }
+            messageLabel={
+              isEs
+                ? (data?.messageLabelEs ?? 'Mensaje')
+                : (data?.messageLabelEn ?? 'Message')
+            }
+            submitLabel={
+              isEs
+                ? (data?.submitLabelEs ?? 'Enviar')
+                : (data?.submitLabelEn ?? 'Send')
+            }
+            successMessage={
+              isEs
+                ? (data?.successMessageEs ?? '¡Mensaje enviado!')
+                : (data?.successMessageEn ?? 'Message sent!')
+            }
+          />
+
         </div>
 
-        {/* ── MAPA ── */}
-        {data?.mapEmbedUrl && (
+        {imageUrl && (
+          <div className="contact-main__image">
+            <Image
+              src={imageUrl}
+              alt="BT Homes Contacto"
+              fill
+              sizes="(max-width: 900px) 100vw, 50vw"
+            />
+          </div>
+        )}
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+  {/* ── MAPA ── */}
+  {data?.mapEmbedUrl && (
+    <section className="contact-map-section">
+
+      <div className="contact-container">
+
+        <div className="contact-map-wrapper">
+
           <iframe
             className="contact-map"
             src={data.mapEmbedUrl}
@@ -175,10 +339,15 @@ export default async function ContactPage({ params }: PageProps) {
             referrerPolicy="no-referrer-when-downgrade"
             title="BT Homes ubicación"
           />
-        )}
 
-      </main>
+        </div>
 
+      </div>
+
+    </section>
+  )}
+
+</main>
       <Footer
         bookNowLabel={bookNowLabel}
         experienceTxt={experienceLabel}

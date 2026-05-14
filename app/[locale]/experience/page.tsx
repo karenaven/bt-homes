@@ -58,202 +58,401 @@ export default async function ExperiencePage({ params }: PageProps) {
     return (
         <>
             <style>{`
-                *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-                html { scroll-behavior: smooth; }
-                body { background: #fff; color: #0a0a0c; }
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 
-                /* ── NAVBAR BLANCO ── */
-                .exp-navbar-wrap {
-                position: relative;
-                background: #fff;
-                border-bottom: 1px solid #eee;
-                }
+  html {
+    scroll-behavior: smooth;
+  }
 
-                /* ── HERO ── */
-                .exp-hero {
-                padding: 5rem 2.5rem 3rem;
-                max-width: 1100px;
-                margin: 0 auto;
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 3rem;
-                align-items: start;
-                }
-                .exp-hero__eyebrow {
-                font-family: 'Jost', sans-serif;
-                font-size: 0.6875rem;
-                font-weight: 500;
-                letter-spacing: 0.2em;
-                text-transform: uppercase;
-                color: #999;
-                padding-top: 0.5rem;
-                }
-                .exp-hero__right {}
-                .exp-hero__title {
-                font-family: 'Cormorant Garamond', Georgia, serif;
-                font-size: clamp(2.25rem, 4vw, 3.5rem);
-                font-weight: 400;
-                line-height: 1.15;
-                color: #0a0a0c;
-                margin: 0 0 1.25rem;
-                }
-                .exp-hero__subtitle {
-                font-family: 'Jost', sans-serif;
-                font-size: 0.9375rem;
-                font-weight: 300;
-                line-height: 1.75;
-                color: #555;
-                margin: 0;
-                }
+  body {
+    background: #fff;
+    color: #0a0a0c;
+  }
 
-                /* Foto full-width */
-                .exp-fullimg {
-                position: relative;
-                width: 100%;
-                aspect-ratio: 16/7;
-                overflow: hidden;
-                background: #e8e4dc;
-                }
-                .exp-fullimg img { object-fit: cover; }
+  /* ─────────────────────────────
+     LAYOUT TOKENS
+  ───────────────────────────── */
 
-                /* ── STATS ── */
-                .exp-stats {
-                padding: 5rem 2.5rem;
-                max-width: 1100px;
-                margin: 0 auto;
-                }
-                .exp-stats__eyebrow {
-                font-family: 'Jost', sans-serif;
-                font-size: 0.6875rem;
-                font-weight: 500;
-                letter-spacing: 0.2em;
-                text-transform: uppercase;
-                color: #999;
-                margin-bottom: 1.5rem;
-                }
-                .exp-stats__body {
-                font-family: 'Jost', sans-serif;
-                font-size: 1rem;
-                font-weight: 300;
-                line-height: 1.8;
-                color: #333;
-                max-width: 720px;
-                margin-bottom: 3rem;
-                }
+  :root {
+    --container-max: 1400px;
 
-                /* ── INCLUDES ── */
-                .exp-includes {
-                padding: 5rem 2.5rem;
-                max-width: 1100px;
-                margin: 0 auto;
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 4rem;
-                align-items: start;
-                }
-                .exp-includes__eyebrow {
-                font-family: 'Jost', sans-serif;
-                font-size: 0.6875rem;
-                font-weight: 500;
-                letter-spacing: 0.2em;
-                text-transform: uppercase;
-                color: #999;
-                margin-bottom: 1.25rem;
-                }
-                .exp-includes__title {
-                font-family: 'Cormorant Garamond', Georgia, serif;
-                font-size: clamp(1.75rem, 3vw, 2.75rem);
-                font-weight: 400;
-                line-height: 1.2;
-                color: #0a0a0c;
-                margin: 0 0 1rem;
-                }
-                .exp-includes__desc {
-                font-family: 'Jost', sans-serif;
-                font-size: 0.875rem;
-                font-weight: 300;
-                line-height: 1.75;
-                color: #666;
-                margin: 0;
-                }
-                .exp-includes__image {
-                position: relative;
-                aspect-ratio: 3/2;
-                overflow: hidden;
-                border-radius: 6px;
-                background: #e8e4dc;
-                margin-bottom: 2.5rem;
-                }
-                .exp-includes__image img { object-fit: cover; }
-                .exp-includes__list {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-                }
-                .exp-includes__item {
-                display: flex;
-                align-items: center;
-                gap: 0.875rem;
-                font-family: 'Jost', sans-serif;
-                font-size: 0.9375rem;
-                font-weight: 300;
-                color: #333;
-                padding: 1rem 0;
-                border-bottom: 1px solid #e8e4dc;
-                }
-                .exp-includes__item:first-child { border-top: 1px solid #e8e4dc; }
-                .exp-includes__asterisk {
-                font-size: 1rem;
-                color: #0a0a0c;
-                flex-shrink: 0;
-                }
+    --gutter-desktop: 2.5rem;
+    --gutter-tablet: 2rem;
+    --gutter-mobile: 1.25rem;
 
-                /* ── PARTNERS ── */
-                .exp-partners {
-                padding: 5rem 2.5rem;
-                text-align: center;
-                border-top: 1px solid #eee;
-                }
-                .exp-partners__title {
-                font-family: 'Cormorant Garamond', Georgia, serif;
-                font-size: clamp(1.75rem, 3vw, 2.5rem);
-                font-weight: 400;
-                color: #0a0a0c;
-                margin: 0 0 1rem;
-                }
-                .exp-partners__desc {
-                font-family: 'Jost', sans-serif;
-                font-size: 0.9rem;
-                font-weight: 300;
-                color: #777;
-                max-width: 500px;
-                margin: 0 auto 3rem;
-                line-height: 1.7;
-                }
-                .exp-partners__logos {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 3rem;
-                flex-wrap: wrap;
-                }
-                .exp-partners__logo {
-                position: relative;
-                height: 32px;
-                width: 120px;
-                }
-                .exp-partners__logo img { object-fit: contain; }
+    --section-space-desktop: 6rem;
+    --section-space-tablet: 5rem;
+    --section-space-mobile: 3.5rem;
+  }
 
-                /* Responsive */
-                @media (max-width: 768px) {
-                .exp-hero { grid-template-columns: 1fr; gap: 1.5rem; padding: 3rem 1.25rem 2rem; }
-                .exp-fullimg { aspect-ratio: 4/3; }
-                .exp-stats { padding: 3.5rem 1.25rem; }
-                .exp-includes { grid-template-columns: 1fr; gap: 2.5rem; padding: 3.5rem 1.25rem; }
-                .exp-partners { padding: 3.5rem 1.25rem; }
-                .exp-partners__logos { gap: 2rem; }
-                }
-            `}</style>
+  /* ─────────────────────────────
+     NAVBAR
+  ───────────────────────────── */
+
+  .exp-navbar-wrap {
+    position: relative;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+  }
+
+  /* ─────────────────────────────
+     HERO
+  ───────────────────────────── */
+
+  .exp-hero {
+    max-width: var(--container-max);
+    margin: 0 auto;
+
+    padding:
+      10rem
+      var(--gutter-desktop)
+      var(--section-space-desktop);
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .exp-hero__eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #444;
+    padding-top: 0.5rem;
+  }
+
+  .exp-hero__title {
+    font-family: 'Helvetica', sans serif;
+    font-size: clamp(1.75rem, 3vw, 2.75rem);
+    font-weight: 400;
+    line-height: 1.15;
+    color: #0a0a0c;
+    margin-bottom: 1.25rem;
+  }
+
+  .exp-hero__subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 300;
+    line-height: 1.5;
+    color: #444;
+  }
+
+  /* ─────────────────────────────
+     FULL IMAGE
+  ───────────────────────────── */
+
+  .exp-fullimg {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/7;
+    overflow: hidden;
+    background: #e8e4dc;
+  }
+
+  .exp-fullimg img {
+    object-fit: cover;
+  }
+
+  /* ─────────────────────────────
+     STATS
+  ───────────────────────────── */
+
+  .exp-stats {
+    max-width: var(--container-max);
+    margin: 0 auto;
+
+    padding:
+      var(--section-space-desktop)
+      var(--gutter-desktop);
+  }
+
+  .exp-stats__eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #444;
+    margin-bottom: 1.5rem;
+  }
+
+  .exp-stats__body {
+    font-family: 'Helvetica', sans serif;
+    font-size: 1.2rem;
+    font-weight: 300;
+    line-height: 1.5;
+    color: #0a0a0c;
+
+    max-width: 900px;
+    margin-bottom: 6rem;
+  }
+
+  /* ─────────────────────────────
+     IMAGE BELOW STATS
+  ───────────────────────────── */
+
+  .img-below-stats {
+    max-width: var(--container-max);
+    margin: 0 auto 5rem;
+
+    padding:
+      0
+      var(--gutter-desktop);
+  }
+
+  /* ─────────────────────────────
+     INCLUDES
+  ───────────────────────────── */
+
+  .exp-includes {
+    max-width: var(--container-max);
+    margin: 0 auto;
+
+    padding:
+      0
+      var(--gutter-desktop)
+      var(--section-space-desktop);
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8rem;
+    align-items: start;
+  }
+
+  .exp-includes__eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #444;
+    margin-bottom: 1.25rem;
+  }
+
+  .exp-includes__title {
+    font-family: 'Helvetica', sans serif;
+    font-size: clamp(1.75rem, 3vw, 2.75rem);
+    font-weight: 400;
+    line-height: 1.2;
+    color: #0a0a0c;
+    margin-bottom: 1rem;
+  }
+
+  .exp-includes__desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 300;
+    line-height: 1.5;
+    color: #444;
+  }
+
+  .exp-includes__image {
+    position: relative;
+    aspect-ratio: 3/2;
+    overflow: hidden;
+    border-radius: 6px;
+    background: #e8e4dc;
+    margin-bottom: 2.5rem;
+  }
+
+  .exp-includes__image img {
+    object-fit: cover;
+  }
+
+  .exp-includes__list {
+    list-style: none;
+  }
+
+  .exp-includes__item {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 300;
+    color: #0a0a0c;
+
+    padding: 1rem 0;
+
+    border-bottom: 1px solid #E5E7EB;
+  }
+
+  .exp-includes__item:first-child {
+    border-top: 1px solid #e8e4dc;
+  }
+
+  .exp-includes__asterisk {
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  /* ─────────────────────────────
+     PARTNERS
+  ───────────────────────────── */
+
+  .exp-partners {
+    padding:
+      var(--section-space-desktop)
+      var(--gutter-desktop);
+
+    text-align: center;
+    border-top: 1px solid #eee;
+  }
+
+  .exp-partners__title {
+    font-family: 'Helvetica', sans serif;
+    font-size: clamp(1.75rem, 3vw, 2.75rem);
+    font-weight: 400;
+    color: #0a0a0c;
+    margin-bottom: 1rem;
+  }
+
+  .exp-partners__desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 300;
+    color: #444;
+    line-height: 1.5;
+
+    max-width: 500px;
+    margin: 0 auto 6rem;
+  }
+
+  .exp-partners__logos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    gap: 4rem;
+  }
+
+  .exp-partners__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 180px;
+    min-height: 48px;
+    flex-shrink: 0;
+  }
+
+  .exp-partners__logo img {
+    display: block;
+  }
+
+  /* ─────────────────────────────
+     TABLET
+  ───────────────────────────── */
+
+  @media (max-width: 900px) {
+
+    .exp-hero,
+    .exp-stats,
+    .img-below-stats,
+    .exp-includes,
+    .exp-partners {
+      padding-left: var(--gutter-tablet);
+      padding-right: var(--gutter-tablet);
+    }
+
+    .exp-hero {
+      padding-top: 8rem;
+      padding-bottom: var(--section-space-tablet);
+
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .exp-stats {
+      padding-top: var(--section-space-tablet);
+      padding-bottom: var(--section-space-tablet);
+    }
+
+    .exp-includes {
+      grid-template-columns: 1fr;
+      gap: 4rem;
+
+      padding-bottom: var(--section-space-tablet);
+    }
+
+    .exp-partners {
+      padding-top: var(--section-space-tablet);
+      padding-bottom: var(--section-space-tablet);
+    }
+
+    .exp-fullimg {
+      aspect-ratio: 4/3;
+    }
+
+    .exp-stats__body {
+      margin-bottom: 4rem;
+    }
+
+    .exp-partners__logos {
+      gap: 2.5rem;
+    }
+  }
+
+  /* ─────────────────────────────
+     MOBILE
+  ───────────────────────────── */
+
+  @media (max-width: 580px) {
+
+    .exp-hero,
+    .exp-stats,
+    .img-below-stats,
+    .exp-includes,
+    .exp-partners {
+      padding-left: var(--gutter-mobile);
+      padding-right: var(--gutter-mobile);
+    }
+
+    .exp-hero {
+      padding-top: 7rem;
+      padding-bottom: var(--section-space-mobile);
+
+      gap: 1.5rem;
+    }
+
+    .exp-stats {
+      padding-top: var(--section-space-mobile);
+      padding-bottom: var(--section-space-mobile);
+    }
+
+    .exp-includes {
+      gap: 2.5rem;
+      padding-bottom: var(--section-space-mobile);
+    }
+
+    .exp-partners {
+      padding-top: var(--section-space-mobile);
+      padding-bottom: var(--section-space-mobile);
+    }
+
+    .exp-stats__body {
+      margin-bottom: 3rem;
+    }
+
+    .exp-partners__desc {
+      margin-bottom: 3rem;
+    }
+
+    .exp-partners__logos {
+      gap: 2rem;
+    }
+  }
+`}</style>
 
             {/* Navbar — sobre fondo blanco */}
 
@@ -301,7 +500,7 @@ export default async function ExperiencePage({ params }: PageProps) {
 
                 {/* Foto debajo de stats */}
                 {statsImageUrl && (
-                    <div style={{ maxWidth: '1100px', margin: '0 auto 5rem', padding: '0 2.5rem' }}>
+                    <div className="img-below-stats" style={{ maxWidth: '1400px', margin: '0 auto 5rem' }}>
                         <div style={{ position: 'relative', aspectRatio: '16/9', borderRadius: '8px', overflow: 'hidden', background: '#e8e4dc' }}>
                             <Image src={statsImageUrl} alt="BT Homes" fill sizes="1100px" style={{ objectFit: 'cover' }} />
                         </div>
@@ -385,7 +584,7 @@ export default async function ExperiencePage({ params }: PageProps) {
                         <div className="exp-partners__logos">
                             {data.partnerLogos.map((partner: any, i: number) => {
                                 const logoUrl = partner.logo
-                                    ? urlFor(partner.logo).width(240).height(64).fit('max').url()
+                                    ? urlFor(partner.logo).width(240).fit('max').url()
                                     : null
                                 return logoUrl ? (
                                     <a
@@ -395,7 +594,14 @@ export default async function ExperiencePage({ params }: PageProps) {
                                         rel="noopener noreferrer"
                                         className="exp-partners__logo"
                                     >
-                                        <Image src={logoUrl} alt={partner.name ?? `Partner ${i + 1}`} fill sizes="120px" />
+                                        <Image
+                                        src={logoUrl}
+                                        alt={partner.name ?? `Partner ${i + 1}`}
+                                        width={140}
+                                        height={48}
+                                        sizes="140px"
+                                        style={{ width: '100%', height: '100%', objectFit: 'contain',}}
+/>
                                     </a>
                                 ) : null
                             })}

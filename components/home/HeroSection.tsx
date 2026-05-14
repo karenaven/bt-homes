@@ -62,11 +62,11 @@ export default function HeroSection({
           bottom: 0;
           left: 0;
           right: 0;
-          padding: 0 2.5rem 4rem;
-          max-width: 900px;
+          padding: 0 6rem 4rem;
+          max-width: 1100px;
         }
         .hero__title {
-          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-family: 'Helvetica', sans serif;
           font-size: clamp(3rem, 7vw, 6.5rem);
           font-weight: 300;
           line-height: 1.05;

@@ -1,5 +1,7 @@
+import Image from 'next/image'
+
 interface Stat {
-  value: string
+  value: string // Ahora será cualquier texto (no importa el valor)
   labelEs: string
   labelEn: string
   icon: 'none' | 'star' | 'medal'
@@ -44,7 +46,7 @@ export default function ExperienceStats({ stats, locale }: ExperienceStatsProps)
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          min-height: 140px;
+          min-height: 200px;
         }
         .estats__icon {
           margin-bottom: 1rem;
@@ -52,46 +54,57 @@ export default function ExperienceStats({ stats, locale }: ExperienceStatsProps)
           display: flex;
           align-items: center;
         }
-        .estats__value {
-          font-family: 'Cormorant Garamond', Georgia, serif;
-          font-size: clamp(2rem, 3.5vw, 2.75rem);
-          font-weight: 400;
-          color: #fff;
-          line-height: 1;
+        .estats__image-container {
+          position: relative;
+          width: 100%;
+          height: 80px;
           margin-bottom: 1rem;
-        }
-        .estats__value--with-icon {
           display: flex;
           align-items: center;
-          gap: 0.5rem;
+          justify-content: center;
+        }
+        .estats__image {
+          width: auto;
+          height: 100%;
+          object-fit: contain;
         }
         .estats__label {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.625rem;
           font-weight: 500;
           letter-spacing: 0.15em;
           text-transform: uppercase;
-          color: rgba(255,255,255,0.5);
+          color: #fff;
           line-height: 1.5;
         }
         @media (max-width: 768px) {
           .estats__grid { grid-template-columns: repeat(2, 1fr); }
+          .estats__card { min-height: 180px; }
         }
         @media (max-width: 400px) {
           .estats__grid { grid-template-columns: 1fr; }
+          .estats__card { min-height: 160px; }
+          .estats__image-container { height: 70px; }
         }
       `}</style>
       <div className="estats__grid">
-        {stats.map((stat, i) => (
-          <div key={i} className="estats__card">
+        {stats.map((stat, index) => (
+          <div key={index} className="estats__card">
             {stat.icon !== 'none' && (
               <div className="estats__icon">
                 {stat.icon === 'star' && <StarIcon />}
                 {stat.icon === 'medal' && <MedalIcon />}
               </div>
             )}
-            <div className={`estats__value${stat.icon !== 'none' ? ' estats__value--with-icon' : ''}`}>
-              {stat.value}
+            <div className="estats__image-container">
+              <Image
+                src={`/images/stats/${index + 1}.svg`}
+                alt={locale === 'es' ? stat.labelEs : stat.labelEn}
+                width={120}
+                height={80}
+                className="estats__image"
+                priority
+              />
             </div>
             <p className="estats__label">
               {locale === 'es' ? stat.labelEs : stat.labelEn}

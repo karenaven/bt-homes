@@ -60,19 +60,32 @@ export default function Navbar({
     <nav className={`navbar navbar--${variant} ${menuOpen ? 'navbar--open' : ''}`}>
       <style>{`
         .navbar {
-          position: absolute;
-          top: 0; left: 0; right: 0;
-          z-index: 100;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 0 2.5rem;
-          height: 72px;
+          position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #0a0a0c;
+
+  padding: 0 2.5rem;
+  height: 72px;
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    backdrop-filter 0.25s ease;
         }
+          
         /* Variante light — para páginas interiores */
         .navbar--light {
-          position: relative;
+          position: fixed;
           background: #fff;
+          border-bottom: 1px solid #E5E7EB;
         }
 
         .navbar__logo-container {
@@ -99,7 +112,7 @@ export default function Navbar({
           padding: 0;
         }
         .navbar__links a {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.875rem;
           font-weight: 400;
           letter-spacing: 0.04em;
@@ -122,7 +135,7 @@ export default function Navbar({
           gap: 1.25rem;
         }
         .navbar__locale {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.75rem;
           font-weight: 500;
           letter-spacing: 0.1em;
@@ -130,13 +143,13 @@ export default function Navbar({
           text-decoration: none;
           transition: opacity 0.2s;
         }
-        .navbar--dark .navbar__locale { color: rgba(255,255,255,0.5); }
-        .navbar--dark .navbar__locale:hover { color: rgba(255,255,255,0.9); }
-        .navbar--light .navbar__locale { color: #888; }
+        .navbar--dark .navbar__locale { color: rgba(255,255,255,0.85); }
+        .navbar--dark .navbar__locale:hover { color: #fff; }
+        .navbar--light .navbar__locale { color:  #333; }
         .navbar--light .navbar__locale:hover { color: #0a0a0c; }
 
         .navbar__cta {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.8125rem;
           font-weight: 500;
           letter-spacing: 0.08em;
@@ -148,6 +161,7 @@ export default function Navbar({
           transition: background 0.2s, color 0.2s;
           white-space: nowrap;
           display: inline-block;
+          border-radius: 4px;
         }
         .navbar--dark .navbar__cta { color: #0a0a0c; background: #fff; }
         .navbar--dark .navbar__cta:hover { background: #e8e4dc; }
@@ -184,7 +198,7 @@ export default function Navbar({
             gap: 1.5rem;
             align-items: flex-start;
           }
-          .navbar--dark.navbar--open .navbar__links { background: rgba(10,10,12,0.97); }
+          .navbar--dark.navbar--open .navbar__links { background: #0a0a0c; }
           .navbar--light.navbar--open .navbar__links { background: #fff; border-bottom: 1px solid #eee; }
         }
         @media (max-width: 480px) {
