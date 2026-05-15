@@ -80,8 +80,8 @@ export default async function ExperiencePage({ params }: PageProps) {
   :root {
     --container-max: 1400px;
 
-    --gutter-desktop: 2.5rem;
-    --gutter-tablet: 2rem;
+    --gutter-desktop: 6rem;
+    --gutter-tablet: 6rem;
     --gutter-mobile: 1.25rem;
 
     --section-space-desktop: 6rem;
@@ -278,7 +278,7 @@ export default async function ExperiencePage({ params }: PageProps) {
 
     font-family: 'Inter', sans-serif;
     font-size: 0.9375rem;
-    font-weight: 300;
+    font-weight: bold;
     color: #0a0a0c;
 
     padding: 1rem 0;

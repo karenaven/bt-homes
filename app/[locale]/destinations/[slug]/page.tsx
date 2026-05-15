@@ -117,13 +117,17 @@ export default async function DestinationPage({ params }: PageProps) {
         }
 
         /* ── INTRO ── */
+        .dest-intro-layout {
+        width: 100%;
+        padding: 6rem 6rem;
+        }
+
         .dest-intro {
           max-width: 1400px;
           display: flex;
           flex-direction: column;
           align-items: start;
           gap: 6rem;
-          padding: 6rem 2.5rem;
           margin: 0 auto;
         }
 
@@ -159,10 +163,10 @@ export default async function DestinationPage({ params }: PageProps) {
         .container-dest-props {
         background: #ecebe9;
         width: 100%;
+        padding: 6rem 6rem;
         }
 
         .dest-props {
-          padding: 6rem 2.5rem;
           max-width: 1400px;
           margin: 0 auto;
         }
@@ -303,18 +307,26 @@ export default async function DestinationPage({ params }: PageProps) {
         }
 
         /* Empty state */
+
         .dest-empty {
           text-align: center;
-          padding: 4rem 2rem;
-          font-family: 'Jost', sans-serif;
+          padding: 4rem 6rem;
+          font-family: 'Inter', sans-serif;
           font-size: 0.9rem;
           color: #aaa;
           grid-column: 1 / -1;
         }
 
-        .dest-others {
-        padding: 6rem 2.5rem !important;
+        .container-destination {
+        padding: 0 6rem !important;
         }
+
+        .dest-others {
+        margin: 0 auto;
+        max-width: 1400px;
+        padding: 0;
+        }
+        
 
         /* Responsive */
         @media (max-width: 900px) {
@@ -355,6 +367,7 @@ export default async function DestinationPage({ params }: PageProps) {
         </div>
 
         {/* ── INTRO ── */}
+        <div className='dest-intro-layout'>
         <div className="dest-intro">
           <h1 className="dest-hero__name">{name}</h1>
 
@@ -367,6 +380,8 @@ export default async function DestinationPage({ params }: PageProps) {
             )}
           </div>
         </div>
+        </div>
+        
 
 
         {/* ── PROPERTIES GRID ── */}
@@ -466,7 +481,8 @@ export default async function DestinationPage({ params }: PageProps) {
           </div>
         )}
 
-        {/* ── OTHER DESTINATIONS CAROUSEL ── */}
+        <div className='container-destination'>
+{/* ── OTHER DESTINATIONS CAROUSEL ── */}
         {otherDests.length > 0 && (
           <OtherDestinationsCarousel
             eyebrow={destinationsEyebrow}
@@ -476,6 +492,9 @@ export default async function DestinationPage({ params }: PageProps) {
             locale={locale}
           />
         )}
+        </div>
+
+        
 
       </main>
 

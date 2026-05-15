@@ -70,7 +70,7 @@ export default function Footer({
         /* ── BOOK NOW ── */
         .booknow {
           background: #fff;
-          padding: 0 2.5rem;
+          padding: 0 6rem;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -91,8 +91,7 @@ export default function Footer({
           align-items: center;
           justify-content: start;
           max-width: 1400px;
-          padding: 0 2.5rem;
-
+          padding: 0 6rem;
         }
         
         .booknow__image {
@@ -105,7 +104,7 @@ export default function Footer({
         /* ── FOOTER ── */
         .footer {
           background: #1e3a2f;
-          padding: 4rem 2.5rem 0;
+          padding: 4rem 6rem 0;
         }
         .footer__inner {
           max-width: 1400px;

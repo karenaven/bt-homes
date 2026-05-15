@@ -87,7 +87,7 @@ body {
 
   /* Desktop */
   --space-section: 6rem;
-  --space-container: 2.5rem;
+  --space-container: 6rem;
 
   /* Tablet */
   --space-section-tablet: 5rem;

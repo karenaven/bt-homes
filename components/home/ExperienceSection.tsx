@@ -29,7 +29,7 @@ export default function ExperienceSection({
       <style>{`
         .experience {
           background: #fff;
-          padding: 6rem 2.5rem;
+          padding: 6rem 6rem;
         }
         .experience__inner {
           max-width: 1400px;

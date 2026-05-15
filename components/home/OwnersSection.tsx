@@ -65,7 +65,7 @@ export default function OwnersSection({ body, images = [] }: OwnersSectionProps)
 .owners__content {
   width: 100%;
   background: #1e3a2f;
-  padding: 10rem 2.5rem;
+  padding: 12rem 6rem;
 }
 
 .container-owners__content {
@@ -79,8 +79,7 @@ export default function OwnersSection({ body, images = [] }: OwnersSectionProps)
 .owners__text {
   font-family: 'Helvetica', Georgia, serif;
   font-size: clamp(2rem, 4.5vw, 4.5rem);
-  text-transform: uppercase;
-  font-weight: 300;
+  font-weight: bold;
   line-height: 1.2;
   color: #fff;
   margin: 0;
@@ -161,7 +160,7 @@ export default function OwnersSection({ body, images = [] }: OwnersSectionProps)
 
 @media (max-width: 900px) {
   .owners__content {
-    padding: 5rem 2rem;
+    padding: 5rem 6rem;
   }
 
   .owners__carousel {

@@ -43,7 +43,7 @@ export default function FeaturedProperties({
             <style>{`
         .featured {
           background: #F0EDE3;
-          padding: 6rem 2.5rem;
+          padding: 6rem 6rem;
         }
         .featured__inner {
           max-width: 1400px;

@@ -1,7 +1,7 @@
 import Image from 'next/image'
 
 interface Stat {
-  value: string // Ahora será cualquier texto (no importa el valor)
+  value: string
   labelEs: string
   labelEn: string
   icon: 'none' | 'star' | 'medal'
@@ -39,6 +39,7 @@ export default function ExperienceStats({ stats, locale }: ExperienceStatsProps)
           grid-template-columns: repeat(4, 1fr);
           gap: 1rem;
         }
+
         .estats__card {
           background: #1e3a2f;
           border-radius: 8px;
@@ -46,28 +47,31 @@ export default function ExperienceStats({ stats, locale }: ExperienceStatsProps)
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          min-height: 200px;
+          min-height: 240px;
+          align-items: start;
+          text-align: start;
         }
+
         .estats__icon {
           margin-bottom: 1rem;
           height: 24px;
           display: flex;
           align-items: center;
         }
+
         .estats__image-container {
-          position: relative;
-          width: 100%;
-          height: 80px;
-          margin-bottom: 1rem;
+          height: 4rem;
           display: flex;
           align-items: center;
           justify-content: center;
         }
+
         .estats__image {
-          width: auto;
+          width: 100%;
           height: 100%;
           object-fit: contain;
         }
+
         .estats__label {
           font-family: 'Inter', sans-serif;
           font-size: 0.625rem;
@@ -77,16 +81,36 @@ export default function ExperienceStats({ stats, locale }: ExperienceStatsProps)
           color: #fff;
           line-height: 1.5;
         }
+
         @media (max-width: 768px) {
-          .estats__grid { grid-template-columns: repeat(2, 1fr); }
-          .estats__card { min-height: 180px; }
+          .estats__grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+
+          .estats__card {
+            min-height: 180px;
+          }
+
+          .estats__image-container {
+            height: 75px;
+          }
         }
+
         @media (max-width: 400px) {
-          .estats__grid { grid-template-columns: 1fr; }
-          .estats__card { min-height: 160px; }
-          .estats__image-container { height: 70px; }
+          .estats__grid {
+            grid-template-columns: 1fr;
+          }
+
+          .estats__card {
+            min-height: 160px;
+          }
+
+          .estats__image-container {
+            height: 60px;
+          }
         }
       `}</style>
+
       <div className="estats__grid">
         {stats.map((stat, index) => (
           <div key={index} className="estats__card">
@@ -96,6 +120,7 @@ export default function ExperienceStats({ stats, locale }: ExperienceStatsProps)
                 {stat.icon === 'medal' && <MedalIcon />}
               </div>
             )}
+
             <div className="estats__image-container">
               <Image
                 src={`/images/stats/${index + 1}.svg`}
@@ -106,6 +131,7 @@ export default function ExperienceStats({ stats, locale }: ExperienceStatsProps)
                 priority
               />
             </div>
+
             <p className="estats__label">
               {locale === 'es' ? stat.labelEs : stat.labelEn}
             </p>

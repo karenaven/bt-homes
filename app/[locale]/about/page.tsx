@@ -103,7 +103,7 @@ export default async function AboutPage({ params }: PageProps) {
 
     /* Desktop */
     --space-section: 6rem;
-    --space-container: 2.5rem;
+    --space-container: 6rem;
 
     /* Tablet */
     --space-section-tablet: 5rem;
@@ -170,7 +170,7 @@ export default async function AboutPage({ params }: PageProps) {
   .ab-about__inner {
     display: grid;
     grid-template-columns: 1fr 1.4fr;
-    gap: 4rem;
+    gap: 6rem;
     align-items: end;
   }
 
@@ -336,7 +336,7 @@ export default async function AboutPage({ params }: PageProps) {
   .about-pt__text {
     font-family: 'Helvetica', sans-serif;
     font-size: clamp(2rem, 4.5vw, 4.5rem);
-    font-weight: 300;
+    font-weight: bold;
     line-height: 1.2;
     color: #fff;
     margin: 0;

@@ -60,30 +60,19 @@ export default function Navbar({
     <nav className={`navbar navbar--${variant} ${menuOpen ? 'navbar--open' : ''}`}>
       <style>{`
         .navbar {
-          position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-
-  z-index: 1000;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #0a0a0c;
-
-  padding: 0 2.5rem;
-  height: 72px;
-
-  transition:
-    background 0.25s ease,
-    border-color 0.25s ease,
-    backdrop-filter 0.25s ease;
+          position: absolute;
+          top: 0; left: 0; right: 0;
+          z-index: 100;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 2.5rem;
+          height: 72px;
         }
           
         /* Variante light — para páginas interiores */
         .navbar--light {
-          position: fixed;
+          position: relative;
           background: #fff;
           border-bottom: 1px solid #E5E7EB;
         }
@@ -198,7 +187,7 @@ export default function Navbar({
             gap: 1.5rem;
             align-items: flex-start;
           }
-          .navbar--dark.navbar--open .navbar__links { background: #0a0a0c; }
+          .navbar--dark.navbar--open .navbar__links { background: rgba(10,10,12,0.97); }
           .navbar--light.navbar--open .navbar__links { background: #fff; border-bottom: 1px solid #eee; }
         }
         @media (max-width: 480px) {

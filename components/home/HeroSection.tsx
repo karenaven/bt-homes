@@ -58,17 +58,19 @@ export default function HeroSection({
           );
         }
         .hero__content {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          padding: 0 6rem 4rem;
-          max-width: 1100px;
-        }
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-width: 60%;
+  padding: 0 6rem 4rem;
+  box-sizing: border-box;
+}
+
         .hero__title {
           font-family: 'Helvetica', sans serif;
-          font-size: clamp(3rem, 7vw, 6.5rem);
-          font-weight: 300;
+          font-size: clamp(2.2rem, 5vw, 5rem);          
+          font-weight: bold;
           line-height: 1.05;
           color: #fff;
           margin: 0 0 1.25rem;
@@ -77,6 +79,7 @@ export default function HeroSection({
           animation: heroTitleIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
           animation-delay: 0.3s;
         }
+
         .hero__title em {
           font-style: italic;
           font-weight: 300;
@@ -167,6 +170,40 @@ export default function HeroSection({
           .hero__content { padding: 0 1.5rem 3rem; }
           .hero__scroll { display: none; }
         }
+
+        /* desktop chico / laptop */
+@media (max-width: 1400px) {
+  .hero__content {
+    max-width: 72%;
+  }
+}
+
+/* tablet horizontal */
+@media (max-width: 1100px) {
+  .hero__content {
+    max-width: 72%;
+  }
+}
+
+/* tablet */
+@media (max-width: 900px) {
+  .hero__content {
+    max-width: 85%;
+    padding: 0 2rem 3rem;
+  }
+}
+
+/* mobile */
+@media (max-width: 640px) {
+  .hero__content {
+    max-width: 100%;
+    padding: 0 1.5rem 3rem;
+  }
+
+  .hero__scroll {
+    display: none;
+  }
+}
       `}</style>
 
       {/* Background image */}

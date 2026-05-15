@@ -22,7 +22,7 @@ export default function OwnersFaq({ title, items, locale }: OwnersFaqProps) {
     <section className="faq">
       <style>{`
         .faq {
-          padding: 6rem 2.5rem;
+          padding: 6rem 6rem;
           max-width: 1400px;
           margin: 0 auto;
           display: grid;

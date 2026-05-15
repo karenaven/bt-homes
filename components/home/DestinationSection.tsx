@@ -100,7 +100,7 @@ export default function DestinationsSection({
       <style>{`
         .destinations {
           background: #fff;
-          padding: 6rem 2.5rem;
+          padding: 6rem 6rem;
           color: #0a0a0c;
         }
 

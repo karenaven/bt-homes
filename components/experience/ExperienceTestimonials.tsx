@@ -51,7 +51,7 @@ export default function ExperienceTestimonials({
         /* Bloque testimonio */
         .etesti__body {
           background: #F0EDE3;
-          padding: 6rem 2.5rem;
+          padding: 6rem 6rem;
         }
         .etesti__inner {
           max-width: 900px;
