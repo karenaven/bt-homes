@@ -957,7 +957,7 @@ body {
                                     <div>
 
                                         <span className="own-eyebrow own-featured__eyebrow">
-                                            {featuredPropertiesEyebrow}
+                                            Hostify
                                         </span>
 
                                         {(isEs
