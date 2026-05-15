@@ -167,15 +167,12 @@ export default function DestinationsSection({
           justify-content: center;
           transition: all 0.2s ease;
           padding: 0;
-          border-radius: 0;
+          border-radius: 50%;
         }
 
         .destinations__nav-btn:hover {
-          background: #0a0a0c;
-        }
-
-        .destinations__nav-btn:hover svg {
-          stroke: #fff;
+          border-color: #0a0a0c;
+          background: rgba(10,10,12,0.04);
         }
 
         .destinations__nav-btn svg {
@@ -265,7 +262,7 @@ export default function DestinationsSection({
           margin-right: auto;
           font-family: 'Inter', sans-serif;
           font-size: 0.9375rem;
-          font-weight: 500;
+          font-weight: 400;
           line-height: 1.5;
           color: #444;
           padding-top: 1rem;
@@ -281,13 +278,10 @@ export default function DestinationsSection({
             gap: 1rem;
             margin-bottom: 2.5rem;
           }
-          .destinations__footer {        
-            grid-template-columns: 1fr;
-            padding-top: 0;
-          }
-          .destinations__nav {
-            bottom: -2.5rem;
-          }
+            .destinations__footer {        
+          grid-template-columns: 1fr;
+          padding-top: 0;
+        }
         }
         @media (max-width: 580px) {
           .destinations {
@@ -306,6 +300,7 @@ export default function DestinationsSection({
           .destinations__nav-btn {
             width: 40px;
             height: 40px;
+            border-radius: 9999;
           }
         }
       `}</style>

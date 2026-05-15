@@ -26,7 +26,7 @@ export default function SearchBar({
   checkoutTxt,
   guestsTxt,
   search,
-  allDestinationsTxt = 'Todos los destinos',
+  allDestinationsTxt,
   locale = 'es',
   destinations = [],
   hostifyUrl

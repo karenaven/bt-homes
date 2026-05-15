@@ -494,6 +494,7 @@ export default async function AboutPage({ params }: PageProps) {
 
     .ab-diff {
       padding-block: var(--space-section-mobile);
+      padding-bottom: 0;
     }
   }
 `}</style>

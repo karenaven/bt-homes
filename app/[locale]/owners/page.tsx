@@ -75,8 +75,8 @@ export default async function OwnersPage({ params }: PageProps) {
         : commonTranslations.activeRevenueManagementEn
 
     const servicesEyebrow = isEs
-        ? commonTranslations.experienceServicesEs
-        : commonTranslations.experienceServicesEn
+        ? commonTranslations.servicesEs
+        : commonTranslations.servicesEn
 
     const bookNowLabel = isEs
         ? commonTranslations.bookNowEs

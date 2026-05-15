@@ -69,7 +69,8 @@ export default async function HomePage({ params }: PageProps) {
   const socialLabel = isEs ? commonTranslations?.socialEs : commonTranslations?.socialEn
   const bookLabel = isEs ? commonTranslations?.bookLabelEs : commonTranslations?.bookLabelEn
   const hostifyBookingUrl = commonTranslations?.hostifyBookingUrl || 'https://bthomes.hostify.club'
-  
+  const allDestinations = isEs ? "Todos los destinos" : "All destinations"
+
   return (
     <>
       <style>{`
@@ -111,6 +112,7 @@ export default async function HomePage({ params }: PageProps) {
           search={search}
           destinations={destinations}
           hostifyUrl={hostifyBookingUrl}
+          allDestinationsTxt={allDestinations}
         />
 
         <DestinationsSection

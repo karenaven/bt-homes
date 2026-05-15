@@ -341,7 +341,7 @@ export default async function ExperiencePage({ params }: PageProps) {
     align-items: center;
     justify-content: center;
 
-    width: 180px;
+    max-width: 96px;
     min-height: 48px;
     flex-shrink: 0;
   }
@@ -597,7 +597,7 @@ export default async function ExperiencePage({ params }: PageProps) {
                                         <Image
                                         src={logoUrl}
                                         alt={partner.name ?? `Partner ${i + 1}`}
-                                        width={140}
+                                        width={96}
                                         height={48}
                                         sizes="140px"
                                         style={{ width: '100%', height: '100%', objectFit: 'contain',}}
