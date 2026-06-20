@@ -83,19 +83,19 @@ body {
 ───────────────────────────── */
 
 :root {
-  --container-width: 1400px;
+   --container-width: 1400px;
 
   /* Desktop */
-  --space-section: 6rem;
-  --space-container: 6rem;
+  --padding-block: 6rem;   /* top + bottom */
+  --padding-inline: 6rem;  /* left + right */
 
   /* Tablet */
-  --space-section-tablet: 5rem;
-  --space-container-tablet: 2rem;
+  --padding-block-tablet: 5rem;
+  --padding-inline-tablet: 2rem;
 
   /* Mobile */
-  --space-section-mobile: 4rem;
-  --space-container-mobile: 1.25rem;
+  --padding-block-mobile: 4rem;
+  --padding-inline-mobile: 1.25rem;
 }
 
 /* ─────────────────────────────
@@ -104,25 +104,30 @@ body {
 
 .contact-container {
   width: 100%;
-  max-width: calc(var(--container-width) + (var(--space-container) * 2));
+  max-width: calc(var(--container-width) + (var(--padding-block) * 2));
   margin: 0 auto;
-  padding-inline: var(--space-container);
+  padding-inline: var(--padding-inline);
 }
 
 /* ─────────────────────────────
    HERO / CONTACT
 ───────────────────────────── */
+.contact-map-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
 
 .contact-main {
   padding-block:
     10rem
-    var(--space-section);
+    var(--padding-block);
 }
 
 .contact-main__grid {
   display: grid;
   grid-template-columns: 1.4fr 1fr;
-  gap: 4rem;
+  gap: 8rem;
   align-items: start;
 }
 
@@ -138,8 +143,8 @@ body {
 
 .contact-main__desc {
   font-family: 'Inter', sans-serif;
-  font-size: 0.9375rem;
-  font-weight: 300;
+  font-size: 1rem;
+  font-weight: 400;
   line-height: 1.7;
   color: #444;
   margin: 0 0 2.5rem;
@@ -162,10 +167,6 @@ body {
    MAP
 ───────────────────────────── */
 
-.contact-map-section {
-  padding-bottom: var(--space-section);
-}
-
 .contact-map {
   width: 100%;
   height: 320px;
@@ -182,13 +183,13 @@ body {
 @media (max-width: 900px) {
 
   .contact-container {
-    padding-inline: var(--space-container-tablet);
+    padding-inline: var(--padding-inline-tablet);
   }
 
   .contact-main {
     padding-block:
       8rem
-      var(--space-section-tablet);
+      var(--padding-block-tablet);
   }
 
   .contact-main__grid {
@@ -196,12 +197,8 @@ body {
     gap: 3rem;
   }
 
-  .contact-main__image {
-    aspect-ratio: 4/3;
-  }
-
   .contact-map-section {
-    padding-bottom: var(--space-section-tablet);
+    padding-bottom: var( --padding-block-tablet);
   }
 }
 
@@ -212,17 +209,21 @@ body {
 @media (max-width: 580px) {
 
   .contact-container {
-    padding-inline: var(--space-container-mobile);
+    padding-inline: var(--padding-inline-mobile);
+  }
+
+  .contact-map-wrapper {
+    grid-template-columns: 1fr;
   }
 
   .contact-main {
     padding-block:
       7rem
-      var(--space-section-mobile);
+      var(--padding-block-mobile);
   }
 
   .contact-main__grid {
-    gap: 2.5rem;
+    gap: 4rem;
   }
 
   .contact-map {
@@ -230,7 +231,7 @@ body {
   }
 
   .contact-map-section {
-    padding-bottom: var(--space-section-mobile);
+    padding-bottom: 0;
   }
 }
       `}</style>
@@ -330,6 +331,15 @@ body {
       <div className="contact-container">
 
         <div className="contact-map-wrapper">
+
+          <iframe
+            className="contact-map"
+            src={data.mapEmbedUrl}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            title="BT Homes ubicación"
+          />
 
           <iframe
             className="contact-map"

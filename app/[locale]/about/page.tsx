@@ -99,20 +99,20 @@ export default async function AboutPage({ params }: PageProps) {
   ───────────────────────────── */
 
   :root {
-    --container-width: 1400px;
+   --container-width: 1400px;
 
-    /* Desktop */
-    --space-section: 6rem;
-    --space-container: 6rem;
+  /* Desktop */
+  --padding-block: 6rem;   /* top + bottom */
+  --padding-inline: 6rem;  /* left + right */
 
-    /* Tablet */
-    --space-section-tablet: 5rem;
-    --space-container-tablet: 2rem;
+  /* Tablet */
+  --padding-block-tablet: 5rem;
+  --padding-inline-tablet: 2rem;
 
-    /* Mobile */
-    --space-section-mobile: 4rem;
-    --space-container-mobile: 1.25rem;
-  }
+  /* Mobile */
+  --padding-block-mobile: 4rem;
+  --padding-inline-mobile: 1.25rem;
+}
 
   /* ─────────────────────────────
      GLOBAL CONTAINER
@@ -120,9 +120,9 @@ export default async function AboutPage({ params }: PageProps) {
 
   .ab-container {
     width: 100%;
-    max-width: calc(var(--container-width) + (var(--space-container) * 2));
+    max-width: calc(var(--container-width) + (var(--padding-block) * 2));
     margin: 0 auto;
-    padding-inline: var(--space-container);
+    padding-inline: var(--padding-inline);
   }
 
   /* ─────────────────────────────
@@ -130,10 +130,10 @@ export default async function AboutPage({ params }: PageProps) {
   ───────────────────────────── */
 
   .ab-hero {
-    background: #F0EDE3;
+    background: #ecebe9;
     padding-block:
       10rem
-      var(--space-section);
+      var(--padding-inline);
   }
 
   .ab-hero__title {
@@ -164,7 +164,7 @@ export default async function AboutPage({ params }: PageProps) {
   ───────────────────────────── */
 
   .ab-about {
-    padding-block: var(--space-section);
+    padding-block: var(--padding-block);
   }
 
   .ab-about__inner {
@@ -196,8 +196,8 @@ export default async function AboutPage({ params }: PageProps) {
 
   .about-pt__body {
     font-family: 'Inter', sans-serif;
-    font-size: 0.9375rem;
-    font-weight: 300;
+    font-size: 1rem;
+    font-weight: 400;
     line-height: 1.7;
     color: #444;
     margin: 0 0 1rem;
@@ -239,12 +239,12 @@ export default async function AboutPage({ params }: PageProps) {
   ───────────────────────────── */
 
   .ab-services {
-    background: #F0EDE3;
-    padding-top: var(--space-section);
+    background: #f1f3e5;
+    padding-top: var(--padding-block);
   }
 
   .ab-services__inner {
-    margin-bottom: var(--space-section);
+    margin-bottom: var(--padding-block);
   }
 
   .ab-services__header {
@@ -262,8 +262,8 @@ export default async function AboutPage({ params }: PageProps) {
 
   .ab-services__desc {
     font-family: 'Inter', sans-serif;
-    font-size: 0.9375rem;
-    font-weight: 300;
+    font-size: 1rem;
+    font-weight: 400;
     line-height: 1.7;
     color: #444;
     max-width: 1000px;
@@ -285,14 +285,14 @@ export default async function AboutPage({ params }: PageProps) {
   .ab-services__icon {
     width: 36px;
     height: 36px;
-    background: #1e3a2f;
+    background: #01281c;
     border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 1.25rem;
-    font-size: 0.9rem;
-    color: #b8e04a;
+    font-size: 1.2rem;
+    color: #d7fe91;
   }
 
   .ab-services__card-title {
@@ -305,9 +305,9 @@ export default async function AboutPage({ params }: PageProps) {
 
   .ab-services__card-desc {
     font-family: 'Inter', sans-serif;
-    font-size: 0.9375rem;
-    font-weight: 300;
-    line-height: 1.7;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
     color: #444;
     margin: 0;
   }
@@ -329,25 +329,55 @@ export default async function AboutPage({ params }: PageProps) {
   ───────────────────────────── */
 
   .ab-highlight {
-    background: #1e3a2f;
-    padding-block: 10rem;
-  }
+  background: #1e3a2f;
+  padding: 8rem 0;
+}
 
-  .about-pt__text {
-    font-family: 'Helvetica', sans-serif;
-    font-size: clamp(2rem, 4.5vw, 4.5rem);
-    font-weight: bold;
-    line-height: 1.2;
-    color: #fff;
-    margin: 0;
-  }
+.ab-highlight__logo {
+  position: relative;
+  width: 84px;
+  height: 84px;
+  margin-bottom: 16rem;
+  flex-shrink: 0;
+}
+
+.ab-highlight__logo img {
+  object-fit: contain;
+}
+
+
+.about-pt__text {
+  font-family: 'Helvetica', Georgia, serif;
+
+  font-size: clamp(
+    2.5rem,
+    4.4vw,
+    5rem
+  );
+
+  font-weight: 500;
+
+  line-height: 1.02;
+
+  letter-spacing: -0.04em;
+
+  color: #fff;
+
+  margin: 0;
+
+  text-wrap: balance;
+
+  word-break: normal;
+  overflow-wrap: normal;
+  hyphens: none;
+}
 
   /* ─────────────────────────────
      DIFFERENTIAL
   ───────────────────────────── */
 
   .ab-diff {
-    padding-block: var(--space-section);
+    padding-block: var(--padding-block);
   }
 
   .ab-diff__inner {
@@ -359,7 +389,7 @@ export default async function AboutPage({ params }: PageProps) {
 
   .ab-diff__eyebrow {
     font-family: 'Inter', sans-serif;
-    font-size: 0.6875rem;
+    font-size: 0.75rem;
     font-weight: 500;
     letter-spacing: 0.18em;
     text-transform: uppercase;
@@ -388,24 +418,59 @@ export default async function AboutPage({ params }: PageProps) {
     object-fit: cover;
   }
 
+  
+ 
+
+          
+/* ─────────────────────────────
+ BREAKPOINTS
+ ───────────────────────────── */
+/* ─────────────────────────────
+  XX-Large devices (larger desktops, 1400px and up) 
+ ───────────────────────────── */
+
+@media (max-width: 1400px) { 
+
+
+}
+
+/* ─────────────────────────────
+ X-Large devices (large desktops, 1200px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 1200px) { 
+
+ }
+
+
+/* ─────────────────────────────
+ Large devices (desktops, 992px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 992px) { 
+
   /* ─────────────────────────────
-     TABLET
+     GLOBAL CONTAINER
   ───────────────────────────── */
 
-  @media (max-width: 900px) {
-
-    .ab-container {
-      padding-inline: var(--space-container-tablet);
+  .ab-container {
+      padding-inline: var(--padding-inline-tablet);
     }
 
-    .ab-hero {
-      padding-block:
-        8rem
-        var(--space-section-tablet);
+    /* ─────────────────────────────
+     HERO
+  ───────────────────────────── */
+
+  .ab-hero {
+      padding-block: 8rem var(--padding-block-tablet)
     }
 
-    .ab-about {
-      padding-block: var(--space-section-tablet);
+    /* ─────────────────────────────
+     ABOUT
+  ───────────────────────────── */
+
+  .ab-about {
+      padding-block: var(--padding-block-tablet);
     }
 
     .ab-about__inner,
@@ -414,49 +479,93 @@ export default async function AboutPage({ params }: PageProps) {
       gap: 3rem;
     }
 
-    .ab-about__image {
-      aspect-ratio: 4/3;
-    }
+    /* ─────────────────────────────
+     SERVICES
+  ───────────────────────────── */
 
-    .ab-services {
-      padding-top: var(--space-section-tablet);
+  .ab-services {
+      padding-top: var(--padding-block-tablet);
     }
 
     .ab-services__inner {
-      margin-bottom: var(--space-section-tablet);
+      margin-bottom: var(--padding-block-tablet);
     }
 
     .ab-services__grid {
       grid-template-columns: repeat(2, 1fr);
     }
 
-    .ab-highlight {
-      padding-block: 7rem;
-    }
-
-    .ab-diff {
-      padding-block: var(--space-section-tablet);
-    }
-  }
-
-  /* ─────────────────────────────
-     MOBILE
+    /* ─────────────────────────────
+     HIGHLIGHT
   ───────────────────────────── */
 
-  @media (max-width: 580px) {
+   .ab-highlight {
+  padding: 5rem 0;
+}
 
-    .ab-container {
-      padding-inline: var(--space-container-mobile);
+.ab-highlight__logo {
+  width: 72px;
+  height: 72px;
+  margin-bottom: 8rem;
+}
+
+.about-pt__text {
+  font-size: clamp(
+    2.3rem,
+    5.8vw,
+    4rem
+  );
+  line-height: 1.03;
+  letter-spacing: -0.04em;
+}
+
+  /* ─────────────────────────────
+     DIFFERENTIAL
+  ───────────────────────────── */
+
+  .ab-diff {
+      padding-block: var(--padding-block-tablet);
     }
 
-    .ab-hero {
-      padding-block:
-        7rem
-        var(--space-section-mobile);
+}
+
+
+ /* ─────────────────────────────
+ Medium devices (tablets, 768px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 768px) { 
+
+ }
+
+  /* ─────────────────────────────
+  Small devices (landscape phones, 576px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 576px) { 
+
+ /* ─────────────────────────────
+     GLOBAL CONTAINER
+  ───────────────────────────── */
+
+  .ab-container {
+      padding-inline: var(--padding-inline-mobile);
     }
 
-    .ab-about {
-      padding-block: var(--space-section-mobile);
+ /* ─────────────────────────────
+     HERO
+  ───────────────────────────── */
+
+  .ab-hero {
+      padding-block: 8rem var(--padding-block-mobile)
+    }
+
+ /* ─────────────────────────────
+     ABOUT
+  ───────────────────────────── */
+
+  .ab-about {
+      padding-block: var(--padding-block-mobile);
     }
 
     .ab-about__inner,
@@ -465,15 +574,36 @@ export default async function AboutPage({ params }: PageProps) {
     }
 
     .ab-about__stats {
-      gap: 2rem;
-    }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4rem;
+  margin-top: 2.5rem;
+  padding-top: 2.5rem;
+  text-align: center;
+}
 
-    .ab-services {
-      padding-top: var(--space-section-mobile);
+.ab-about__stats > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ab-about__stat-value {
+font-size: clamp(2.25rem, 4vw, 4rem);  
+}
+
+ /* ─────────────────────────────
+     SERVICES
+  ───────────────────────────── */
+
+  .ab-services {
+      padding-top: var(--padding-block-mobile);
     }
 
     .ab-services__inner {
-      margin-bottom: var(--space-section-mobile);
+      margin-bottom: var(--padding-block-mobile);
     }
 
     .ab-services__header {
@@ -488,15 +618,43 @@ export default async function AboutPage({ params }: PageProps) {
       aspect-ratio: 4/3;
     }
 
-    .ab-highlight {
-      padding-block: var(--space-section-mobile);
-    }
+/* ─────────────────────────────
+     HIGHLIGHT
+  ───────────────────────────── */
 
-    .ab-diff {
-      padding-block: var(--space-section-mobile);
+   .ab-highlight {
+  padding: 4rem 0;
+}
+
+.ab-highlight__logo {
+  width: 48px;
+  margin-bottom: 6rem;
+}
+
+
+.about-pt__text {
+  width: 100%;
+  max-width: 100%;
+  font-size: clamp(
+    1.85rem,
+    7.5vw,
+    2.5rem
+  );
+  line-height: 1.04;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+  /* ─────────────────────────────
+     DIFFERENTIAL
+  ───────────────────────────── */
+
+  .ab-diff {
+      padding-block: var(--padding-block-mobile);
       padding-bottom: 0;
     }
-  }
+
+}
 `}</style>
 
       <Navbar
@@ -513,200 +671,208 @@ export default async function AboutPage({ params }: PageProps) {
 
       <main>
 
-  {/* ── HERO ── */}
-  <div className="ab-hero">
-    <div className="ab-container">
-      {heroTitle && (
-        <h1 className="ab-hero__title">
-          {heroTitle}
-        </h1>
-      )}
-
-      {heroImageUrl && (
-        <div className="ab-hero__image">
-          <Image
-            src={heroImageUrl}
-            alt={heroTitle ?? 'Quiénes somos'}
-            fill
-            priority
-            sizes="1100px"
-          />
-        </div>
-      )}
-    </div>
-  </div>
-
-  {/* ── QUIÉNES SOMOS ── */}
-  <div className="ab-about">
-    <div className="ab-container">
-      <div className="ab-about__inner">
-
-        {aboutImageUrl && (
-          <div className="ab-about__image">
-            <Image
-              src={aboutImageUrl}
-              alt="BT Homes"
-              fill
-              sizes="(max-width: 900px) 100vw, 500px"
-            />
-          </div>
-        )}
-
-        <div className="ab-about__right">
-
-          <h2 className="ab-about__title">
-            {isEs ? data?.aboutTitleEs : data?.aboutTitleEn}
-          </h2>
-
-          {(isEs ? data?.aboutBodyEs : data?.aboutBodyEn) && (
-            <PortableText
-              value={isEs ? data.aboutBodyEs : data.aboutBodyEn}
-              components={ptBody}
-            />
-          )}
-
-          {data?.aboutStats?.length > 0 && (
-            <div className="ab-about__stats">
-              {data.aboutStats.map((s: any, i: number) => (
-                <div key={i}>
-                  <span className="ab-about__stat-value">
-                    {s.value}
-                  </span>
-
-                  <span className="ab-about__stat-label">
-                    {isEs ? s.labelEs : s.labelEn}
-                  </span>
-                </div>
-              ))}
-            </div>
-          )}
-
-        </div>
-      </div>
-    </div>
-  </div>
-
-  {/* ── QUÉ HACEMOS ── */}
-  {data?.services?.length > 0 && (
-    <div className="ab-services">
-
-      <div className="ab-container">
-        <div className="ab-services__inner">
-
-          <div className="ab-services__header">
-
-            <h2 className="ab-services__title">
-              {isEs ? data.servicesTitleEs : data.servicesTitleEn}
-            </h2>
-
-            {(isEs ? data.servicesDescriptionEs : data.servicesDescriptionEn) && (
-              <p className="ab-services__desc">
-                {isEs ? data.servicesDescriptionEs : data.servicesDescriptionEn}
-              </p>
+        {/* ── HERO ── */}
+        <div className="ab-hero">
+          <div className="ab-container">
+            {heroTitle && (
+              <h1 className="ab-hero__title">
+                {heroTitle}
+              </h1>
             )}
 
+            {heroImageUrl && (
+              <div className="ab-hero__image">
+                <Image
+                  src={heroImageUrl}
+                  alt={heroTitle ?? 'Quiénes somos'}
+                  fill
+                  priority
+                  sizes="1100px"
+                />
+              </div>
+            )}
           </div>
+        </div>
 
-          <div className="ab-services__grid">
+        {/* ── QUIÉNES SOMOS ── */}
+        <div className="ab-about">
+          <div className="ab-container">
+            <div className="ab-about__inner">
 
-            {data.services.map((svc: any, i: number) => (
-              <div key={i} className="ab-services__card">
-
-                <div className="ab-services__icon">
-                  ✳
+              {aboutImageUrl && (
+                <div className="ab-about__image">
+                  <Image
+                    src={aboutImageUrl}
+                    alt="BT Homes"
+                    fill
+                    sizes="(max-width: 900px) 100vw, 500px"
+                  />
                 </div>
+              )}
 
-                <h3 className="ab-services__card-title">
-                  {isEs ? svc.titleEs : svc.titleEn}
-                </h3>
+              <div className="ab-about__right">
 
-                {(isEs ? svc.descriptionEs : svc.descriptionEn) && (
-                  <p className="ab-services__card-desc">
-                    {isEs ? svc.descriptionEs : svc.descriptionEn}
-                  </p>
+                <h2 className="ab-about__title">
+                  {isEs ? data?.aboutTitleEs : data?.aboutTitleEn}
+                </h2>
+
+                {(isEs ? data?.aboutBodyEs : data?.aboutBodyEn) && (
+                  <PortableText
+                    value={isEs ? data.aboutBodyEs : data.aboutBodyEn}
+                    components={ptBody}
+                  />
+                )}
+
+                {data?.aboutStats?.length > 0 && (
+                  <div className="ab-about__stats">
+                    {data.aboutStats.map((s: any, i: number) => (
+                      <div key={i}>
+                        <span className="ab-about__stat-value">
+                          {s.value}
+                        </span>
+
+                        <span className="ab-about__stat-label">
+                          {isEs ? s.labelEs : s.labelEn}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
                 )}
 
               </div>
-            ))}
-
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Foto full-width */}
-      {servicesImageUrl && (
-        <div className="ab-services__fullimg">
-          <Image
-            src={servicesImageUrl}
-            alt="BT Homes"
-            fill
-            sizes="100vw"
-          />
-        </div>
-      )}
+        {/* ── QUÉ HACEMOS ── */}
+        {data?.services?.length > 0 && (
+          <div className="ab-services">
 
-    </div>
-  )}
+            <div className="ab-container">
+              <div className="ab-services__inner">
 
-  {/* ── SECCIÓN VERDE CON HIGHLIGHTS ── */}
-  {(isEs ? data?.highlightBodyEs : data?.highlightBodyEn) && (
-    <div className="ab-highlight">
+                <div className="ab-services__header">
 
-      <div className="ab-container">
+                  <h2 className="ab-services__title">
+                    {isEs ? data.servicesTitleEs : data.servicesTitleEn}
+                  </h2>
 
-        <PortableText
-          value={isEs ? data.highlightBodyEs : data.highlightBodyEn}
-          components={ptHighlight}
-        />
+                  {(isEs ? data.servicesDescriptionEs : data.servicesDescriptionEn) && (
+                    <p className="ab-services__desc">
+                      {isEs ? data.servicesDescriptionEs : data.servicesDescriptionEn}
+                    </p>
+                  )}
 
-      </div>
-    </div>
-  )}
+                </div>
 
-  {/* ── DIFERENCIAL ── */}
-  {(data?.differentialTitleEs || data?.differentialTitleEn) && (
-    <div className="ab-diff">
+                <div className="ab-services__grid">
 
-      <div className="ab-container">
+                  {data.services.map((svc: any, i: number) => (
+                    <div key={i} className="ab-services__card">
 
-        <div className="ab-diff__inner">
+                      <div className="ab-services__icon">
+                        ✳
+                      </div>
 
-          <div>
+                      <h3 className="ab-services__card-title">
+                        {isEs ? svc.titleEs : svc.titleEn}
+                      </h3>
 
-            <p className="ab-diff__eyebrow">
-              {differentialEyebrow}
-            </p>
+                      {(isEs ? svc.descriptionEs : svc.descriptionEn) && (
+                        <p className="ab-services__card-desc">
+                          {isEs ? svc.descriptionEs : svc.descriptionEn}
+                        </p>
+                      )}
 
-            <h2 className="ab-diff__title">
-              {isEs ? data.differentialTitleEs : data.differentialTitleEn}
-            </h2>
+                    </div>
+                  ))}
 
-            {(isEs ? data.differentialBodyEs : data.differentialBodyEn) && (
-              <PortableText
-                value={isEs ? data.differentialBodyEs : data.differentialBodyEn}
-                components={ptBody}
-              />
+                </div>
+              </div>
+            </div>
+
+            {/* Foto full-width */}
+            {servicesImageUrl && (
+              <div className="ab-services__fullimg">
+                <Image
+                  src={servicesImageUrl}
+                  alt="BT Homes"
+                  fill
+                  sizes="100vw"
+                />
+              </div>
             )}
 
           </div>
+        )}
 
-          {differentialImageUrl && (
-            <div className="ab-diff__image">
-              <Image
-                src={differentialImageUrl}
-                alt="Diferencial BT Homes"
-                fill
-                sizes="(max-width: 900px) 100vw, 550px"
+        {/* ── SECCIÓN VERDE CON HIGHLIGHTS ── */}
+        {(isEs ? data?.highlightBodyEs : data?.highlightBodyEn) && (
+          <div className="ab-highlight">
+
+            <div className="ab-container">
+
+              <div className="ab-highlight__logo">
+                <Image
+                  src="/images/logos/isotipo-bth-white.png"
+                  alt="BT Homes"
+                  fill
+                />
+              </div>
+
+              <PortableText
+                value={isEs ? data.highlightBodyEs : data.highlightBodyEn}
+                components={ptHighlight}
               />
+
             </div>
-          )}
+          </div>
+        )}
 
-        </div>
-      </div>
-    </div>
-  )}
+        {/* ── DIFERENCIAL ── */}
+        {(data?.differentialTitleEs || data?.differentialTitleEn) && (
+          <div className="ab-diff">
 
-</main>
+            <div className="ab-container">
+
+              <div className="ab-diff__inner">
+
+                <div>
+
+                  <p className="ab-diff__eyebrow">
+                    {differentialEyebrow}
+                  </p>
+
+                  <h2 className="ab-diff__title">
+                    {isEs ? data.differentialTitleEs : data.differentialTitleEn}
+                  </h2>
+
+                  {(isEs ? data.differentialBodyEs : data.differentialBodyEn) && (
+                    <PortableText
+                      value={isEs ? data.differentialBodyEs : data.differentialBodyEn}
+                      components={ptBody}
+                    />
+                  )}
+
+                </div>
+
+                {differentialImageUrl && (
+                  <div className="ab-diff__image">
+                    <Image
+                      src={differentialImageUrl}
+                      alt="Diferencial BT Homes"
+                      fill
+                      sizes="(max-width: 900px) 100vw, 550px"
+                    />
+                  </div>
+                )}
+
+              </div>
+            </div>
+          </div>
+        )}
+
+      </main>
 
       <Footer
         bookNowLabel={bookNowLabel}

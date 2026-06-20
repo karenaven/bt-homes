@@ -59,30 +59,15 @@ export default function SearchBar({
   }, [])
 
   function handleSearch() {
-    // Convertir YYYY-MM-DD a DD-MM-YYYY
-    const formatDateForHostify = (dateStr: string) => {
-      const [year, month, day] = dateStr.split('-')
-      return `${day}-${month}-${year}`
-    }
-
-    const cityId = selectedDestination?.cityId
-
+    const cityId = selectedDestination?.cityId ?? destinations[0]?.cityId ?? ''
     const params = new URLSearchParams({
-      'long-term-mode': '',
-      start_date: formatDateForHostify(checkin),
-      end_date: formatDateForHostify(checkout),
+      city_id: cityId,
+      start_date: checkin,
+      end_date: checkout,
       guests: String(guests),
-      adults: String(guests),
-      children: '0',
-      infants: '0',
-      pets: '0',
     })
-
-    if (cityId) {
-      params.set('city_id', String(cityId))
-    }
-
-    window.location.href = `${hostifyUrl}?${params.toString()}`
+    const url = `/${locale}/properties?${params.toString()}`
+    window.location.href = url
   }
 
   const destinationLabel = selectedDestination
@@ -92,13 +77,38 @@ export default function SearchBar({
   return (
     <section className="searchbar-section">
       <style>{`
+
+/* ─────────────────────────────
+ Tokens 
+ ───────────────────────────── */
+  :root {
+  --container-width: 1400px;
+
+  /* Desktop */
+  --padding-block: 6rem;   /* top + bottom */
+  --padding-inline: 6rem;  /* left + right */
+
+  /* Tablet */
+  --padding-block-tablet: 5rem;
+  --padding-inline-tablet: 2rem;
+
+  /* Mobile */
+  --padding-block-mobile: 4rem;
+  --padding-inline-mobile: 1.25rem;
+}
+
+/* ─────────────────────────────
+Search bar 
+ ───────────────────────────── */
+
         .searchbar-section {
-          background: #F1F3E5;
-          padding: 6rem 2.5rem;
+          background: #f1f3e5;
+          padding: var(--padding-block) var(--padding-inline);
           display: flex;
           justify-content: center;
           align-items: center;
         }
+
         .searchbar {
           display: flex;
           align-items: stretch;
@@ -108,6 +118,7 @@ export default function SearchBar({
           background: #fff;
           border: 1px solid #ddd;
         }
+
         .searchbar__field {
           flex: 1;
           display: flex;
@@ -118,19 +129,23 @@ export default function SearchBar({
           min-height: 60px;
           position: relative;
         }
+
         .searchbar__field:last-of-type { border-right: none; }
+
         .searchbar__icon {
           color: #888;
           flex-shrink: 0;
           width: 16px;
           height: 16px;
         }
+
         .searchbar__input-wrap {
           display: flex;
           flex-direction: column;
           flex: 1;
           gap: 1px;
         }
+
         .searchbar__label {
           font-family: 'Inter', sans-serif;
           font-size: 0.625rem;
@@ -139,6 +154,7 @@ export default function SearchBar({
           text-transform: uppercase;
           color: #444;
         }
+
         .searchbar__input {
           font-family: 'Inter', sans-serif;
           font-size: 0.9rem;
@@ -151,6 +167,7 @@ export default function SearchBar({
           width: 100%;
           cursor: pointer;
         }
+          
         .searchbar__input::placeholder { color: #bbb; }
         .searchbar__input[type="date"] { color-scheme: light; }
         .searchbar__input[type="date"]::-webkit-calendar-picker-indicator {
@@ -160,6 +177,7 @@ export default function SearchBar({
           width: 100%;
           cursor: pointer;
         }
+
         .searchbar__dest-btn {
           font-family: 'Inter', sans-serif;
           font-size: 0.9rem;
@@ -177,6 +195,7 @@ export default function SearchBar({
           justify-content: space-between;
           gap: 0.5rem;
         }
+
         .searchbar__dest-btn--placeholder { color: #444; }
         .searchbar__dest-chevron {
           width: 12px;
@@ -185,6 +204,7 @@ export default function SearchBar({
           flex-shrink: 0;
           transition: transform 0.2s;
         }
+
         .searchbar__dest-chevron--open { transform: rotate(180deg); }
         .searchbar__dropdown {
           position: absolute;

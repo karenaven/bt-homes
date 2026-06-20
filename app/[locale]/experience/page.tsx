@@ -13,51 +13,51 @@ import ExperienceServices from '@/components/experience/ExperienceServices'
 import ExperienceTestimonials from '@/components/experience/ExperienceTestimonials'
 
 interface PageProps {
-    params: Promise<{ locale: string }>
+  params: Promise<{ locale: string }>
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-    const { locale } = await params
-    const data = await client.fetch(experiencePageQuery)
-    const isEs = locale === 'es'
-    return {
-        title: isEs ? data?.seoTitleEs : data?.seoTitleEn,
-        description: isEs ? data?.seoDescriptionEs : data?.seoDescriptionEn,
-    }
+  const { locale } = await params
+  const data = await client.fetch(experiencePageQuery)
+  const isEs = locale === 'es'
+  return {
+    title: isEs ? data?.seoTitleEs : data?.seoTitleEn,
+    description: isEs ? data?.seoDescriptionEs : data?.seoDescriptionEn,
+  }
 }
 
 export default async function ExperiencePage({ params }: PageProps) {
-    const { locale } = await params
-    if (!['es', 'en'].includes(locale)) notFound()
+  const { locale } = await params
+  if (!['es', 'en'].includes(locale)) notFound()
 
-    const [data, homeData, commonTranslations]: [any, HomePage, any] = await Promise.all([
-        client.fetch(experiencePageQuery, {}, { next: { revalidate: 60 } }),
-        client.fetch(homePageQuery, {}, { next: { revalidate: 60 } }),
-        client.fetch(commonTranslationsQuery, {}, { next: { revalidate: 60 } }),
-    ])
+  const [data, homeData, commonTranslations]: [any, HomePage, any] = await Promise.all([
+    client.fetch(experiencePageQuery, {}, { next: { revalidate: 60 } }),
+    client.fetch(homePageQuery, {}, { next: { revalidate: 60 } }),
+    client.fetch(commonTranslationsQuery, {}, { next: { revalidate: 60 } }),
+  ])
 
-    const isEs = locale === 'es'
+  const isEs = locale === 'es'
 
-    const heroTitle = isEs ? data?.heroTitleEs : data?.heroTitleEn
-    const heroSubtitle = isEs ? data?.heroSubtitleEs : data?.heroSubtitleEn
-    const heroImageUrl = data?.heroImage ? urlFor(data.heroImage).width(1600).height(900).fit('crop').url() : null
-    const statsImageUrl = data?.statsImage ? urlFor(data.statsImage).width(1200).height(700).fit('crop').url() : null
-    const statsEyebrow = isEs ? data?.statsEyebrowEs : data?.statsEyebrowEn
-    const includesEyebrow = isEs ? data?.includesEyebrowEs : data?.includesEyebrowEn
-    const servicesEyebrow = isEs ? data?.servicesEyebrowEs : data?.servicesEyebrowEn
-    const testimonialsEyebrow = isEs ? data?.testimonialsEyebrowEs : data?.testimonialsEyebrowEn
-    const bookNowLabel = isEs ? commonTranslations.bookNowEs : commonTranslations.bookNowEn
-    const experienceEyebrow = isEs ? commonTranslations.experienceEs : commonTranslations.experienceEn
-    const ownerLabel = isEs ? commonTranslations.ownersEs : commonTranslations.ownersEn
-    const contactLabel = isEs ? commonTranslations.contactEs : commonTranslations.contactEn
-    const blogLabel = isEs ? commonTranslations.blogEs : commonTranslations.blogEn
-    const aboutUsLabel = isEs ? commonTranslations.aboutUsEs : commonTranslations.aboutUsEn
-    const socialLabel = isEs ? commonTranslations.socialEs : commonTranslations.socialEn
-    const bookLabel = isEs ? commonTranslations?.bookLabelEs : commonTranslations?.bookLabelEn
+  const heroTitle = isEs ? data?.heroTitleEs : data?.heroTitleEn
+  const heroSubtitle = isEs ? data?.heroSubtitleEs : data?.heroSubtitleEn
+  const heroImageUrl = data?.heroImage ? urlFor(data.heroImage).width(1600).height(900).fit('crop').url() : null
+  const statsImageUrl = data?.statsImage ? urlFor(data.statsImage).width(1200).height(700).fit('crop').url() : null
+  const statsEyebrow = isEs ? data?.statsEyebrowEs : data?.statsEyebrowEn
+  const includesEyebrow = isEs ? data?.includesEyebrowEs : data?.includesEyebrowEn
+  const servicesEyebrow = isEs ? data?.servicesEyebrowEs : data?.servicesEyebrowEn
+  const testimonialsEyebrow = isEs ? data?.testimonialsEyebrowEs : data?.testimonialsEyebrowEn
+  const bookNowLabel = isEs ? commonTranslations.bookNowEs : commonTranslations.bookNowEn
+  const experienceEyebrow = isEs ? commonTranslations.experienceEs : commonTranslations.experienceEn
+  const ownerLabel = isEs ? commonTranslations.ownersEs : commonTranslations.ownersEn
+  const contactLabel = isEs ? commonTranslations.contactEs : commonTranslations.contactEn
+  const blogLabel = isEs ? commonTranslations.blogEs : commonTranslations.blogEn
+  const aboutUsLabel = isEs ? commonTranslations.aboutUsEs : commonTranslations.aboutUsEn
+  const socialLabel = isEs ? commonTranslations.socialEs : commonTranslations.socialEn
+  const bookLabel = isEs ? commonTranslations?.bookLabelEs : commonTranslations?.bookLabelEn
 
-    return (
-        <>
-            <style>{`
+  return (
+    <>
+      <style>{`
   *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
@@ -78,16 +78,30 @@ export default async function ExperiencePage({ params }: PageProps) {
   ───────────────────────────── */
 
   :root {
-    --container-max: 1400px;
+   --container-width: 1400px;
 
-    --gutter-desktop: 6rem;
-    --gutter-tablet: 6rem;
-    --gutter-mobile: 1.25rem;
+  /* Desktop */
+  --padding-block: 6rem;   /* top + bottom */
+  --padding-inline: 6rem;  /* left + right */
 
-    --section-space-desktop: 6rem;
-    --section-space-tablet: 5rem;
-    --section-space-mobile: 3.5rem;
-  }
+  /* Tablet */
+  --padding-block-tablet: 5rem;
+  --padding-inline-tablet: 2rem;
+
+  /* Mobile */
+  --padding-block-mobile: 4rem;
+  --padding-inline-mobile: 1.25rem;
+}
+
+.exp-container {
+  width: 100%;
+  max-width: calc(
+    var(--container-width) +
+    (var(--padding-block) * 2)
+  );
+  margin: 0 auto;
+  padding-inline: var(--padding-inline);
+}
 
   /* ─────────────────────────────
      NAVBAR
@@ -104,23 +118,21 @@ export default async function ExperiencePage({ params }: PageProps) {
   ───────────────────────────── */
 
   .exp-hero {
-    max-width: var(--container-max);
-    margin: 0 auto;
+  padding-block:
+    10rem
+    var(--padding-inline);
+}
 
-    padding:
-      10rem
-      var(--gutter-desktop)
-      var(--section-space-desktop);
-
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    align-items: start;
-  }
+.exp-hero__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
 
   .exp-hero__eyebrow {
     font-family: 'Inter', sans-serif;
-    font-size: 0.6875rem;
+    font-size: 0.75rem;
     font-weight: 500;
     letter-spacing: 0.2em;
     text-transform: uppercase;
@@ -139,8 +151,8 @@ export default async function ExperiencePage({ params }: PageProps) {
 
   .exp-hero__subtitle {
     font-family: 'Inter', sans-serif;
-    font-size: 0.9375rem;
-    font-weight: 300;
+    font-size: 1rem;
+    font-weight: 400;
     line-height: 1.5;
     color: #444;
   }
@@ -166,33 +178,27 @@ export default async function ExperiencePage({ params }: PageProps) {
   ───────────────────────────── */
 
   .exp-stats {
-    max-width: var(--container-max);
-    margin: 0 auto;
-
-    padding:
-      var(--section-space-desktop)
-      var(--gutter-desktop);
-  }
+  padding-block: var(--padding-block);
+}
 
   .exp-stats__eyebrow {
     font-family: 'Inter', sans-serif;
-    font-size: 0.6875rem;
+    font-size: 0.75rem;
     font-weight: 500;
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: #444;
     margin-bottom: 1.5rem;
+    line-height: 1.7;
   }
 
   .exp-stats__body {
     font-family: 'Helvetica', sans serif;
-    font-size: 1.2rem;
+    font-size: clamp(1.125rem, 2.25vw, 1.75rem);    
     font-weight: 300;
-    line-height: 1.5;
+    line-height: 1.3;
     color: #0a0a0c;
-
-    max-width: 900px;
-    margin-bottom: 6rem;
+    margin-bottom: var(--padding-block);
   }
 
   /* ─────────────────────────────
@@ -200,41 +206,39 @@ export default async function ExperiencePage({ params }: PageProps) {
   ───────────────────────────── */
 
   .img-below-stats {
-    max-width: var(--container-max);
-    margin: 0 auto 5rem;
+  margin-bottom: var(--padding-block);
+}
 
-    padding:
-      0
-      var(--gutter-desktop);
-  }
+.img-below-stats__image {
+  position: relative;
+  aspect-ratio: 16/9;
+  border-radius: 8px;
+  overflow: hidden;
+}
 
   /* ─────────────────────────────
      INCLUDES
   ───────────────────────────── */
 
   .exp-includes {
-    max-width: var(--container-max);
-    margin: 0 auto;
+  padding-bottom: var(--padding-block);
+}
 
-    padding:
-      0
-      var(--gutter-desktop)
-      var(--section-space-desktop);
-
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8rem;
-    align-items: start;
-  }
+.exp-includes__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8rem;
+  align-items: start;
+}
 
   .exp-includes__eyebrow {
     font-family: 'Inter', sans-serif;
-    font-size: 0.6875rem;
+    font-size: 0.75rem;
     font-weight: 500;
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: #444;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
   }
 
   .exp-includes__title {
@@ -248,8 +252,8 @@ export default async function ExperiencePage({ params }: PageProps) {
 
   .exp-includes__desc {
     font-family: 'Inter', sans-serif;
-    font-size: 0.9375rem;
-    font-weight: 300;
+    font-size: 1rem;
+    font-weight: 400;
     line-height: 1.5;
     color: #444;
   }
@@ -260,7 +264,7 @@ export default async function ExperiencePage({ params }: PageProps) {
     overflow: hidden;
     border-radius: 6px;
     background: #e8e4dc;
-    margin-bottom: 2.5rem;
+    margin-bottom: 3rem;
   }
 
   .exp-includes__image img {
@@ -277,7 +281,7 @@ export default async function ExperiencePage({ params }: PageProps) {
     gap: 0.875rem;
 
     font-family: 'Inter', sans-serif;
-    font-size: 0.9375rem;
+    font-size: 1rem;
     font-weight: bold;
     color: #0a0a0c;
 
@@ -295,36 +299,51 @@ export default async function ExperiencePage({ params }: PageProps) {
     flex-shrink: 0;
   }
 
+  .ab-services__icon {
+    width: 24px;
+    height: 24px;
+    background: #01281c;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    color: #d7fe91;
+  }
+
   /* ─────────────────────────────
      PARTNERS
   ───────────────────────────── */
 
   .exp-partners {
-    padding:
-      var(--section-space-desktop)
-      var(--gutter-desktop);
-
-    text-align: center;
-    border-top: 1px solid #eee;
-  }
+  padding-block: var(--padding-block);
+  border-top: 1px solid #eee;
+}
 
   .exp-partners__title {
-    font-family: 'Helvetica', sans serif;
-    font-size: clamp(1.75rem, 3vw, 2.75rem);
-    font-weight: 400;
-    color: #0a0a0c;
-    margin-bottom: 1rem;
-  }
+  font-family: 'Helvetica', sans serif;
+  font-size: clamp(1.75rem, 3vw, 2.75rem);
+  font-weight: 400;
+  color: #0a0a0c;
+
+  max-width: 500px;
+  margin: 0 auto 1rem;
+  text-align: center;
+}
 
   .exp-partners__desc {
     font-family: 'Inter', sans-serif;
-    font-size: 0.9375rem;
-    font-weight: 300;
+    font-size: 1rem;
+    font-weight: 400;
     color: #444;
     line-height: 1.5;
 
     max-width: 500px;
     margin: 0 auto 6rem;
+
+  max-width: 500px;
+  margin: 0 auto 6rem;
+  text-align: center;
   }
 
   .exp-partners__logos {
@@ -351,43 +370,89 @@ export default async function ExperiencePage({ params }: PageProps) {
   }
 
   /* ─────────────────────────────
-     TABLET
-  ───────────────────────────── */
+   DIVIDER
+───────────────────────────── */
 
-  @media (max-width: 900px) {
+.exp-divider {
+  width: 100%;
+}
 
-    .exp-hero,
-    .exp-stats,
-    .img-below-stats,
-    .exp-includes,
-    .exp-partners {
-      padding-left: var(--gutter-tablet);
-      padding-right: var(--gutter-tablet);
-    }
+.exp-divider__line {
+  width: 100%;
+  height: 1px;
+  background: #000;
+}
+
+
+
+
+
+  /* ─────────────────────────────
+ BREAKPOINTS
+ ───────────────────────────── */
+/* ─────────────────────────────
+  XX-Large devices (larger desktops, 1400px and up) 
+ ───────────────────────────── */
+
+@media (max-width: 1400px) { 
+
+}
+
+/* ─────────────────────────────
+ X-Large devices (large desktops, 1200px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 1200px) { 
+
+ }
+
+
+/* ─────────────────────────────
+ Large devices (desktops, 992px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 992px) { 
+
+}
+
+
+ /* ─────────────────────────────
+ Medium devices (tablets, 768px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 768px) { 
+
+ .exp-container {
+  padding-inline: var(--padding-inline-tablet);
+}
 
     .exp-hero {
-      padding-top: 8rem;
-      padding-bottom: var(--section-space-tablet);
+  padding-top: 8rem;
+  padding-bottom: var(--padding-inline-tablet);
+}
 
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
+.exp-hero__inner {
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
 
-    .exp-stats {
-      padding-top: var(--section-space-tablet);
-      padding-bottom: var(--section-space-tablet);
-    }
+   .exp-stats,
+.exp-partners {
+  padding-block: var(--padding-block-tablet);
+}
 
-    .exp-includes {
-      grid-template-columns: 1fr;
-      gap: 4rem;
+.exp-includes {
+  padding-bottom: 4rem;
+}
 
-      padding-bottom: var(--section-space-tablet);
-    }
+.exp-includes__inner {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
 
     .exp-partners {
-      padding-top: var(--section-space-tablet);
-      padding-bottom: var(--section-space-tablet);
+      padding-top: var(--padding-block-tablet);
+      padding-bottom: var(--padding-block-tablet);
     }
 
     .exp-fullimg {
@@ -401,43 +466,56 @@ export default async function ExperiencePage({ params }: PageProps) {
     .exp-partners__logos {
       gap: 2.5rem;
     }
-  }
+ }
 
   /* ─────────────────────────────
-     MOBILE
-  ───────────────────────────── */
+  Small devices (landscape phones, 576px and up) 
+ ───────────────────────────── */
 
-  @media (max-width: 580px) {
+ @media (max-width: 576px) { 
 
-    .exp-hero,
-    .exp-stats,
-    .img-below-stats,
-    .exp-includes,
-    .exp-partners {
-      padding-left: var(--gutter-mobile);
-      padding-right: var(--gutter-mobile);
-    }
-
+ .exp-container {
+  padding-inline: var(--padding-inline-mobile);
+}
     .exp-hero {
-      padding-top: 7rem;
-      padding-bottom: var(--section-space-mobile);
+  padding-top: 7rem;
+  padding-bottom: var(--padding-block-mobile);
+}
 
-      gap: 1.5rem;
-    }
+.exp-hero__inner {
+  gap: 1.5rem;
+}
 
-    .exp-stats {
-      padding-top: var(--section-space-mobile);
-      padding-bottom: var(--section-space-mobile);
-    }
+.img-below-stats {
+    margin-bottom: 3rem;
+  }
+
+    .exp-stats,
+.exp-partners {
+  padding-block: var(--padding-block-mobile);
+}
 
     .exp-includes {
       gap: 2.5rem;
-      padding-bottom: var(--section-space-mobile);
+      padding-bottom: var(--padding-block-mobile);
     }
 
+     .exp-includes__inner {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .exp-includes__image {
+    margin-bottom: 2rem;
+  }
+
+  .exp-includes__title {
+    margin-bottom: 0.75rem;
+  }
+
     .exp-partners {
-      padding-top: var(--section-space-mobile);
-      padding-bottom: var(--section-space-mobile);
+      padding-top: var(--padding-block-mobile);
+      padding-bottom: var(--padding-block-mobile);
     }
 
     .exp-stats__body {
@@ -451,185 +529,209 @@ export default async function ExperiencePage({ params }: PageProps) {
     .exp-partners__logos {
       gap: 2rem;
     }
-  }
+}
 `}</style>
 
-            {/* Navbar — sobre fondo blanco */}
+      {/* Navbar — sobre fondo blanco */}
 
-            <Navbar
-                locale={locale}
-                ctaUrl={homeData?.heroCtaUrl}
-                ctaLabel={bookLabel}
-                variant="light"
-                experienceTxt={experienceEyebrow}
-                aboutUsTxt={aboutUsLabel}
-                ownerTxt={ownerLabel}
-                contactTxt={contactLabel}
-                blogTxt={blogLabel}
-            />
+      <Navbar
+        locale={locale}
+        ctaUrl={homeData?.heroCtaUrl}
+        ctaLabel={bookLabel}
+        variant="light"
+        experienceTxt={experienceEyebrow}
+        aboutUsTxt={aboutUsLabel}
+        ownerTxt={ownerLabel}
+        contactTxt={contactLabel}
+        blogTxt={blogLabel}
+      />
 
-            <main>
-                {/* ── HERO ── */}
-                <div className="exp-hero">
-                    <div>
-                        <p className="exp-hero__eyebrow">{experienceEyebrow}</p>
-                    </div>
-                    <div className="exp-hero__right">
-                        {heroTitle && <h1 className="exp-hero__title">{heroTitle}</h1>}
-                        {heroSubtitle && <p className="exp-hero__subtitle">{heroSubtitle}</p>}
-                    </div>
+      <main>
+        {/* ── HERO ── */}
+        <div className="exp-hero">
+          <div className="exp-container">
+            <div className="exp-hero__inner">
+              <div>
+                <p className="exp-hero__eyebrow">{experienceEyebrow}</p>
+              </div>
+              <div className="exp-hero__right">
+                {heroTitle && <h1 className="exp-hero__title">{heroTitle}</h1>}
+                {heroSubtitle && <p className="exp-hero__subtitle">{heroSubtitle}</p>}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Foto full-width */}
+        {heroImageUrl && (
+          <div className="exp-fullimg">
+            <Image src={heroImageUrl} alt={heroTitle ?? 'Experiencia BTH'} fill priority sizes="100vw" />
+          </div>
+        )}
+
+        {/* ── STATS ── */}
+        {data?.stats?.length > 0 && (
+          <div className="exp-stats">
+            <div className="exp-container">
+              <p className="exp-stats__eyebrow">{statsEyebrow}</p>
+              {(isEs ? data.statsBodyEs : data.statsBodyEn) && (
+                <p className="exp-stats__body">{isEs ? data.statsBodyEs : data.statsBodyEn}</p>
+              )}
+              <ExperienceStats stats={data.stats} locale={locale} />
+            </div>
+          </div>
+        )}
+
+        {/* Foto debajo de stats */}
+        {statsImageUrl && (
+          <div className="img-below-stats">
+            <div className="exp-container">
+              <div className="img-below-stats__image">
+                <div style={{ position: 'relative', aspectRatio: '16/9', borderRadius: '8px', overflow: 'hidden', background: '#e8e4dc' }}>
+                  <Image src={statsImageUrl} alt="BT Homes" fill sizes="1100px" style={{ objectFit: 'cover' }} />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ── INCLUDES ── */}
+        {(data?.includesTitleEs || data?.includesItems?.length > 0) && (
+          <div className="exp-includes">
+            <div className="exp-container">
+              <div className="exp-includes__inner">
+                {/* Columna izquierda */}
+                <div>
+                  <p className="exp-includes__eyebrow">{includesEyebrow}</p>
+                  {(isEs ? data.includesTitleEs : data.includesTitleEn) && (
+                    <h2 className="exp-includes__title">
+                      {isEs ? data.includesTitleEs : data.includesTitleEn}
+                    </h2>
+                  )}
+                  {(isEs ? data.includesDescriptionEs : data.includesDescriptionEn) && (
+                    <p className="exp-includes__desc">
+                      {isEs ? data.includesDescriptionEs : data.includesDescriptionEn}
+                    </p>
+                  )}
                 </div>
 
-                {/* Foto full-width */}
-                {heroImageUrl && (
-                    <div className="exp-fullimg">
-                        <Image src={heroImageUrl} alt={heroTitle ?? 'Experiencia BTH'} fill priority sizes="100vw" />
+                {/* Columna derecha: foto + lista */}
+                <div>
+                  {data.includesImage && (
+                    <div className="exp-includes__image">
+                      <Image
+                        src={urlFor(data.includesImage).width(800).height(533).fit('crop').url()}
+                        alt="Incluye"
+                        fill
+                        sizes="(max-width: 768px) 100vw, 550px"
+                      />
                     </div>
-                )}
+                  )}
+                  {data.includesItems?.length > 0 && (
+                    <ul className="exp-includes__list">
+                      {data.includesItems.map((item: any, i: number) => (
+                        <li key={i} className="exp-includes__item">
+                          <div className="ab-services__icon">✳</div>
+                          {isEs ? item.textEs : item.textEn}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
 
-                {/* ── STATS ── */}
-                {data?.stats?.length > 0 && (
-                    <div className="exp-stats">
-                        <p className="exp-stats__eyebrow">{statsEyebrow}</p>
-                        {(isEs ? data.statsBodyEs : data.statsBodyEn) && (
-                            <p className="exp-stats__body">{isEs ? data.statsBodyEs : data.statsBodyEn}</p>
-                        )}
-                        <ExperienceStats stats={data.stats} locale={locale} />
-                    </div>
-                )}
+              </div>
+            </div>
+          </div>
+        )}
 
-                {/* Foto debajo de stats */}
-                {statsImageUrl && (
-                    <div className="img-below-stats" style={{ maxWidth: '1400px', margin: '0 auto 5rem' }}>
-                        <div style={{ position: 'relative', aspectRatio: '16/9', borderRadius: '8px', overflow: 'hidden', background: '#e8e4dc' }}>
-                            <Image src={statsImageUrl} alt="BT Homes" fill sizes="1100px" style={{ objectFit: 'cover' }} />
-                        </div>
-                    </div>
-                )}
+        {/* ── SERVICIOS ADICIONALES ── */}
+        {data?.services?.length > 0 && (
+          <ExperienceServices
+            eyebrow={servicesEyebrow}
+            title={isEs ? data.servicesTitleEs : data.servicesTitleEn}
+            services={data.services}
+            locale={locale}
+          />
+        )}
 
-                {/* ── INCLUDES ── */}
-                {(data?.includesTitleEs || data?.includesItems?.length > 0) && (
-                    <div className="exp-includes">
-                        {/* Columna izquierda */}
-                        <div>
-                            <p className="exp-includes__eyebrow">{includesEyebrow}</p>
-                            {(isEs ? data.includesTitleEs : data.includesTitleEn) && (
-                                <h2 className="exp-includes__title">
-                                    {isEs ? data.includesTitleEs : data.includesTitleEn}
-                                </h2>
-                            )}
-                            {(isEs ? data.includesDescriptionEs : data.includesDescriptionEn) && (
-                                <p className="exp-includes__desc">
-                                    {isEs ? data.includesDescriptionEs : data.includesDescriptionEn}
-                                </p>
-                            )}
-                        </div>
+        {/* ── TESTIMONIOS ── */}
+        {data?.testimonials?.length > 0 && (
+          <ExperienceTestimonials
+            eyebrow={testimonialsEyebrow}
+            image={data.testimonialsImage}
+            testimonials={data.testimonials}
+          />
+        )}
 
-                        {/* Columna derecha: foto + lista */}
-                        <div>
-                            {data.includesImage && (
-                                <div className="exp-includes__image">
-                                    <Image
-                                        src={urlFor(data.includesImage).width(800).height(533).fit('crop').url()}
-                                        alt="Incluye"
-                                        fill
-                                        sizes="(max-width: 768px) 100vw, 550px"
-                                    />
-                                </div>
-                            )}
-                            {data.includesItems?.length > 0 && (
-                                <ul className="exp-includes__list">
-                                    {data.includesItems.map((item: any, i: number) => (
-                                        <li key={i} className="exp-includes__item">
-                                            <span className="exp-includes__asterisk">✳</span>
-                                            {isEs ? item.textEs : item.textEn}
-                                        </li>
-                                    ))}
-                                </ul>
-                            )}
-                        </div>
-                    </div>
-                )}
+        {/* ── PARTNERS ── */}
+        {data?.partnerLogos?.length > 0 && (
+          <div className="exp-partners">
+            <div className="exp-container">
+              <h2 className="exp-partners__title">
+                {isEs ? data.partnersTitleEs : data.partnersTitleEn}
+              </h2>
+              {(isEs ? data.partnersDescriptionEs : data.partnersDescriptionEn) && (
+                <p className="exp-partners__desc">
+                  {isEs ? data.partnersDescriptionEs : data.partnersDescriptionEn}
+                </p>
+              )}
+              <div className="exp-partners__logos">
+                {data.partnerLogos.map((partner: any, i: number) => {
+                  const logoUrl = partner.logo
+                    ? urlFor(partner.logo).width(240).fit('max').url()
+                    : null
+                  return logoUrl ? (
+                    <a
+                      key={i}
+                      href={partner.url ?? '#'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="exp-partners__logo"
+                    >
+                      <Image
+                        src={logoUrl}
+                        alt={partner.name ?? `Partner ${i + 1}`}
+                        width={96}
+                        height={48}
+                        sizes="140px"
+                        style={{ width: '100%', height: '100%', objectFit: 'contain', }}
+                      />
+                    </a>
+                  ) : null
+                })}
+              </div>
+            </div>
+          </div>
+        )}
+      </main>
 
-                {/* ── SERVICIOS ADICIONALES ── */}
-                {data?.services?.length > 0 && (
-                    <ExperienceServices
-                        eyebrow={servicesEyebrow}
-                        title={isEs ? data.servicesTitleEs : data.servicesTitleEn}
-                        services={data.services}
-                        locale={locale}
-                    />
-                )}
+      <div className="exp-divider">
+        <div className="exp-container">
+          <div className="exp-divider__line"></div>
+        </div>
+      </div>
 
-                {/* ── TESTIMONIOS ── */}
-                {data?.testimonials?.length > 0 && (
-                    <ExperienceTestimonials
-                        eyebrow={testimonialsEyebrow}
-                        image={data.testimonialsImage}
-                        testimonials={data.testimonials}
-                    />
-                )}
 
-                {/* ── PARTNERS ── */}
-                {data?.partnerLogos?.length > 0 && (
-                    <div className="exp-partners">
-                        <h2 className="exp-partners__title">
-                            {isEs ? data.partnersTitleEs : data.partnersTitleEn}
-                        </h2>
-                        {(isEs ? data.partnersDescriptionEs : data.partnersDescriptionEn) && (
-                            <p className="exp-partners__desc">
-                                {isEs ? data.partnersDescriptionEs : data.partnersDescriptionEn}
-                            </p>
-                        )}
-                        <div className="exp-partners__logos">
-                            {data.partnerLogos.map((partner: any, i: number) => {
-                                const logoUrl = partner.logo
-                                    ? urlFor(partner.logo).width(240).fit('max').url()
-                                    : null
-                                return logoUrl ? (
-                                    <a
-                                        key={i}
-                                        href={partner.url ?? '#'}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="exp-partners__logo"
-                                    >
-                                        <Image
-                                        src={logoUrl}
-                                        alt={partner.name ?? `Partner ${i + 1}`}
-                                        width={96}
-                                        height={48}
-                                        sizes="140px"
-                                        style={{ width: '100%', height: '100%', objectFit: 'contain',}}
-/>
-                                    </a>
-                                ) : null
-                            })}
-                        </div>
-                    </div>
-                )}
-            </main>
-
-            <Footer
-                bookNowLabel={bookNowLabel}
-                experienceTxt={experienceEyebrow}
-                aboutUsTxt={aboutUsLabel}
-                ownerTxt={ownerLabel}
-                contactTxt={contactLabel}
-                blogTxt={blogLabel}
-                socialTxt={socialLabel}
-                hostifyUrl={homeData?.heroCtaUrl}
-                tagline={isEs ? homeData?.footerTaglineEs : homeData?.footerTaglineEn}
-                emailPrimary={homeData?.footerEmailPrimary}
-                emailSecondary={homeData?.footerEmailSecondary}
-                phoneArg={homeData?.footerPhoneArg}
-                phoneMex={homeData?.footerPhoneMex}
-                website={homeData?.footerWebsite}
-                siteArg={homeData?.footerSiteArg}
-                siteMex={homeData?.footerSiteMex}
-                copyright={isEs ? homeData?.footerCopyrightEs : homeData?.footerCopyrightEn}
-                locale={locale}
-            />
-        </>
-    )
+      <Footer
+        bookNowLabel={bookNowLabel}
+        experienceTxt={experienceEyebrow}
+        aboutUsTxt={aboutUsLabel}
+        ownerTxt={ownerLabel}
+        contactTxt={contactLabel}
+        blogTxt={blogLabel}
+        socialTxt={socialLabel}
+        hostifyUrl={homeData?.heroCtaUrl}
+        tagline={isEs ? homeData?.footerTaglineEs : homeData?.footerTaglineEn}
+        emailPrimary={homeData?.footerEmailPrimary}
+        emailSecondary={homeData?.footerEmailSecondary}
+        phoneArg={homeData?.footerPhoneArg}
+        phoneMex={homeData?.footerPhoneMex}
+        website={homeData?.footerWebsite}
+        siteArg={homeData?.footerSiteArg}
+        siteMex={homeData?.footerSiteMex}
+        copyright={isEs ? homeData?.footerCopyrightEs : homeData?.footerCopyrightEn}
+        locale={locale}
+      />
+    </>
+  )
 }

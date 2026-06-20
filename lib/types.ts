@@ -55,7 +55,7 @@ export interface Property {
   images: SanityImageSource[]
   descriptionEs?: PortableTextBlock[]
   descriptionEn?: PortableTextBlock[]
-  hostifyUrl: string
+  idPropertyHostify: string
   featured?: boolean
   featuredOrder?: number
 }

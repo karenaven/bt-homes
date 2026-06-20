@@ -95,7 +95,29 @@ export default async function DestinationPage({ params }: PageProps) {
         html { scroll-behavior: smooth; }
         body { background: #fff; color: #0a0a0c; }
 
-        /* ── HERO ── */
+/* ─────────────────────────────
+  GLOBAL SPACING SYSTEM
+───────────────────────────── */
+
+  :root {
+   --container-width: 1400px;
+
+  /* Desktop */
+  --padding-block: 6rem;   /* top + bottom */
+  --padding-inline: 6rem;  /* left + right */
+
+  /* Tablet */
+  --padding-block-tablet: 5rem;
+  --padding-inline-tablet: 2rem;
+
+  /* Mobile */
+  --padding-block-mobile: 4rem;
+  --padding-inline-mobile: 1.25rem;
+}
+
+ /* ─────────────────────────────
+     HERO
+  ───────────────────────────── */
         .dest-hero {
           position: relative;
           width: 100%;
@@ -103,7 +125,12 @@ export default async function DestinationPage({ params }: PageProps) {
           background: #1a1a1a;
           overflow: hidden;
         }
-        .dest-hero img { object-fit: cover; filter: brightness(0.75); }
+
+        .dest-hero img { 
+          object-fit: cover; 
+          filter: brightness(0.75); 
+        }
+        
         .dest-hero__name {
           bottom: 2.5rem;
           left: 2.5rem;
@@ -116,10 +143,15 @@ export default async function DestinationPage({ params }: PageProps) {
           margin: 0;
         }
 
-        /* ── INTRO ── */
+
+ /* ─────────────────────────────
+     INTRO
+  ───────────────────────────── */
+
         .dest-intro-layout {
         width: 100%;
-        padding: 6rem 6rem;
+        padding: var(--padding-block) var(--padding-inline);
+        background: #ecebe9;
         }
 
         .dest-intro {
@@ -141,7 +173,7 @@ export default async function DestinationPage({ params }: PageProps) {
 
         .dest-intro__eyebrow {
           font-family: 'Inter', sans-serif;
-          font-size: 0.6875rem;
+          font-size: 0.75rem;
           font-weight: 500;
           letter-spacing: 0.2em;
           text-transform: uppercase;
@@ -151,19 +183,21 @@ export default async function DestinationPage({ params }: PageProps) {
 
         .dest-intro__desc {
           font-family: 'Inter', sans-serif;
-          font-size: 0.9375rem;
-          font-weight: 300;
-          line-height: 1.5;
+          font-size: 1rem;
+          font-weight: 400;
+          line-height: 1.7;
           color: #444;
           margin: 0;
         }
         
 
-        /* ── PROPERTIES GRID ── */
+  /* ─────────────────────────────
+     PROPERTIES GRID
+  ───────────────────────────── */
         .container-dest-props {
-        background: #ecebe9;
+        background: #fff;
         width: 100%;
-        padding: 6rem 6rem;
+        padding: var(--padding-block) var(--padding-inline);
         }
 
         .dest-props {
@@ -180,16 +214,21 @@ export default async function DestinationPage({ params }: PageProps) {
           line-height: 1.2;
           max-width: 500px;
         }
+
         .dest-props__grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 1.75rem;
         }
-        /* Card */
+
+ /* ─────────────────────────────
+     CARD
+  ───────────────────────────── */
         .dest-card {
           display: flex;
           flex-direction: column;
         }
+
         .dest-card__image {
           position: relative;
           aspect-ratio: 4/3;
@@ -198,19 +237,23 @@ export default async function DestinationPage({ params }: PageProps) {
           background: #e8e4dc;
           margin-bottom: 0.875rem;
         }
+
         .dest-card__image img {
           object-fit: cover;
           transition: transform 0.5s ease;
         }
+
         .dest-card:hover .dest-card__image img {
           transform: scale(1.04);
         }
+
         .dest-card__header {
           display: flex;
           align-items: center;
           justify-content: space-between;
           margin-bottom: 0.25rem;
         }
+
         .dest-card__name {
           font-family: 'Inter', sans-serif;
           font-size: 0.9375rem;
@@ -219,6 +262,7 @@ export default async function DestinationPage({ params }: PageProps) {
           margin: 0;
           line-height: 1.4;
         }
+
         .dest-card__rating {
           display: flex;
           align-items: center;
@@ -229,10 +273,12 @@ export default async function DestinationPage({ params }: PageProps) {
           color: #0a0a0c;
           flex-shrink: 0;
         }
+
         .dest-card__star {
           color: #c9a84c;
           font-size: 0.75rem;
         }
+
         .dest-card__location {
           font-family: 'Inter', sans-serif;
           font-size: 0.8125rem;
@@ -240,11 +286,13 @@ export default async function DestinationPage({ params }: PageProps) {
           color: #888;
           margin: 0 0 0.625rem;
         }
+
         .dest-card__meta {
           display: flex;
           gap: 0.625rem;
           margin-bottom: 0.875rem;
         }
+
         .dest-card__pill {
           font-family: 'Inter', sans-serif;
           font-size: 0.75rem;
@@ -254,6 +302,7 @@ export default async function DestinationPage({ params }: PageProps) {
           padding: 0.2rem 0.625rem;
           border-radius: 20px;
         }
+
         .dest-card__price {
           font-family: 'Inter', sans-serif;
           font-size: 1rem;
@@ -262,11 +311,13 @@ export default async function DestinationPage({ params }: PageProps) {
           margin: 0.5rem 0 0;
           line-height: 1;
         }
+
         .dest-card__price span {
           font-weight: 400;
           font-size: 0.85rem;
           color: #555;
         }
+
         .dest-card__footer {
           display: flex;
           align-items: flex-end;
@@ -274,6 +325,7 @@ export default async function DestinationPage({ params }: PageProps) {
           gap: 1rem;
           margin-top: auto;
         }
+
         .dest-card__btn {
           font-family: 'Inter', sans-serif;
           font-size: 0.75rem;
@@ -290,6 +342,7 @@ export default async function DestinationPage({ params }: PageProps) {
           letter-spacing: 0.05em;
           white-space: nowrap;
         }
+
         .dest-card__btn:hover {
           background: #333;
         }
@@ -318,13 +371,8 @@ export default async function DestinationPage({ params }: PageProps) {
         }
 
         .container-destination {
-        padding: 0 6rem !important;
-        }
-
-        .dest-others {
-        margin: 0 auto;
-        max-width: 1400px;
-        padding: 0;
+        padding: 6rem !important;
+        background: #f1f3e5;
         }
         
 
@@ -333,16 +381,111 @@ export default async function DestinationPage({ params }: PageProps) {
           .dest-intro { grid-template-columns: 1fr; gap: 1.5rem; }
           .dest-props__grid { grid-template-columns: repeat(2, 1fr); }
         }
-        @media (max-width: 580px) {
-          .dest-hero { aspect-ratio: 4/3; }
-          .dest-hero__name { font-size: clamp(2.5rem, 12vw, 4rem); left: 1.25rem; bottom: 1.5rem; }
-          .container-dest-intro { grid-template-columns: 1fr; gap: 1.5rem;}
-          .dest-intro { padding: 3rem 1.25rem; }
-          .dest-props { padding: 3rem 1.25rem 4rem; }
-          .dest-props__grid { grid-template-columns: 1fr; }
-          .dest-separator { aspect-ratio: 4/3; }
-          .dest-others { padding: 4rem 1.25rem !important; }
-        }
+       
+
+
+
+
+
+
+
+
+
+
+/* ─────────────────────────────
+ BREAKPOINTS
+ ───────────────────────────── */
+/* ─────────────────────────────
+  XX-Large devices (larger desktops, 1400px and up) 
+ ───────────────────────────── */
+
+@media (max-width: 1400px) { 
+
+
+}
+
+/* ─────────────────────────────
+ X-Large devices (large desktops, 1200px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 1200px) { 
+
+ }
+
+
+/* ─────────────────────────────
+ Large devices (desktops, 992px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 992px) { 
+
+
+}
+
+
+ /* ─────────────────────────────
+ Medium devices (tablets, 768px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 768px) { 
+
+ }
+
+  /* ─────────────────────────────
+  Small devices (landscape phones, 576px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 576px) { 
+
+  /* ─────────────────────────────
+     HERO
+  ───────────────────────────── */
+
+ .dest-intro-layout {
+    padding: var(--padding-block-mobile) var(--padding-inline-mobile);
+  }
+
+  .dest-hero { 
+    aspect-ratio: 4/3; 
+  }
+
+  .dest-hero__name { 
+    font-size: clamp(2.5rem, 12vw, 4rem); 
+    left: 1.25rem; 
+    bottom: 1.5rem; 
+  }
+
+  .container-dest-intro { 
+    grid-template-columns: 1fr; gap: 1.5rem;
+  }
+
+
+  /* ─────────────────────────────
+     PROPERTIES GRID
+  ───────────────────────────── */
+
+  .container-dest-props {
+        padding: var(--padding-block-mobile) var(--padding-inline-mobile);
+  }
+
+  .dest-props__grid { 
+    grid-template-columns: 1fr; 
+  }
+
+  .dest-separator { 
+    aspect-ratio: 4/3; 
+  }
+
+  .dest-others { 
+    padding: 4rem 1.25rem !important; 
+    background: green;
+  }
+
+   .container-destination {
+        padding: var(--padding-block-mobile) var(--padding-inline-mobile) !important;
+   }
+
+}
       `}</style>
 
       <Navbar
@@ -368,111 +511,111 @@ export default async function DestinationPage({ params }: PageProps) {
 
         {/* ── INTRO ── */}
         <div className='dest-intro-layout'>
-        <div className="dest-intro">
-          <h1 className="dest-hero__name">{name}</h1>
+          <div className="dest-intro">
+            <h1 className="dest-hero__name">{name}</h1>
 
-          <div className="container-dest-intro">
-            <span className="dest-intro__eyebrow">
-              {destinationsEyebrow}
-          </span>
-            {description && (
-              <p className="dest-intro__desc">{description}</p>
-            )}
+            <div className="container-dest-intro">
+              <span className="dest-intro__eyebrow">
+                {destinationsEyebrow}
+              </span>
+              {description && (
+                <p className="dest-intro__desc">{description}</p>
+              )}
+            </div>
           </div>
         </div>
-        </div>
-        
+
 
 
         {/* ── PROPERTIES GRID ── */}
         <div className="container-dest-props">
           <div className="dest-props">
-          <h2 className="dest-props__title">{propertiesTitle}</h2>
-          <div className="dest-props__grid">
-            {properties.length === 0 && (
-              <p className="dest-empty">
-                {isEs ? 'Próximamente propiedades en este destino.' : 'Properties coming soon.'}
-              </p>
-            )}
-            {/* {properties.map((prop) => {
+            <h2 className="dest-props__title">{propertiesTitle}</h2>
+            <div className="dest-props__grid">
+              {properties.length === 0 && (
+                <p className="dest-empty">
+                  {isEs ? 'Próximamente propiedades en este destino.' : 'Properties coming soon.'}
+                </p>
+              )}
+              {/* {properties.map((prop) => {
               const photoUrls = prop.photos?.split(',') || []
               const baseImageUrl = photoUrls[0]?.trim()
               const imageUrl = baseImageUrl
                 ?.replace('-md.jpg', '-lg.jpg')
                 ?.replace('-md.', '-lg.') || prop.thumbnail_file || null */}
-            {properties.map((prop: any) => {
-              const propName = isEs ? prop.nameEs : prop.nameEn
-              const location = isEs ? prop.locationEs : prop.locationEn
-              const imageUrl = prop.mainImage
-                ? urlFor(prop.mainImage).width(600).height(450).fit('crop').url()
-                : null
+              {properties.map((prop: any) => {
+                const propName = isEs ? prop.nameEs : prop.nameEn
+                const location = isEs ? prop.locationEs : prop.locationEn
+                const imageUrl = prop.mainImage
+                  ? urlFor(prop.mainImage).width(600).height(450).fit('crop').url()
+                  : null
 
-              return (
-                <div key={prop.slug?.current} className="dest-card">
-                  {/* <div key={prop.id} className="dest-card"> */}
-                  {/* Imagen */}
-                  <div className="dest-card__image">
-                    {imageUrl && (
-                      <Image src={imageUrl} alt={propName} fill sizes="(max-width: 580px) 100vw, (max-width: 900px) 50vw, 33vw" />
-                      // <Image src={imageUrl} alt={prop.name} fill sizes="(max-width: 580px) 100vw, (max-width: 900px) 50vw, 33vw" />
+                return (
+                  <div key={prop.slug?.current} className="dest-card">
+                    {/* <div key={prop.id} className="dest-card"> */}
+                    {/* Imagen */}
+                    <div className="dest-card__image">
+                      {imageUrl && (
+                        <Image src={imageUrl} alt={propName} fill sizes="(max-width: 580px) 100vw, (max-width: 900px) 50vw, 33vw" />
+                        // <Image src={imageUrl} alt={prop.name} fill sizes="(max-width: 580px) 100vw, (max-width: 900px) 50vw, 33vw" />
+                      )}
+                    </div>
+
+                    {/* Nombre + rating */}
+                    <div className="dest-card__header">
+                      <h3 className="dest-card__name">{propName}</h3>
+                      {/* <h3 className="dest-card__name">{prop.name}</h3> */}
+                      {prop.rating && (
+                        <div className="dest-card__rating">
+                          <span className="dest-card__star">★</span>
+                          {prop.rating}
+                          {/* {prop.rating.toFixed(1)} */}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Ubicación */}
+                    {location && (
+                      <p className="dest-card__location">{location}</p>
                     )}
+
+                    {/* Pills (camas / baños) */}
+                    <div className="dest-card__meta">
+                      {prop.beds && (
+                        <span className="dest-card__pill">
+                          {prop.beds} {bedsLabel}
+                        </span>
+                      )}
+                      {prop.baths && (
+                        <span className="dest-card__pill">
+                          {prop.baths} {isEs ? 'baños' : 'baths'}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Precio + Book now */}
+                    <div className="dest-card__footer">
+                      {prop.pricePerNight && (
+                        <p className="dest-card__price">
+                          ${prop.pricePerNight} <span>/{nightLabel}</span>
+                        </p>
+                      )}
+                      <a
+                        href={prop.hostifyUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="dest-card__btn"
+                      >
+                        {bookNowLabel}
+                      </a>
+                    </div>
                   </div>
-
-                  {/* Nombre + rating */}
-                  <div className="dest-card__header">
-                    <h3 className="dest-card__name">{propName}</h3>
-                    {/* <h3 className="dest-card__name">{prop.name}</h3> */}
-                    {prop.rating && (
-                      <div className="dest-card__rating">
-                        <span className="dest-card__star">★</span>
-                        {prop.rating}
-                        {/* {prop.rating.toFixed(1)} */}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Ubicación */}
-                  {location && (
-                    <p className="dest-card__location">{location}</p>
-                  )}
-
-                  {/* Pills (camas / baños) */}
-                  <div className="dest-card__meta">
-                    {prop.beds && (
-                      <span className="dest-card__pill">
-                        {prop.beds} {bedsLabel}
-                      </span>
-                    )}
-                    {prop.baths && (
-                      <span className="dest-card__pill">
-                        {prop.baths} {isEs ? 'baños' : 'baths'}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Precio + Book now */}
-                  <div className="dest-card__footer">
-                    {prop.pricePerNight && (
-                      <p className="dest-card__price">
-                        ${prop.pricePerNight} <span>/{nightLabel}</span>
-                      </p>
-                    )}
-                    <a
-                      href={prop.hostifyUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="dest-card__btn"
-                    >
-                      {bookNowLabel}
-                    </a>
-                  </div>
-                </div>
-              )
-            })}
+                )
+              })}
+            </div>
           </div>
         </div>
-        </div>
-        
+
 
         {/* ── SEPARATOR IMAGE ── */}
         {separatorImageUrl && (
@@ -482,19 +625,19 @@ export default async function DestinationPage({ params }: PageProps) {
         )}
 
         <div className='container-destination'>
-{/* ── OTHER DESTINATIONS CAROUSEL ── */}
-        {otherDests.length > 0 && (
-          <OtherDestinationsCarousel
-            eyebrow={destinationsEyebrow}
-            title={otherDestinationsTitle}
-            exploreLabel={exploreLabel}
-            otherDestinations={otherDests}
-            locale={locale}
-          />
-        )}
+          {/* ── OTHER DESTINATIONS CAROUSEL ── */}
+          {otherDests.length > 0 && (
+            <OtherDestinationsCarousel
+              eyebrow={destinationsEyebrow}
+              title={otherDestinationsTitle}
+              exploreLabel={exploreLabel}
+              otherDestinations={otherDests}
+              locale={locale}
+            />
+          )}
         </div>
 
-        
+
 
       </main>
 

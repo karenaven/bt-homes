@@ -1,108 +1,226 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { urlFor } from '@/lib/sanity.client'
 import type { Destination } from '@/lib/types'
 
 interface OtherDestinationsCarouselProps {
-    eyebrow?: string
-    title?: string
-    exploreLabel?: string
-    otherDestinations: Destination[]
-    locale: string
+  eyebrow?: string
+  title?: string
+  exploreLabel?: string
+  otherDestinations: Destination[]
+  locale: string
 }
 
 export default function OtherDestinationsCarousel({
-    eyebrow,
-    title,
-    exploreLabel,
-    otherDestinations,
-    locale,
+  eyebrow,
+  title,
+  exploreLabel,
+  otherDestinations,
+  locale,
 }: OtherDestinationsCarouselProps) {
-    const [currentIndex, setCurrentIndex] = useState(0)
-    const [isDragging, setIsDragging] = useState(false)
-    const [dragStart, setDragStart] = useState(0)
-    const [dragOffset, setDragOffset] = useState(0)
-    const carouselRef = useRef<HTMLDivElement>(null)
-    const itemsPerSlide = 3
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [isDragging, setIsDragging] = useState(false)
+  const [dragStart, setDragStart] = useState(0)
+  const [dragOffset, setDragOffset] = useState(0)
 
-    if (!otherDestinations?.length) return null
+  const carouselRef = useRef<HTMLDivElement>(null)
 
-    const totalSlides = Math.ceil(otherDestinations.length / itemsPerSlide)
+  const [itemsPerSlide, setItemsPerSlide] =
+    useState(3)
 
-    const handleMouseDown = (e: React.MouseEvent) => {
-        setIsDragging(true)
-        setDragStart(e.clientX)
+  useEffect(() => {
+    const updateItemsPerSlide = () => {
+      if (window.innerWidth <= 576) {
+        setItemsPerSlide(1)
+      } else if (window.innerWidth <= 992) {
+        setItemsPerSlide(2)
+      } else {
+        setItemsPerSlide(3)
+      }
     }
 
-    const handleMouseMove = (e: React.MouseEvent) => {
-        if (!isDragging) return
-        const offset = e.clientX - dragStart
-        setDragOffset(offset)
+    updateItemsPerSlide()
+
+    window.addEventListener(
+      'resize',
+      updateItemsPerSlide
+    )
+
+    return () =>
+      window.removeEventListener(
+        'resize',
+        updateItemsPerSlide
+      )
+  }, [])
+
+  useEffect(() => {
+    const maxIndex = Math.max(
+      0,
+      Math.ceil(
+        otherDestinations.length /
+        itemsPerSlide
+      ) - 1
+    )
+
+    if (currentIndex > maxIndex) {
+      setCurrentIndex(maxIndex)
+    }
+  }, [
+    currentIndex,
+    otherDestinations.length,
+    itemsPerSlide,
+  ])
+
+  if (!otherDestinations?.length) return null
+
+  const totalSlides = Math.ceil(
+    otherDestinations.length / itemsPerSlide
+  )
+
+  const handleMouseDown = (
+    e: React.MouseEvent
+  ) => {
+    setIsDragging(true)
+    setDragStart(e.clientX)
+  }
+
+  const handleMouseMove = (
+    e: React.MouseEvent
+  ) => {
+    if (!isDragging) return
+
+    const offset = e.clientX - dragStart
+    setDragOffset(offset)
+  }
+
+  const handleMouseUp = () => {
+    if (!isDragging) return
+
+    setIsDragging(false)
+
+    const threshold = 50
+
+    if (dragOffset > threshold) {
+      setCurrentIndex((prev) =>
+        prev === 0
+          ? totalSlides - 1
+          : prev - 1
+      )
+    } else if (dragOffset < -threshold) {
+      setCurrentIndex((prev) =>
+        prev === totalSlides - 1
+          ? 0
+          : prev + 1
+      )
     }
 
-    const handleMouseUp = (e: React.MouseEvent) => {
-        if (!isDragging) return
-        setIsDragging(false)
+    setDragOffset(0)
+  }
 
-        const threshold = 50
-        if (dragOffset > threshold) {
-            setCurrentIndex((prev) => (prev === 0 ? totalSlides - 1 : prev - 1))
-        } else if (dragOffset < -threshold) {
-            setCurrentIndex((prev) => (prev === totalSlides - 1 ? 0 : prev + 1))
-        }
+  const handleTouchStart = (
+    e: React.TouchEvent
+  ) => {
+    setIsDragging(true)
+    setDragStart(e.touches[0].clientX)
+  }
 
-        setDragOffset(0)
+  const handleTouchMove = (
+    e: React.TouchEvent
+  ) => {
+    if (!isDragging) return
+
+    const offset =
+      e.touches[0].clientX - dragStart
+
+    setDragOffset(offset)
+  }
+
+  const handleTouchEnd = () => {
+    if (!isDragging) return
+
+    setIsDragging(false)
+
+    const threshold = 50
+
+    if (dragOffset > threshold) {
+      setCurrentIndex((prev) =>
+        prev === 0
+          ? totalSlides - 1
+          : prev - 1
+      )
+    } else if (dragOffset < -threshold) {
+      setCurrentIndex((prev) =>
+        prev === totalSlides - 1
+          ? 0
+          : prev + 1
+      )
     }
 
-    const handleTouchStart = (e: React.TouchEvent) => {
-        setIsDragging(true)
-        setDragStart(e.touches[0].clientX)
-    }
+    setDragOffset(0)
+  }
 
-    const handleTouchMove = (e: React.TouchEvent) => {
-        if (!isDragging) return
-        const offset = e.touches[0].clientX - dragStart
-        setDragOffset(offset)
-    }
+  const handlePrev = () => {
+    setCurrentIndex((prev) =>
+      prev === 0
+        ? totalSlides - 1
+        : prev - 1
+    )
+  }
 
-    const handleTouchEnd = () => {
-        if (!isDragging) return
-        setIsDragging(false)
+  const handleNext = () => {
+    setCurrentIndex((prev) =>
+      prev === totalSlides - 1
+        ? 0
+        : prev + 1
+    )
+  }
 
-        const threshold = 50
-        if (dragOffset > threshold) {
-            setCurrentIndex((prev) => (prev === 0 ? totalSlides - 1 : prev - 1))
-        } else if (dragOffset < -threshold) {
-            setCurrentIndex((prev) => (prev === totalSlides - 1 ? 0 : prev + 1))
-        }
+  const startIndex =
+    currentIndex * itemsPerSlide
 
-        setDragOffset(0)
-    }
+  const visibleDestinations =
+    otherDestinations.slice(
+      startIndex,
+      startIndex + itemsPerSlide
+    )
 
-    const handlePrev = () => {
-        setCurrentIndex((prev) => (prev === 0 ? totalSlides - 1 : prev - 1))
-    }
+  return (
+    <div className="dest-others">
+      <style>{`
 
-    const handleNext = () => {
-        setCurrentIndex((prev) => (prev === totalSlides - 1 ? 0 : prev + 1))
-    }
+/* ─────────────────────────────
+  GLOBAL SPACING SYSTEM
+───────────────────────────── */
 
-    const startIndex = currentIndex * itemsPerSlide
-    const visibleDestinations = otherDestinations.slice(startIndex, startIndex + itemsPerSlide)
+  :root {
+   --container-width: 1400px;
 
-    return (
-        <div className="dest-others">
-            <style>{`
+  /* Desktop */
+  --padding-block: 6rem;   /* top + bottom */
+  --padding-inline: 6rem;  /* left + right */
+
+  /* Tablet */
+  --padding-block-tablet: 5rem;
+  --padding-inline-tablet: 2rem;
+
+  /* Mobile */
+  --padding-block-mobile: 4rem;
+  --padding-inline-mobile: 1.25rem;
+}
+
         .dest-others {
-          padding: 4rem 2.5rem 5rem;
           max-width: 1400px;
           margin: 0 auto;
+          background: #f1f3e5;
         }
 
-        /* Header: eyebrow izquierda, título derecha */
+/* ─────────────────────────────
+    HEADER
+───────────────────────────── */
+
         .dest-others__header {
           display: grid;
           grid-template-columns: 1fr 1fr;
@@ -113,12 +231,11 @@ export default function OtherDestinationsCarousel({
 
         .dest-others__eyebrow {
           font-family: 'Inter', sans-serif;
-          font-size: 0.6875rem;
+          font-size: 0.75rem;
           font-weight: 500;
           letter-spacing: 0.2em;
           text-transform: uppercase;
           color: #444;
-          padding-top: 0.25rem;
         }
 
         .dest-others__title {
@@ -130,71 +247,38 @@ export default function OtherDestinationsCarousel({
           line-height: 1.2;
         }
 
-        /* Carrusel container */
+        /* ─────────────────────────────
+           CAROUSEL
+        ───────────────────────────── */
+
         .dest-others__carousel-wrapper {
           position: relative;
+
           cursor: grab;
           user-select: none;
-          margin-bottom: 4rem;
         }
 
         .dest-others__carousel-wrapper.dragging {
           cursor: grabbing;
         }
 
-        /* Botones de navegación */
-        .dest-others__nav {
-          position: absolute;
-          bottom: -3rem;
-          right: 0;
-          display: flex;
-          gap: 0.75rem;
-        }
-
-        .dest-others__nav-btn {
-          width: 44px;
-          height: 44px;
-          border: 1px solid #0a0a0c;
-          background: #fff;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: all 0.2s ease;
-          padding: 0;
-          border-radius: 0;
-        }
-
-        .dest-others__nav-btn:hover {
-          background: #0a0a0c;
-        }
-
-        .dest-others__nav-btn:hover svg {
-          stroke: #fff;
-        }
-
-        .dest-others__nav-btn svg {
-          width: 18px;
-          height: 18px;
-          stroke: #0a0a0c;
-          fill: none;
-          stroke-width: 1.5;
-          transition: stroke 0.2s;
-        }
-
-        /* Grid de cards */
         .dest-others__grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 1.25rem;
+
           transition: opacity 0.3s ease;
         }
 
-        .dest-others__carousel-wrapper.dragging .dest-others__grid {
+        .dest-others__carousel-wrapper.dragging
+        .dest-others__grid {
           opacity: 0.8;
         }
 
-        /* Card */
+        /* ─────────────────────────────
+           CARD
+        ───────────────────────────── */
+
         .dest-others__card {
           display: flex;
           flex-direction: column;
@@ -215,10 +299,18 @@ export default function OtherDestinationsCarousel({
         .dest-others__image img {
           object-fit: cover;
           object-position: center;
-          transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          transition:
+            transform 0.6s
+            cubic-bezier(
+              0.25,
+              0.46,
+              0.45,
+              0.94
+            );
         }
 
-        .dest-others__card:hover .dest-others__image img {
+        .dest-others__card:hover
+        .dest-others__image img {
           transform: scale(1.04);
         }
 
@@ -246,144 +338,257 @@ export default function OtherDestinationsCarousel({
           stroke: #0a0a0c;
         }
 
-        .dest-others__card:hover .dest-others__arrow {
+        .dest-others__card:hover
+        .dest-others__arrow {
           transform: translateX(3px);
         }
 
-        /* Responsive */
-        @media (max-width: 900px) {
-          .dest-others__header {
+        /* ─────────────────────────────
+           NAVIGATION
+        ───────────────────────────── */
+
+        .dest-others__nav {
+          display: flex;
+          gap: 0.5rem;
+          justify-content: flex-end;
+          margin-top: 2rem;
+        }
+
+        .dest-others__nav-btn {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          border: 1px solid rgba(0,0,0,0.12);
+          background: transparent;
+          color: #0a0a0c;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition:
+            border-color 0.2s,
+            background 0.2s,
+            color 0.2s;
+        }
+
+        .dest-others__nav-btn:hover {
+          border-color: #0a0a0c;
+          background: rgba(0,0,0,0.04);
+        }
+
+        .dest-others__nav-btn svg {
+          width: 16px;
+          height: 16px;
+          fill: none;
+          stroke: currentColor;
+          stroke-width: 1.5;
+        }
+
+
+
+
+
+
+/* ─────────────────────────────
+ BREAKPOINTS
+ ───────────────────────────── */
+/* ─────────────────────────────
+  XX-Large devices (larger desktops, 1400px and up) 
+ ───────────────────────────── */
+
+@media (max-width: 1400px) { 
+
+
+}
+
+/* ─────────────────────────────
+ X-Large devices (large desktops, 1200px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 1200px) { 
+
+ }
+
+
+/* ─────────────────────────────
+ Large devices (desktops, 992px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 992px) { 
+
+ .dest-others__header {
             grid-template-columns: 1fr;
             gap: 1rem;
             margin-bottom: 2.5rem;
           }
+
           .dest-others__grid {
             grid-template-columns: repeat(2, 1fr);
           }
-          .dest-others__nav {
-            bottom: -2.5rem;
-          }
-        }
 
-        @media (max-width: 580px) {
-          .dest-others {
-            padding: 3rem 1.25rem 4rem;
-          }
-          .dest-others__grid {
-            grid-template-columns: 1fr;
-            gap: 2rem;
-          }
-          .dest-others__image {
-            aspect-ratio: 4/3;
-          }
-          .dest-others__nav {
-            bottom: -2rem;
-          }
-          .dest-others__nav-btn {
-            width: 40px;
-            height: 40px;
-          }
-        }
+}
+
+
+ /* ─────────────────────────────
+ Medium devices (tablets, 768px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 768px) { 
+
+ }
+
+  /* ─────────────────────────────
+  Small devices (landscape phones, 576px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 576px) { 
+
+ .dest-others {
+    padding: 0 !important;
+  }
+
+  .dest-others__grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .dest-others__nav {
+    margin-top: 1.5rem;
+  }
+}
       `}</style>
 
-            {/* Header */}
-            <div className="dest-others__header">
-                {eyebrow && (
-                    <span className="dest-others__eyebrow">{eyebrow}</span>
-                )}
-                {title && (
-                    <h2 className="dest-others__title">{title}</h2>
-                )}
-            </div>
+      {/* Header */}
+      <div className="dest-others__header">
+        {eyebrow && (
+          <span className="dest-others__eyebrow">
+            {eyebrow}
+          </span>
+        )}
 
-            {/* Carrusel */}
-            <div
-                ref={carouselRef}
-                className={`dest-others__carousel-wrapper ${isDragging ? 'dragging' : ''}`}
-                onMouseDown={handleMouseDown}
-                onMouseMove={handleMouseMove}
-                onMouseUp={handleMouseUp}
-                onMouseLeave={handleMouseUp}
-                onTouchStart={handleTouchStart}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
-            >
-                {/* Cards */}
-                <div className="dest-others__grid">
-                    {visibleDestinations.map((other: any) => {
-                        const otherName = locale === 'es' ? other.nameEs : other.nameEn
-                        const otherHref = `/${locale}/destinations/${other.slug?.current}`
-                        const otherImageUrl = other.image
-                            ? urlFor(other.image).width(500).height(610).fit('crop').url()
-                            : null
+        {title && (
+          <h2 className="dest-others__title">
+            {title}
+          </h2>
+        )}
+      </div>
 
-                        return (
-                            <Link
-                                key={other.slug?.current}
-                                href={otherHref}
-                                className="dest-others__card"
-                                onClick={(e) => {
-                                    if (isDragging) {
-                                        e.preventDefault()
-                                    }
-                                }}
-                            >
-                                <div className="dest-others__image">
-                                    {otherImageUrl && (
-                                        <Image
-                                            src={otherImageUrl}
-                                            alt={otherName}
-                                            fill
-                                            sizes="(max-width: 580px) 100vw, (max-width: 900px) 50vw, 33vw"
-                                            draggable={false}
-                                        />
-                                    )}
-                                </div>
-                                <div className="dest-others__footer">
-                                    <span className="dest-others__name">
-                                        {exploreLabel} {otherName}
-                                    </span>
-                                    <svg
-                                        className="dest-others__arrow"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="1.5"
-                                    >
-                                        <path d="M9 18l6-6-6-6" />
-                                    </svg>
-                                </div>
-                            </Link>
-                        )
-                    })}
+      {/* Carrusel */}
+      <div
+        ref={carouselRef}
+        className={`dest-others__carousel-wrapper ${isDragging ? 'dragging' : ''
+          }`}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        {/* Cards */}
+        <div className="dest-others__grid">
+          {visibleDestinations.map((other: any) => {
+            const otherName =
+              locale === 'es'
+                ? other.nameEs
+                : other.nameEn
+
+            const otherHref = `/${locale}/destinations/${other.slug?.current}`
+
+            const otherImageUrl =
+              other.image
+                ? urlFor(other.image)
+                  .width(500)
+                  .height(610)
+                  .fit('crop')
+                  .url()
+                : null
+
+            return (
+              <Link
+                key={other.slug?.current}
+                href={otherHref}
+                className="dest-others__card"
+                onClick={(e) => {
+                  if (isDragging) {
+                    e.preventDefault()
+                  }
+                }}
+              >
+                <div className="dest-others__image">
+                  {otherImageUrl && (
+                    <Image
+                      src={otherImageUrl}
+                      alt={otherName}
+                      fill
+                      sizes="
+                        (max-width: 580px) 100vw,
+                        (max-width: 900px) 50vw,
+                        33vw
+                      "
+                      draggable={false}
+                    />
+                  )}
                 </div>
 
-                {/* Botones de navegación */}
-                {totalSlides > 1 && (
-                    <div className="dest-others__nav">
-                        <button
-                            className="dest-others__nav-btn"
-                            onClick={handlePrev}
-                            aria-label="Slide anterior"
-                            type="button"
-                        >
-                            <svg viewBox="0 0 24 24">
-                                <path d="M15 18l-6-6 6-6" />
-                            </svg>
-                        </button>
-                        <button
-                            className="dest-others__nav-btn"
-                            onClick={handleNext}
-                            aria-label="Siguiente slide"
-                            type="button"
-                        >
-                            <svg viewBox="0 0 24 24">
-                                <path d="M9 18l6-6-6-6" />
-                            </svg>
-                        </button>
-                    </div>
-                )}
-            </div>
+                <div className="dest-others__footer">
+                  <span className="dest-others__name">
+                    {exploreLabel} {otherName}
+                  </span>
+
+                  <svg
+                    className="dest-others__arrow"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  >
+                    <path d="M9 18l6-6-6-6" />
+                  </svg>
+                </div>
+              </Link>
+            )
+          })}
         </div>
-    )
+
+        {/* Navigation */}
+        {totalSlides > 1 && (
+          <div className="dest-others__nav">
+            <button
+              className="dest-others__nav-btn"
+              onClick={handlePrev}
+              aria-label="Anterior"
+              type="button"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
+            </button>
+
+            <button
+              className="dest-others__nav-btn"
+              onClick={handleNext}
+              aria-label="Siguiente"
+              type="button"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  )
 }

@@ -27,23 +27,46 @@ export default function ExperienceSection({
   return (
     <section className="experience" id="experiencia">
       <style>{`
-        .experience {
-          background: #fff;
-          padding: 6rem 6rem;
-        }
-        .experience__inner {
-          max-width: 1400px;
-          margin: 0 auto;
-        }
 
-        /* Header centrado */
+/* ─────────────────────────────
+ Tokens 
+ ───────────────────────────── */
+  :root {
+  --container-width: 1400px;
+
+  /* Desktop */
+  --padding-block: 6rem;   /* top + bottom */
+  --padding-inline: 6rem;  /* left + right */
+
+  /* Tablet */
+  --padding-block-tablet: 5rem;
+  --padding-inline-tablet: 2rem;
+
+  /* Mobile */
+  --padding-block-mobile: 4rem;
+  --padding-inline-mobile: 1.25rem;
+}
+
+.experience {
+  padding: var(--padding-block) var(--padding-inline);
+}
+
+.experience__inner {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ─────────────────────────────
+ Header
+ ───────────────────────────── */
         .experience__header {
           text-align: center;
-          margin-bottom: 3.5rem;
+          margin-bottom: 3rem;
         }
+
         .experience__eyebrow {
           font-family: 'Inter', sans-serif;
-          font-size: 0.6875rem;
+          font-size: 0.75rem;
           font-weight: 500;
           letter-spacing: 0.18em;
           text-transform: uppercase;
@@ -63,7 +86,9 @@ export default function ExperienceSection({
           margin-right: auto;
         }
 
-        /* Grilla — 3 columnas, 3 filas */
+/* ─────────────────────────────
+ Grilla
+ ───────────────────────────── */
         .experience__grid {
           display: grid;
           grid-template-columns: 1fr 1fr 1fr;
@@ -156,15 +181,42 @@ export default function ExperienceSection({
         }
         .experience__cell-body {
           font-family: 'Inter', sans-serif;
-          font-size: 0.9375rem;
-          font-weight: 300;
+          font-size: 1rem;
+          font-weight: 400;
           line-height: 1.5;
           margin: 0;
         }
 
-        /* Responsive */
-        @media (max-width: 900px) {
-          .experience__grid {
+
+
+
+/* ─────────────────────────────
+ BREAKPOINTS
+ ───────────────────────────── */
+/* ─────────────────────────────
+  XX-Large devices (larger desktops, 1400px and up) 
+ ───────────────────────────── */
+
+@media (max-width: 1400px) { 
+
+}
+
+/* ─────────────────────────────
+ X-Large devices (large desktops, 1200px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 1200px) { 
+ 
+ }
+
+
+/* ─────────────────────────────
+ Large devices (desktops, 992px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 992px) { 
+
+ .experience__grid {
             grid-template-columns: 1fr 1fr;
           }
           .experience__cell--0 { grid-column: 1; grid-row: 1 / 3; }
@@ -173,9 +225,27 @@ export default function ExperienceSection({
           .experience__cell--3 { grid-column: 1; grid-row: 3; }
           .experience__cell--4 { grid-column: 2; grid-row: 3; }
           .experience__cell--5 { grid-column: 1 / 3; grid-row: 4; min-height: 180px; }
-        }
-        @media (max-width: 580px) {
-          .experience { padding: 4rem 1.25rem; }
+
+}
+
+
+ /* ─────────────────────────────
+ Medium devices (tablets, 768px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 768px) { 
+
+ }
+
+  /* ─────────────────────────────
+  Small devices (landscape phones, 576px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 576px) { 
+
+ .experience { 
+            padding: var(--padding-block-mobile) var(--padding-inline-mobile);
+          }
           .experience__grid {
             grid-template-columns: 1fr;
           }
@@ -189,7 +259,7 @@ export default function ExperienceSection({
             grid-row: auto;
           }
           .experience__cell { min-height: 200px; }
-        }
+}
       `}</style>
 
       <div className="experience__inner">
@@ -217,11 +287,10 @@ export default function ExperienceSection({
             return (
               <div
                 key={cell._key ?? i}
-                className={`experience__cell experience__cell--${i} ${
-                  isText
+                className={`experience__cell experience__cell--${i} ${isText
                     ? `experience__cell--${textVariant}`
                     : 'experience__cell--img'
-                }`}
+                  }`}
               >
                 {isText ? (
                   <>

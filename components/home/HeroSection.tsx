@@ -24,6 +24,33 @@ export default function HeroSection({
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap');
 
+/* ─────────────────────────────
+ Tokens 
+ ───────────────────────────── */
+  :root {
+  --container-width: 1400px;
+
+  /* Desktop */
+  --padding-block: 6rem;   /* top + bottom */
+  --padding-inline: 6rem;  /* left + right */
+
+  /* Tablet */
+  --padding-block-tablet: 5rem;
+  --padding-inline-tablet: 2rem;
+
+  /* Mobile */
+  --padding-block-mobile: 4rem;
+  --padding-inline-mobile: 1.25rem;
+}
+
+.destinations {
+  padding: var(--padding-block) var(--padding-inline);
+  color: #0a0a0c;
+}
+
+/* ─────────────────────────────
+ Hero
+ ───────────────────────────── */
         .hero {
           position: relative;
           width: 100%;
@@ -32,6 +59,7 @@ export default function HeroSection({
           overflow: hidden;
           background: #0a0a0c;
         }
+
         .hero__img {
           position: absolute;
           inset: 0;
@@ -43,9 +71,11 @@ export default function HeroSection({
           filter: brightness(0.72);
           transition: transform 8s ease;
         }
+
         .hero:hover .hero__img {
           transform: scale(1.03);
         }
+
         /* bottom gradient for text legibility */
         .hero__overlay {
           position: absolute;
@@ -57,20 +87,20 @@ export default function HeroSection({
             transparent 70%
           );
         }
+
         .hero__content {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  max-width: 60%;
-  padding: 0 6rem 4rem;
+  padding: 0 var(--padding-inline) 4rem;
   box-sizing: border-box;
 }
 
         .hero__title {
           font-family: 'Helvetica', sans serif;
           font-size: clamp(2.2rem, 5vw, 5rem);          
-          font-weight: bold;
+          font-weight: 500;
           line-height: 1.05;
           color: #fff;
           margin: 0 0 1.25rem;
@@ -78,12 +108,14 @@ export default function HeroSection({
           /* reveal animation */
           animation: heroTitleIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
           animation-delay: 0.3s;
+          white-space: pre-line;
         }
 
         .hero__title em {
           font-style: italic;
           font-weight: 300;
         }
+
         .hero__subtitle {
           font-family: 'Jost', sans-serif;
           font-size: clamp(0.9rem, 1.5vw, 1.1rem);
@@ -95,6 +127,7 @@ export default function HeroSection({
           animation: heroTitleIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
           animation-delay: 0.55s;
         }
+
         .hero__cta {
           display: inline-block;
           font-family: 'Jost', sans-serif;
@@ -110,9 +143,11 @@ export default function HeroSection({
           animation: heroTitleIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
           animation-delay: 0.75s;
         }
+
         .hero__cta:hover {
           background: #e8e4dc;
         }
+
         /* scroll indicator */
         .hero__scroll {
           position: absolute;
@@ -125,6 +160,7 @@ export default function HeroSection({
           animation: heroTitleIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
           animation-delay: 1s;
         }
+
         .hero__scroll span {
           font-family: 'Jost', sans-serif;
           font-size: 0.625rem;
@@ -134,6 +170,7 @@ export default function HeroSection({
           color: rgba(255,255,255,0.4);
           writing-mode: vertical-rl;
         }
+
         .hero__scroll-line {
           width: 1px;
           height: 48px;
@@ -141,6 +178,7 @@ export default function HeroSection({
           position: relative;
           overflow: hidden;
         }
+
         .hero__scroll-line::after {
           content: '';
           position: absolute;
@@ -150,6 +188,7 @@ export default function HeroSection({
           background: rgba(255,255,255,0.7);
           animation: scrollDown 1.8s ease-in-out infinite;
         }
+
         @keyframes heroTitleIn {
           from {
             opacity: 0;
@@ -160,50 +199,73 @@ export default function HeroSection({
             transform: translateY(0);
           }
         }
+
         @keyframes scrollDown {
           0%   { transform: translateY(-100%); opacity: 0; }
           20%  { opacity: 1; }
           80%  { opacity: 1; }
           100% { transform: translateY(280%); opacity: 0; }
         }
+
         @media (max-width: 640px) {
           .hero__content { padding: 0 1.5rem 3rem; }
           .hero__scroll { display: none; }
         }
 
-        /* desktop chico / laptop */
-@media (max-width: 1400px) {
-  .hero__content {
-    max-width: 72%;
-  }
+
+/* ─────────────────────────────
+ BREAKPOINTS
+ ───────────────────────────── */
+/* ─────────────────────────────
+  XX-Large devices (larger desktops, 1400px and up) 
+ ───────────────────────────── */
+
+@media (max-width: 1400px) { 
+
 }
 
-/* tablet horizontal */
-@media (max-width: 1100px) {
-  .hero__content {
-    max-width: 72%;
-  }
+/* ─────────────────────────────
+ X-Large devices (large desktops, 1200px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 1200px) { 
+
+ }
+
+
+/* ─────────────────────────────
+ Large devices (desktops, 992px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 992px) { 
+
+
 }
 
-/* tablet */
-@media (max-width: 900px) {
-  .hero__content {
-    max-width: 85%;
-    padding: 0 2rem 3rem;
-  }
+
+ /* ─────────────────────────────
+ Medium devices (tablets, 768px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 768px) { 
+   .hero__content {
+  padding: 0 var(--padding-inline-tablet) 3rem;
 }
 
-/* mobile */
-@media (max-width: 640px) {
-  .hero__content {
-    max-width: 100%;
-    padding: 0 1.5rem 3rem;
-  }
+ }
 
-  .hero__scroll {
-    display: none;
-  }
+  /* ─────────────────────────────
+  Small devices (landscape phones, 576px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 576px) { 
+
+  .hero__content {
+  padding: 0 var(--padding-inline-mobile) 3rem;
 }
+
+}
+
       `}</style>
 
       {/* Background image */}
@@ -222,7 +284,7 @@ export default function HeroSection({
       {/* Text content */}
       <div className="hero__content">
         <h1 className="hero__title">{title}</h1>
-        {subtitle && <p className="hero__subtitle">{subtitle}</p>}        
+        {subtitle && <p className="hero__subtitle">{subtitle}</p>}
       </div>
 
       {/* Scroll indicator */}

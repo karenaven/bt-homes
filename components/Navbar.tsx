@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 interface NavbarProps {
   locale: string
@@ -13,7 +13,7 @@ interface NavbarProps {
   blogTxt: string
   ctaUrl?: string
   ctaLabel?: string
-  variant?: 'dark' | 'light'  // dark = sobre hero oscuro, light = página interior blanca
+  variant?: 'dark' | 'light'
 }
 
 export default function Navbar({
@@ -25,8 +25,11 @@ export default function Navbar({
   ownerTxt,
   contactTxt,
   blogTxt,
-  variant = 'dark' }: NavbarProps) {
+  variant = 'dark',
+}: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
   const navLinks = {
     es: [
       { label: experienceTxt, href: `/${locale}/experience` },
@@ -48,33 +51,69 @@ export default function Navbar({
   const otherLocale = locale === 'es' ? 'en' : 'es'
   const isLight = variant === 'light'
 
-  // Logo dinámico según variant
-  const logoSrc = isLight ? '/images/logos/isotipo-bth-black.png' : '/images/logos/isotipo-bth-white.png'
+  // Logo dinámico según variant + scroll
+  const logoSrc =
+    isLight || scrolled || menuOpen
+      ? '/images/logos/isotipo-bth-black.png'
+      : '/images/logos/isotipo-bth-white.png'
 
-  // Handle CTA button click - redirect to properties search page
-  // const handleCTAClick = () => {
-  //   window.location.href = `/${locale}/properties`
-  // }
+  // Detectar scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   return (
-    <nav className={`navbar navbar--${variant} ${menuOpen ? 'navbar--open' : ''}`}>
+    <nav
+      className={`
+        navbar
+        navbar--${variant}
+        ${menuOpen ? 'navbar--open' : ''}
+        ${scrolled ? 'navbar--scrolled' : ''}
+      `}
+    >
       <style>{`
         .navbar {
-          position: absolute;
-          top: 0; left: 0; right: 0;
-          z-index: 100;
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          z-index: 1000;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 0 2.5rem;
           height: 72px;
+          padding: 0 2.5rem;
+          transition:
+            background 0.3s ease,
+            backdrop-filter 0.3s ease,
+            border-color 0.3s ease,
+            transform 0.3s ease;
         }
-          
-        /* Variante light — para páginas interiores */
-        .navbar--light {
-          position: relative;
+
+        /* DARK */
+        .navbar--dark {
+          background: transparent;
+        }
+
+        .navbar--dark.navbar--scrolled {
           background: #fff;
-          border-bottom: 1px solid #E5E7EB;
+          backdrop-filter: blur(12px);
+          border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        /* LIGHT */
+        .navbar--light {
+          background: #fff;
+          backdrop-filter: blur(12px);
+          border-bottom: 1px solid rgba(0, 0, 0, 0.08);
         }
 
         .navbar__logo-container {
@@ -90,6 +129,7 @@ export default function Navbar({
           width: 100%;
           height: 100%;
           object-fit: contain;
+          transition: opacity 0.3s ease;
         }
 
         .navbar__links {
@@ -100,20 +140,44 @@ export default function Navbar({
           margin: 0;
           padding: 0;
         }
+
         .navbar__links a {
           font-family: 'Inter', sans-serif;
           font-size: 0.875rem;
           font-weight: 400;
           letter-spacing: 0.04em;
           text-decoration: none;
-          transition: opacity 0.2s;
+          transition: opacity 0.2s, color 0.2s;
         }
-        .navbar--dark .navbar__links a { color: rgba(255,255,255,0.85); }
-        .navbar--dark .navbar__links a:hover { color: #fff; }
-        .navbar--light .navbar__links a { color: #333; }
-        .navbar--light .navbar__links a:hover { color: #0a0a0c; }
-        /* Link activo en light */
-        .navbar--light .navbar__links a[aria-current="page"] {
+
+        /* DARK LINKS */
+        .navbar--dark .navbar__links a {
+          color: rgba(255, 255, 255, 0.85);
+        }
+
+        .navbar--dark .navbar__links a:hover {
+          color: #fff;
+        }
+
+        .navbar--dark.navbar--scrolled .navbar__links a {
+          color: rgba(0, 0, 0, 0.72);
+        }
+
+        .navbar--dark.navbar--scrolled .navbar__links a:hover {
+          color: #000;
+        }
+
+        /* LIGHT LINKS */
+        .navbar--light .navbar__links a {
+          color: #333;
+        }
+
+        .navbar--light .navbar__links a:hover {
+          color: #0a0a0c;
+        }
+
+        /* ACTIVE LINK */
+        .navbar--light .navbar__links a[aria-current='page'] {
           font-weight: 500;
           color: #0a0a0c;
         }
@@ -123,6 +187,7 @@ export default function Navbar({
           align-items: center;
           gap: 1.25rem;
         }
+
         .navbar__locale {
           font-family: 'Inter', sans-serif;
           font-size: 0.75rem;
@@ -130,12 +195,34 @@ export default function Navbar({
           letter-spacing: 0.1em;
           text-transform: uppercase;
           text-decoration: none;
-          transition: opacity 0.2s;
+          transition: opacity 0.2s, color 0.2s;
         }
-        .navbar--dark .navbar__locale { color: rgba(255,255,255,0.85); }
-        .navbar--dark .navbar__locale:hover { color: #fff; }
-        .navbar--light .navbar__locale { color:  #333; }
-        .navbar--light .navbar__locale:hover { color: #0a0a0c; }
+
+        /* DARK LOCALE */
+        .navbar--dark .navbar__locale {
+          color: rgba(255, 255, 255, 0.85);
+        }
+
+        .navbar--dark .navbar__locale:hover {
+          color: #fff;
+        }
+
+        .navbar--dark.navbar--scrolled .navbar__locale {
+          color: rgba(0, 0, 0, 0.72);
+        }
+
+        .navbar--dark.navbar--scrolled .navbar__locale:hover {
+          color: #000;
+        }
+
+        /* LIGHT LOCALE */
+        .navbar--light .navbar__locale {
+          color: #333;
+        }
+
+        .navbar--light .navbar__locale:hover {
+          color: #0a0a0c;
+        }
 
         .navbar__cta {
           font-family: 'Inter', sans-serif;
@@ -147,15 +234,44 @@ export default function Navbar({
           padding: 0.6rem 1.4rem;
           cursor: pointer;
           text-decoration: none;
-          transition: background 0.2s, color 0.2s;
+          transition:
+            background 0.2s,
+            color 0.2s,
+            border-color 0.2s;
           white-space: nowrap;
           display: inline-block;
           border-radius: 4px;
         }
-        .navbar--dark .navbar__cta { color: #0a0a0c; background: #fff; }
-        .navbar--dark .navbar__cta:hover { background: #e8e4dc; }
-        .navbar--light .navbar__cta { color: #fff; background: #1e3a2f; }
-        .navbar--light .navbar__cta:hover { background: #2a5040; }
+
+        /* DARK CTA */
+        .navbar--dark .navbar__cta {
+          color: #0a0a0c;
+          background: #fff;
+        }
+
+        .navbar--dark .navbar__cta:hover {
+          background: #e8e4dc;
+        }
+
+        /* DARK CTA SCROLLED */
+        .navbar--dark.navbar--scrolled .navbar__cta {
+          color: #fff;
+          background: #1e3a2f;
+        }
+
+        .navbar--dark.navbar--scrolled .navbar__cta:hover {
+          background: #2a5040;
+        }
+
+        /* LIGHT CTA */
+        .navbar--light .navbar__cta {
+          color: #fff;
+          background: #1e3a2f;
+        }
+
+        .navbar--light .navbar__cta:hover {
+          background: #2a5040;
+        }
 
         .navbar__burger {
           display: none;
@@ -166,33 +282,101 @@ export default function Navbar({
           background: none;
           border: none;
         }
+
         .navbar__burger span {
           display: block;
           width: 24px;
           height: 1.5px;
-          transition: transform 0.3s, opacity 0.3s;
+          transition:
+            transform 0.3s,
+            opacity 0.3s,
+            background 0.3s;
         }
-        .navbar--dark .navbar__burger span { background: #fff; }
-        .navbar--light .navbar__burger span { background: #0a0a0c; }
+
+        /* DARK BURGER */
+        .navbar--dark .navbar__burger span {
+          background: #fff;
+        }
+
+        .navbar--dark.navbar--scrolled .navbar__burger span {
+          background: #000;
+        }
+
+        /* LIGHT BURGER */
+        .navbar--light .navbar__burger span {
+          background: #0a0a0c;
+        }
 
         @media (max-width: 900px) {
-          .navbar__links { display: none; }
-          .navbar__burger { display: flex; }
+          .navbar__links {
+            display: none;
+          }
+
+          .navbar__burger {
+            display: flex;
+          }
+
           .navbar--open .navbar__links {
             display: flex;
             flex-direction: column;
             position: absolute;
-            top: 72px; left: 0; right: 0;
+            top: 71px;
+            left: 0;
+            right: 0;
             padding: 2rem;
             gap: 1.5rem;
             align-items: flex-start;
           }
-          .navbar--dark.navbar--open .navbar__links { background: rgba(10,10,12,0.97); }
-          .navbar--light.navbar--open .navbar__links { background: #fff; border-bottom: 1px solid #eee; }
+
+          /* MOBILE MENU - HOMOGENEO */
+
+.navbar--open {
+  background: #fff;
+  backdrop-filter: blur(12px);
+  border-bottom: none;
+}
+
+.navbar--open .navbar__links {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  border: none;
+}
+
+.navbar--open .navbar__links a,
+.navbar--open .navbar__locale {
+  color: rgba(0, 0, 0, 0.72);
+}
+
+.navbar--open .navbar__links a:hover,
+.navbar--open .navbar__locale:hover {
+  color: #000;
+}
+
+.navbar--open .navbar__burger span {
+  background: #000;
+}
+
+/* CTA SIEMPRE VERDE CUANDO EL MENU ESTA ABIERTO */
+
+.navbar--open .navbar__cta {
+  background: #1e3a2f;
+  color: #fff;
+}
+
+.navbar--open .navbar__cta:hover {
+  background: #2a5040;
+}
         }
+
         @media (max-width: 480px) {
-          .navbar { padding: 0 1.25rem; }
-          .navbar__logo-container { width: 40px; height: 40px; }
+          .navbar {
+            padding: 0 1.25rem;
+          }
+
+          .navbar__logo-container {
+            width: 40px;
+            height: 40px;
+          }
         }
       `}</style>
 
@@ -219,18 +403,26 @@ export default function Navbar({
         <Link href={`/${otherLocale}`} className="navbar__locale">
           {otherLocale.toUpperCase()}
         </Link>
-        {/* {ctaLabel && (
-          <button onClick={handleCTAClick} className="navbar__cta">
-            {ctaLabel}
-          </button>
-        )} */}
+
         {ctaUrl && (
-          <a href={ctaUrl} target="_blank" rel="noopener noreferrer" className="navbar__cta">
+          <a
+            href={ctaUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="navbar__cta"
+          >
             {ctaLabel}
           </a>
         )}
-        <button className="navbar__burger" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
-          <span /><span /><span />
+
+        <button
+          className="navbar__burger"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Toggle menu"
+        >
+          <span />
+          <span />
+          <span />
         </button>
       </div>
     </nav>

@@ -1,30 +1,201 @@
 @import "tailwindcss";
 
+/* =========================================================
+   ROOT TOKENS
+========================================================= */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+
+  /* =========================================================
+     COLORS
+  ========================================================= */
+
+  /* Base */
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f7f7f5;
+  --color-background-dark: #0a0a0c;
+
+  --color-text-primary: #0a0a0c;
+  --color-text-secondary: #4b5563;
+  --color-text-inverse: #ffffff;
+
+  --color-border-primary: rgba(0, 0, 0, 0.08);
+  --color-border-secondary: rgba(255, 255, 255, 0.12);
+
+  /* Brand */
+  --color-brand-primary: #1e3a2f;
+  --color-brand-primary-hover: #2a5040;
+
+  /* Overlay */
+  --color-overlay-dark: rgba(10, 10, 12, 0.72);
+  --color-overlay-light: rgba(255, 255, 255, 0.82);
+
+  /* =========================================================
+     TYPOGRAPHY
+  ========================================================= */
+
+  /* Font Families */
+  --font-family-primary: 'Inter', sans-serif;
+  --font-family-secondary: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  /* Font Sizes */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 2rem;
+  --font-size-4xl: 3rem;
+
+  /* Font Weights */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  /* Letter Spacing */
+  --letter-spacing-tight: -0.02em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.04em;
+  --letter-spacing-wider: 0.08em;
+  --letter-spacing-uppercase: 0.1em;
+
+  /* Line Heights */
+  --line-height-tight: 1.1;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  /* =========================================================
+     SPACING
+  ========================================================= */
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+
+  /* =========================================================
+     RADIUS
+  ========================================================= */
+
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+  --radius-full: 9999px;
+
+  /* =========================================================
+     SHADOWS
+  ========================================================= */
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.12);
+
+  /* =========================================================
+     TRANSITIONS
+  ========================================================= */
+
+  --transition-fast: 0.2s ease;
+  --transition-medium: 0.3s ease;
+  --transition-slow: 0.5s ease;
+
+  /* =========================================================
+     LAYOUT
+  ========================================================= */
+
+  --navbar-height: 72px;
+  --container-width: 1440px;
+  --container-padding: 2.5rem;
+
+  /* =========================================================
+     BLUR
+  ========================================================= */
+
+  --blur-navbar: 12px;
 }
 
+/* =========================================================
+   TAILWIND THEME TOKENS
+========================================================= */
+
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  /* Colors */
+  --color-background: var(--color-background-primary);
+  --color-foreground: var(--color-text-primary);
+
+  /* Typography */
+  --font-sans: var(--font-family-primary);
+  --font-heading: var(--font-family-secondary);
+
+  /* Radius */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+
+  /* Shadows */
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
 }
+
+/* =========================================================
+   DARK MODE
+========================================================= */
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --color-background-primary: #0a0a0c;
+    --color-text-primary: #ffffff;
+    --color-border-primary: rgba(255, 255, 255, 0.12);
   }
 }
 
+/* =========================================================
+   BASE STYLES
+========================================================= */
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background-primary);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-normal);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
 main {
-  padding-top: 72px;
+  padding-top: var(--navbar-height);
+}
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.container-custom {
+  width: 100%;
+  max-width: var(--container-width);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+/* =========================================================
+   SELECTION
+========================================================= */
+
+::selection {
+  background: var(--color-brand-primary);
+  color: var(--color-text-inverse);
 }

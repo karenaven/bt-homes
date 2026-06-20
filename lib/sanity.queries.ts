@@ -20,7 +20,7 @@ export const featuredPropertiesQuery = groq`
     images,
     descriptionEs,
     descriptionEn,
-    hostifyUrl,
+    idPropertyHostify,
   }
 `
 

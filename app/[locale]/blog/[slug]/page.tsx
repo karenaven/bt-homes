@@ -143,20 +143,20 @@ export default async function BlogPostPage({ params }: PageProps) {
   ───────────────────────────── */
 
   :root {
-    --container-width: 1400px;
+   --container-width: 1400px;
 
-    /* Desktop */
-    --space-section: 6rem;
-    --space-container: 6rem;
+  /* Desktop */
+  --padding-block: 6rem;   /* top + bottom */
+  --padding-inline: 6rem;  /* left + right */
 
-    /* Tablet */
-    --space-section-tablet: 5rem;
-    --space-container-tablet: 2rem;
+  /* Tablet */
+  --padding-block-tablet: 5rem;
+  --padding-inline-tablet: 2rem;
 
-    /* Mobile */
-    --space-section-mobile: 4rem;
-    --space-container-mobile: 1.25rem;
-  }
+  /* Mobile */
+  --padding-block-mobile: 4rem;
+  --padding-inline-mobile: 1.25rem;
+}
 
   /* ─────────────────────────────
      GLOBAL CONTAINER
@@ -164,9 +164,9 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   .bp-container {
     width: 100%;
-    max-width: calc(var(--container-width) + (var(--space-container) * 2));
+    max-width: calc(var(--container-width) + (var(--padding-block) * 2));
     margin: 0 auto;
-    padding-inline: var(--space-container);
+    padding-inline: var(--padding-inline);
   }
 
   /* ─────────────────────────────
@@ -175,7 +175,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   .bp-article {
     padding-top: 10rem;
-    padding-bottom: var(--space-section);
+    padding-bottom: var(--padding-block);
   }
 
   .bp-body {
@@ -189,7 +189,7 @@ export default async function BlogPostPage({ params }: PageProps) {
     align-items: center;
     gap: 0.5rem;
     font-family: 'Inter', sans-serif;
-    font-size: 0.8125rem;
+    font-size: 1rem;
     font-weight: 400;
     color: #444;
     text-decoration: none;
@@ -210,7 +210,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   .bp-category {
     font-family: 'Inter', sans-serif;
-    font-size: 0.6875rem;
+    font-size: 0.75rem;
     font-weight: 500;
     letter-spacing: 0.18em;
     text-transform: uppercase;
@@ -238,8 +238,8 @@ export default async function BlogPostPage({ params }: PageProps) {
     align-items: center;
     gap: 0.875rem;
     font-family: 'Inter', sans-serif;
-    font-size: 0.8125rem;
-    font-weight: 300;
+    font-size: 1rem;
+    font-weight: 400;
     color: #444;
     margin-bottom: 3rem;
     flex-wrap: wrap;
@@ -262,22 +262,66 @@ export default async function BlogPostPage({ params }: PageProps) {
     border-radius: 10px;
     overflow: hidden;
     background: #e8e4dc;
-    margin-bottom: 4rem;
   }
 
   .bp-cover img {
     object-fit: cover;
   }
 
+
+/* Gallery Grid */
+  .gallery-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 0.75rem;
+}
+
+.gallery-grid__main {
+  position: relative;
+  min-height: 700px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.gallery-grid__side {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.gallery-grid__card {
+  position: relative;
+  min-height: 340px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.gallery-grid__img {
+  object-fit: cover;
+  transition: transform 0.6s
+    cubic-bezier(
+      0.25,
+      0.46,
+      0.45,
+      0.94
+    );
+}
+
+.gallery-grid__main:hover .gallery-grid__img,
+.gallery-grid__card:hover .gallery-grid__img {
+  transform: scale(1.04);
+}
+
+
   /* Body */
 
   .bp__p {
     font-family: 'Inter', sans-serif;
-    font-size: 0.9375rem;
-    font-weight: 300;
+    font-size: 1rem;
+    font-weight: 400;
     line-height: 1.7;
     color: #444;
-    margin: 0 0 1.5rem;
+    margin: 1.5rem 0;
   }
 
   .bp__h2 {
@@ -355,13 +399,13 @@ export default async function BlogPostPage({ params }: PageProps) {
   ───────────────────────────── */
 
   .bp-related {
-    background: #f5f3ee;
-    padding-block: var(--space-section);
+    background: #ECEBE9;
+    padding-block: var(--padding-block);
   }
 
   .bp-related__title {
     font-family: 'Inter', sans-serif;
-    font-size: 0.6875rem;
+    font-size: 0.75rem;
     font-weight: 500;
     letter-spacing: 0.2em;
     text-transform: uppercase;
@@ -403,7 +447,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   .bp-related__category {
     font-family: 'Inter', sans-serif;
-    font-size: 0.625rem;
+    font-size: 0.75rem;
     font-weight: 500;
     letter-spacing: 0.18em;
     text-transform: uppercase;
@@ -446,53 +490,109 @@ export default async function BlogPostPage({ params }: PageProps) {
     color: #444;
   }
 
-  /* ─────────────────────────────
-     TABLET
-  ───────────────────────────── */
 
-  @media (max-width: 900px) {
+  
 
-    .bp-container {
-      padding-inline: var(--space-container-tablet);
+
+
+
+            
+/* ─────────────────────────────
+ BREAKPOINTS
+ ───────────────────────────── */
+/* ─────────────────────────────
+  XX-Large devices (larger desktops, 1400px and up) 
+ ───────────────────────────── */
+
+@media (max-width: 1400px) { 
+
+
+}
+
+/* ─────────────────────────────
+ X-Large devices (large desktops, 1200px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 1200px) { 
+
+ }
+
+
+/* ─────────────────────────────
+ Large devices (desktops, 992px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 992px) { 
+
+ .bp-container {
+      padding-inline: var(--padding-inline-tablet);
     }
 
     .bp-article {
       padding-top: 8rem;
-      padding-bottom: var(--space-section-tablet);
+      padding-bottom: var(--padding-block-tablet);
     }
 
     .bp-related {
-      padding-block: var(--space-section-tablet);
+      padding-block: 0;
     }
 
     .bp-related__grid {
       grid-template-columns: 1fr;
     }
+
+    .gallery-grid__main {
+    min-height: 500px;
   }
 
+  .gallery-grid__card {
+    min-height: 245px;
+  }
+
+}
+
+
+ /* ─────────────────────────────
+ Medium devices (tablets, 768px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 768px) { 
+
+ }
+
   /* ─────────────────────────────
-     MOBILE
-  ───────────────────────────── */
+  Small devices (landscape phones, 576px and up) 
+ ───────────────────────────── */
 
-  @media (max-width: 580px) {
+ @media (max-width: 576px) { 
 
-    .bp-container {
-      padding-inline: var(--space-container-mobile);
+ .bp-container {
+      padding: var(--padding-block-mobile) var(--padding-inline-mobile);
     }
 
     .bp-article {
-      padding-top: 7rem;
-      padding-bottom: var(--space-section-mobile);
+      padding-top: 4rem;
+      padding-bottom: 0;
     }
 
-    .bp-cover {
-      margin-bottom: 3rem;
-    }
-
-    .bp-related {
-      padding-block: var(--space-section-mobile);
-    }
+    .gallery-grid {
+    grid-template-columns: 1.5fr 1fr;
+    gap: 0.5rem;
   }
+
+  .gallery-grid__side {
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .gallery-grid__main {
+    min-height: 320px;
+  }
+
+  .gallery-grid__card {
+    min-height: 155px;
+  }
+}
+
 `}</style>
 
       <Navbar
@@ -509,169 +609,235 @@ export default async function BlogPostPage({ params }: PageProps) {
 
       <main>
 
-  <article className="bp-article">
-    <div className="bp-container">
+        <article className="bp-article">
+          <div className="bp-container">
 
-      {/* Back */}
-      <Link href={`/${locale}/blog`} className="bp-back">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M19 12H5M12 19l-7-7 7-7" />
-        </svg>
+            {/* Back */}
+            <Link href={`/${locale}/blog`} className="bp-back">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+              </svg>
 
-        {isEs ? 'Volver al blog' : 'Back to blog'}
-      </Link>
+              {isEs ? 'Volver al blog' : 'Back to blog'}
+            </Link>
 
-      {/* Category */}
-      {category && (
-        <span className="bp-category">
-          {category}
-        </span>
-      )}
+            {/* Category */}
+            {category && (
+              <span className="bp-category">
+                {category}
+              </span>
+            )}
 
-      {/* Title */}
-      <h1 className="bp-title">
-        {title}
-      </h1>
+            {/* Title */}
+            <h1 className="bp-title">
+              {title}
+            </h1>
 
-      {/* Meta */}
-      <div className="bp-meta">
+            {/* Meta */}
+            <div className="bp-meta">
 
-        <span>
-          {byLabel}
-        </span>
+              <span>
+                {byLabel}
+              </span>
 
-        {post.publishedAt && (
-          <>
-            <div className="bp-meta__sep" />
+              {post.publishedAt && (
+                <>
+                  <div className="bp-meta__sep" />
 
-            <span>
-              {formatDate(post.publishedAt, locale)}
-            </span>
-          </>
-        )}
+                  <span>
+                    {formatDate(post.publishedAt, locale)}
+                  </span>
+                </>
+              )}
 
-        <div className="bp-meta__sep" />
+              <div className="bp-meta__sep" />
 
-        <span>
-          {minutes} {minLabel}
-        </span>
+              <span>
+                {minutes} {minLabel}
+              </span>
 
-      </div>
+            </div>
 
-      {/* Cover image */}
-      {coverImageUrl && (
-        <div className="bp-cover">
-          <Image
-            src={coverImageUrl}
-            alt={title}
-            fill
-            priority
-            sizes="1100px"
-          />
-        </div>
-      )}
+            {/* Cover image */}
+            {coverImageUrl && (
+              <div className="bp-cover">
+                <Image
+                  src={coverImageUrl}
+                  alt={title}
+                  fill
+                  priority
+                  sizes="1100px"
+                />
+              </div>
+            )}
 
-      {/* Body */}
-      {body && (
-        <div className="bp-body">
-          <PortableText
-            value={body}
-            components={ptComponents}
-          />
-        </div>
-      )}
+            {/* Body */}
+            {body && (
+              <div className="bp-body">
+                <PortableText
+                  value={body}
+                  components={ptComponents}
+                />
+              </div>
+            )}
 
-    </div>
-  </article>
 
-  {/* Related */}
-  {relatedPosts.length > 0 && (
-    <div className="bp-related">
+            {/* Grid imagenes */}
+            <div className="gallery-grid">
 
-      <div className="bp-container">
+              <div className="gallery-grid__main">
+                <Image
+                  src={coverImageUrl!}
+                  alt={title}
+                  fill
+                  priority
+                  className="gallery-grid__img"
+                />
+              </div>
 
-        <span className="bp-related__title">
-          {isEs ? 'Más artículos' : 'More articles'}
-        </span>
+              <div className="gallery-grid__side">
 
-        <div className="bp-related__grid">
-
-          {relatedPosts.map((related: any) => {
-
-            const relTitle = isEs
-              ? related.titleEs
-              : related.titleEn
-
-            const relCategory = isEs
-              ? related.categoryEs
-              : related.categoryEn
-
-            const relExcerpt = isEs
-              ? related.excerptEs
-              : related.excerptEn
-
-            const relHref = `/${locale}/blog/${related.slug?.current}`
-
-            const relImageUrl = related.coverImage
-              ? urlFor(related.coverImage)
-                  .width(500)
-                  .height(375)
-                  .fit('crop')
-                  .url()
-              : null
-
-            return (
-              <Link
-                key={related.slug?.current}
-                href={relHref}
-                className="bp-related__card"
-              >
-
-                <div className="bp-related__image">
-
-                  {relImageUrl && (
-                    <Image
-                      src={relImageUrl}
-                      alt={relTitle}
-                      fill
-                      sizes="(max-width: 900px) 100vw, 33vw"
-                    />
-                  )}
-
+                <div className="gallery-grid__card">
+                  <Image
+                    src={coverImageUrl!}
+                    alt={title}
+                    fill
+                    priority
+                    className="gallery-grid__img"
+                  />
                 </div>
 
-                {relCategory && (
-                  <span className="bp-related__category">
-                    {relCategory}
-                  </span>
-                )}
+                <div className="gallery-grid__card">
+                  <Image
+                    src={coverImageUrl!}
+                    alt={title}
+                    fill
+                    priority
+                    className="gallery-grid__img"
+                  />
+                </div>
 
-                <span className="bp-related__name">
-                  {relTitle}
-                </span>
+              </div>
 
-                {relExcerpt && (
-                  <p className="bp-related__excerpt">
-                    {relExcerpt}
-                  </p>
-                )}
+            </div>
 
-                {related.publishedAt && (
-                  <span className="bp-related__date">
-                    {formatDate(related.publishedAt, locale)}
-                  </span>
-                )}
 
-              </Link>
-            )
-          })}
+            {/* Body */}
+            {body && (
+              <div className="bp-body">
+                <PortableText
+                  value={body}
+                  components={ptComponents}
+                />
+              </div>
+            )}
 
-        </div>
-      </div>
-    </div>
-  )}
+            {/* Cover image */}
+            {coverImageUrl && (
+              <div className="bp-cover">
+                <Image
+                  src={coverImageUrl}
+                  alt={title}
+                  fill
+                  priority
+                  sizes="1100px"
+                />
+              </div>
+            )}
 
-</main>
+
+
+          </div>
+        </article>
+
+        {/* Related */}
+        {relatedPosts.length > 0 && (
+          <div className="bp-related">
+
+            <div className="bp-container">
+
+              <span className="bp-related__title">
+                {isEs ? 'Más artículos' : 'More articles'}
+              </span>
+
+              <div className="bp-related__grid">
+
+                {relatedPosts.map((related: any) => {
+
+                  const relTitle = isEs
+                    ? related.titleEs
+                    : related.titleEn
+
+                  const relCategory = isEs
+                    ? related.categoryEs
+                    : related.categoryEn
+
+                  const relExcerpt = isEs
+                    ? related.excerptEs
+                    : related.excerptEn
+
+                  const relHref = `/${locale}/blog/${related.slug?.current}`
+
+                  const relImageUrl = related.coverImage
+                    ? urlFor(related.coverImage)
+                      .width(500)
+                      .height(375)
+                      .fit('crop')
+                      .url()
+                    : null
+
+                  return (
+                    <Link
+                      key={related.slug?.current}
+                      href={relHref}
+                      className="bp-related__card"
+                    >
+
+                      <div className="bp-related__image">
+
+                        {relImageUrl && (
+                          <Image
+                            src={relImageUrl}
+                            alt={relTitle}
+                            fill
+                            sizes="(max-width: 900px) 100vw, 33vw"
+                          />
+                        )}
+
+                      </div>
+
+                      {relCategory && (
+                        <span className="bp-related__category">
+                          {relCategory}
+                        </span>
+                      )}
+
+                      <span className="bp-related__name">
+                        {relTitle}
+                      </span>
+
+                      {relExcerpt && (
+                        <p className="bp-related__excerpt">
+                          {relExcerpt}
+                        </p>
+                      )}
+
+                      {related.publishedAt && (
+                        <span className="bp-related__date">
+                          {formatDate(related.publishedAt, locale)}
+                        </span>
+                      )}
+
+                    </Link>
+                  )
+                })}
+
+              </div>
+            </div>
+          </div>
+        )}
+
+      </main>
 
       <Footer
         bookNowLabel={bookNowLabel}

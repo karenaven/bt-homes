@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect, } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { urlFor } from '@/lib/sanity.client'
@@ -27,103 +27,224 @@ export default function DestinationsSection({
   const [isDragging, setIsDragging] = useState(false)
   const [dragStart, setDragStart] = useState(0)
   const [dragOffset, setDragOffset] = useState(0)
+
   const carouselRef = useRef<HTMLDivElement>(null)
-  const itemsPerSlide = 3
+
+  const [itemsPerSlide, setItemsPerSlide] =
+    useState(3)
+
+  useEffect(() => {
+    const updateItemsPerSlide = () => {
+      if (window.innerWidth <= 580) {
+        setItemsPerSlide(1)
+      } else if (
+        window.innerWidth <= 900
+      ) {
+        setItemsPerSlide(2)
+      } else {
+        setItemsPerSlide(3)
+      }
+    }
+
+    updateItemsPerSlide()
+
+    window.addEventListener(
+      'resize',
+      updateItemsPerSlide
+    )
+
+    return () =>
+      window.removeEventListener(
+        'resize',
+        updateItemsPerSlide
+      )
+  }, [])
+
+  useEffect(() => {
+    const maxIndex = Math.max(
+      0,
+      Math.ceil(
+        destinations.length /
+        itemsPerSlide
+      ) - 1
+    )
+
+    if (currentIndex > maxIndex) {
+      setCurrentIndex(maxIndex)
+    }
+  }, [
+    currentIndex,
+    destinations.length,
+    itemsPerSlide,
+  ])
+
 
   if (!destinations?.length) return null
 
-  const totalSlides = Math.ceil(destinations.length / itemsPerSlide)
+  const totalSlides = Math.ceil(
+    destinations.length / itemsPerSlide
+  )
 
-  const handleMouseDown = (e: React.MouseEvent) => {
+  const handleMouseDown = (
+    e: React.MouseEvent
+  ) => {
     setIsDragging(true)
     setDragStart(e.clientX)
   }
 
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handleMouseMove = (
+    e: React.MouseEvent
+  ) => {
     if (!isDragging) return
+
     const offset = e.clientX - dragStart
     setDragOffset(offset)
   }
 
-  const handleMouseUp = (e: React.MouseEvent) => {
+  const handleMouseUp = () => {
     if (!isDragging) return
+
     setIsDragging(false)
 
     const threshold = 50
+
     if (dragOffset > threshold) {
-      setCurrentIndex((prev) => (prev === 0 ? totalSlides - 1 : prev - 1))
+      setCurrentIndex((prev) =>
+        prev === 0
+          ? totalSlides - 1
+          : prev - 1
+      )
     } else if (dragOffset < -threshold) {
-      setCurrentIndex((prev) => (prev === totalSlides - 1 ? 0 : prev + 1))
+      setCurrentIndex((prev) =>
+        prev === totalSlides - 1
+          ? 0
+          : prev + 1
+      )
     }
 
     setDragOffset(0)
   }
 
-  const handleTouchStart = (e: React.TouchEvent) => {
+  const handleTouchStart = (
+    e: React.TouchEvent
+  ) => {
     setIsDragging(true)
     setDragStart(e.touches[0].clientX)
   }
 
-  const handleTouchMove = (e: React.TouchEvent) => {
+  const handleTouchMove = (
+    e: React.TouchEvent
+  ) => {
     if (!isDragging) return
-    const offset = e.touches[0].clientX - dragStart
+
+    const offset =
+      e.touches[0].clientX - dragStart
+
     setDragOffset(offset)
   }
 
   const handleTouchEnd = () => {
     if (!isDragging) return
+
     setIsDragging(false)
 
     const threshold = 50
+
     if (dragOffset > threshold) {
-      setCurrentIndex((prev) => (prev === 0 ? totalSlides - 1 : prev - 1))
+      setCurrentIndex((prev) =>
+        prev === 0
+          ? totalSlides - 1
+          : prev - 1
+      )
     } else if (dragOffset < -threshold) {
-      setCurrentIndex((prev) => (prev === totalSlides - 1 ? 0 : prev + 1))
+      setCurrentIndex((prev) =>
+        prev === totalSlides - 1
+          ? 0
+          : prev + 1
+      )
     }
 
     setDragOffset(0)
   }
 
   const handlePrev = () => {
-    setCurrentIndex((prev) => (prev === 0 ? totalSlides - 1 : prev - 1))
+    setCurrentIndex((prev) =>
+      prev === 0
+        ? totalSlides - 1
+        : prev - 1
+    )
   }
 
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev === totalSlides - 1 ? 0 : prev + 1))
+    setCurrentIndex((prev) =>
+      prev === totalSlides - 1
+        ? 0
+        : prev + 1
+    )
   }
 
-  const startIndex = currentIndex * itemsPerSlide
-  const visibleDestinations = destinations.slice(startIndex, startIndex + itemsPerSlide)
+  const startIndex =
+    currentIndex * itemsPerSlide
+
+  const visibleDestinations =
+    destinations.slice(
+      startIndex,
+      startIndex + itemsPerSlide
+    )
 
   return (
     <section className="destinations">
       <style>{`
-        .destinations {
-          background: #fff;
-          padding: 6rem 6rem;
-          color: #0a0a0c;
-        }
 
-        /* Header: eyebrow izquierda, título derecha */
+/* ─────────────────────────────
+ Tokens 
+ ───────────────────────────── */
+  :root {
+  --container-width: 1400px;
+
+  /* Desktop */
+  --padding-block: 6rem;   /* top + bottom */
+  --padding-inline: 6rem;  /* left + right */
+
+  /* Tablet */
+  --padding-block-tablet: 5rem;
+  --padding-inline-tablet: 2rem;
+
+  /* Mobile */
+  --padding-block-mobile: 4rem;
+  --padding-inline-mobile: 1.25rem;
+}
+
+.destinations {
+  padding: var(--padding-block) var(--padding-inline);
+  color: #0a0a0c;
+}
+
+/* ─────────────────────────────
+ Header
+ ───────────────────────────── */
+
         .destinations__header {
           display: grid;
           grid-template-columns: 1fr 1fr;
           gap: 2rem;
           align-items: start;
-          margin-bottom: 3.5rem;
-          max-width: 1400px;
+          margin-bottom: 3rem;
+          max-width: var(--container-width);
           margin-left: auto;
           margin-right: auto;
         }
+
         .destinations__eyebrow {
           font-family: 'Inter', sans-serif;
-          font-size: 0.6875rem;
+          font-size: 0.75rem;
           font-weight: 500;
           letter-spacing: 0.2em;
           text-transform: uppercase;
           color: #444;
           padding-top: 0.25rem;
         }
+
         .destinations__title {
           font-family: 'Helvetica', Georgia, serif;
           font-size: clamp(1.75rem, 3vw, 2.75rem);
@@ -133,12 +254,14 @@ export default function DestinationsSection({
           margin: 0;
         }
 
-        /* Carrusel container */
+/* ─────────────────────────────
+ Carousel 
+ ───────────────────────────── */
+
         .destinations__carousel-wrapper {
           position: relative;
           max-width: 1400px;
           margin: 0 auto;
-          margin-bottom: 5rem;
           cursor: grab;
           user-select: none;
         }
@@ -147,44 +270,47 @@ export default function DestinationsSection({
           cursor: grabbing;
         }
 
-        /* Botones de navegación */
+        /* Navigation */
+
         .destinations__nav {
-          position: absolute;
-          bottom: -3rem;
-          right: 0;
           display: flex;
-          gap: 0.75rem;
+          gap: 0.5rem;
+          justify-content: flex-end;
+          margin-top: 2rem;
         }
 
         .destinations__nav-btn {
-          width: 44px;
-          height: 44px;
-          border: 1px solid #0a0a0c;
-          background: #fff;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          border: 1px solid rgba(0,0,0,0.12);
+          background: transparent;
+          color: #0a0a0c;
           cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
-          transition: all 0.2s ease;
           padding: 0;
-          border-radius: 50%;
+          transition:
+          border-color 0.2s,
+          background 0.2s,
+          color 0.2s;
         }
 
         .destinations__nav-btn:hover {
           border-color: #0a0a0c;
-          background: rgba(10,10,12,0.04);
+          background: rgba(0,0,0,0.04);
         }
 
         .destinations__nav-btn svg {
-          width: 18px;
-          height: 18px;
-          stroke: #0a0a0c;
-          fill: none;
-          stroke-width: 1.5;
-          transition: stroke 0.2s;
+          width: 16px;
+          height: 16px;
         }
 
-        /* Grid de cards */
+/* ─────────────────────────────
+ Grid
+ ───────────────────────────── */
+
         .destinations__grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
@@ -218,7 +344,14 @@ export default function DestinationsSection({
         .destinations__card-img {
           object-fit: cover;
           object-position: center;
-          transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          transition:
+            transform 0.6s
+            cubic-bezier(
+              0.25,
+              0.46,
+              0.45,
+              0.94
+            );
         }
 
         .destinations__card:hover .destinations__card-img {
@@ -237,8 +370,8 @@ export default function DestinationsSection({
           font-family: 'Inter', sans-serif;
           font-size: 1rem;
           font-weight: 400;
-          color: #0a0a0c;
           line-height: 1.4;
+          color: #0a0a0c;
         }
 
         .destinations__card-arrow {
@@ -252,7 +385,7 @@ export default function DestinationsSection({
           transform: translateX(3px);
         }
 
-        .destinations__footer {        
+        .destinations__footer {
           display: grid;
           grid-template-columns: 1fr 1fr;
           gap: 2rem;
@@ -260,65 +393,122 @@ export default function DestinationsSection({
           max-width: 1400px;
           margin-left: auto;
           margin-right: auto;
+          padding-top: 1rem;
           font-family: 'Inter', sans-serif;
-          font-size: 0.9375rem;
+          font-size: 1rem;
           font-weight: 400;
           line-height: 1.5;
           color: #444;
-          padding-top: 1rem;
         }
 
-        /* Responsive */
-        @media (max-width: 900px) {
-          .destinations__grid {
-            grid-template-columns: repeat(2, 1fr);
-          }
-          .destinations__header {
-            grid-template-columns: 1fr;
-            gap: 1rem;
-            margin-bottom: 2.5rem;
-          }
-            .destinations__footer {        
-          grid-template-columns: 1fr;
-          padding-top: 0;
-        }
-        }
-        @media (max-width: 580px) {
-          .destinations {
-            padding: 4rem 1.25rem;
-          }
-          .destinations__grid {
-            grid-template-columns: 1fr;
-            gap: 2rem;
-          }
-          .destinations__card-image {
-            aspect-ratio: 4/3;
-          }
-          .destinations__nav {
-            bottom: -2rem;
-          }
-          .destinations__nav-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 9999;
-          }
-        }
+
+/* ─────────────────────────────
+ BREAKPOINTS
+ ───────────────────────────── */
+/* ─────────────────────────────
+  XX-Large devices (larger desktops, 1400px and up) 
+ ───────────────────────────── */
+
+@media (max-width: 1400px) { 
+
+
+
+}
+
+/* ─────────────────────────────
+ X-Large devices (large desktops, 1200px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 1200px) { 
+
+ }
+
+
+/* ─────────────────────────────
+ Large devices (desktops, 992px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 992px) { 
+
+
+ .destinations__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .destinations__header {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .destinations__footer {
+    grid-template-columns: 1fr;
+    padding-top: 2rem;
+  }
+
+}
+
+
+ /* ─────────────────────────────
+ Medium devices (tablets, 768px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 768px) { 
+
+ }
+
+  /* ─────────────────────────────
+  Small devices (landscape phones, 576px and up) 
+ ───────────────────────────── */
+
+ @media (max-width: 576px) { 
+
+.destinations {
+  padding: var(--padding-block-mobile) var(--padding-inline-mobile);
+}
+
+.destinations__grid {
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+  .destinations__nav {
+  margin-top: 2rem;
+}
+
+.destinations__nav-btn {
+  width: 40px;
+  height: 40px;
+}
+
+}
+
       `}</style>
 
       {/* Header */}
+
       <div className="destinations__header">
         {eyebrow && (
-          <span className="destinations__eyebrow">{eyebrow}</span>
+          <span className="destinations__eyebrow">
+            {eyebrow}
+          </span>
         )}
+
         {title && (
-          <h2 className="destinations__title">{title}</h2>
+          <h2 className="destinations__title">
+            {title}
+          </h2>
         )}
       </div>
 
-      {/* Carrusel */}
+      {/* Carousel */}
+
       <div
         ref={carouselRef}
-        className={`destinations__carousel-wrapper ${isDragging ? 'dragging' : ''}`}
+        className={`
+          destinations__carousel-wrapper
+          ${isDragging ? 'dragging' : ''}
+        `}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -327,18 +517,30 @@ export default function DestinationsSection({
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        {/* Cards */}
         <div className="destinations__grid">
           {visibleDestinations.map((dest) => {
-            const name = locale === 'es' ? dest.nameEs : dest.nameEn
+
+            const name =
+              locale === 'es'
+                ? dest.nameEs
+                : dest.nameEn
+
             const href = `/${locale}/destinations/${dest.slug?.current}`
+
             const imageUrl = dest.image
-              ? urlFor(dest.image).width(800).height(980).fit('crop').url()
+              ? urlFor(dest.image)
+                .width(800)
+                .height(980)
+                .fit('crop')
+                .url()
               : null
 
             return (
               <Link
-                key={dest.slug?.current ?? dest.cityId}
+                key={
+                  dest.slug?.current ??
+                  dest.cityId
+                }
                 href={href}
                 className="destinations__card"
                 onClick={(e) => {
@@ -347,7 +549,6 @@ export default function DestinationsSection({
                   }
                 }}
               >
-                {/* Imagen */}
                 <div className="destinations__card-image">
                   {imageUrl ? (
                     <Image
@@ -355,19 +556,29 @@ export default function DestinationsSection({
                       alt={name}
                       fill
                       className="destinations__card-img"
-                      sizes="(max-width: 580px) 100vw, (max-width: 900px) 50vw, 33vw"
+                      sizes="
+                        (max-width: 580px) 100vw,
+                        (max-width: 900px) 50vw,
+                        33vw
+                      "
                       draggable={false}
                     />
                   ) : (
-                    <div style={{ width: '100%', height: '100%', background: '#e8e4dc' }} />
+                    <div
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        background: '#e8e4dc',
+                      }}
+                    />
                   )}
                 </div>
 
-                {/* Footer: nombre + flecha */}
                 <div className="destinations__card-footer">
                   <span className="destinations__card-name">
                     {exploreLabel} {name}
                   </span>
+
                   <svg
                     className="destinations__card-arrow"
                     viewBox="0 0 24 24"
@@ -383,7 +594,8 @@ export default function DestinationsSection({
           })}
         </div>
 
-        {/* Botones de navegación */}
+        {/* Navigation */}
+
         {totalSlides > 1 && (
           <div className="destinations__nav">
             <button
@@ -392,17 +604,28 @@ export default function DestinationsSection({
               aria-label="Slide anterior"
               type="button"
             >
-              <svg viewBox="0 0 24 24">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
                 <path d="M15 18l-6-6 6-6" />
               </svg>
             </button>
+
             <button
               className="destinations__nav-btn"
               onClick={handleNext}
               aria-label="Siguiente slide"
               type="button"
             >
-              <svg viewBox="0 0 24 24">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
                 <path d="M9 18l6-6-6-6" />
               </svg>
             </button>
@@ -411,9 +634,12 @@ export default function DestinationsSection({
       </div>
 
       {/* Footer */}
+
       <div className="destinations__footer">
         {footerLabel && (
-          <span className="destinations__footer-label">{footerLabel}</span>
+          <span className="destinations__footer-label">
+            {footerLabel}
+          </span>
         )}
       </div>
     </section>

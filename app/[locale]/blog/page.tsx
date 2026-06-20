@@ -78,21 +78,21 @@ export default async function BlogPage({ params }: PageProps) {
      GLOBAL SPACING SYSTEM
   ───────────────────────────── */
 
-  :root {
-    --container-width: 1400px;
+ :root {
+   --container-width: 1400px;
 
-    /* Desktop */
-    --space-section: 6rem;
-    --space-container: 6rem;
+  /* Desktop */
+  --padding-block: 6rem;   /* top + bottom */
+  --padding-inline: 6rem;  /* left + right */
 
-    /* Tablet */
-    --space-section-tablet: 5rem;
-    --space-container-tablet: 2rem;
+  /* Tablet */
+  --padding-block-tablet: 5rem;
+  --padding-inline-tablet: 2rem;
 
-    /* Mobile */
-    --space-section-mobile: 4rem;
-    --space-container-mobile: 1.25rem;
-  }
+  /* Mobile */
+  --padding-block-mobile: 4rem;
+  --padding-inline-mobile: 1.25rem;
+}
 
   /* ─────────────────────────────
      GLOBAL CONTAINER
@@ -100,9 +100,9 @@ export default async function BlogPage({ params }: PageProps) {
 
   .blog-container {
     width: 100%;
-    max-width: calc(var(--container-width) + (var(--space-container) * 2));
+    max-width: calc(var(--container-width) + (var(--padding-block) * 2));
     margin: 0 auto;
-    padding-inline: var(--space-container);
+    padding-inline: var(--padding-inline);
   }
 
   /* ─────────────────────────────
@@ -112,7 +112,7 @@ export default async function BlogPage({ params }: PageProps) {
   .blog-header {
     padding-block:
       10rem
-      var(--space-section);
+      4rem;
   }
 
   .blog-header__title {
@@ -127,8 +127,8 @@ export default async function BlogPage({ params }: PageProps) {
 
   .blog-header__desc {
     font-family: 'Inter', sans-serif;
-    font-size: 0.9375rem;
-    font-weight: 300;
+    font-size: 1rem;
+    font-weight: 400;
     line-height: 1.7;
     color: #444;
     max-width: 700px;
@@ -139,7 +139,7 @@ export default async function BlogPage({ params }: PageProps) {
   ───────────────────────────── */
 
   .blog-featured-section {
-    padding-bottom: var(--space-section);
+    padding-bottom: var(--padding-block);
   }
 
   .blog-featured {
@@ -169,7 +169,7 @@ export default async function BlogPage({ params }: PageProps) {
 
   .blog-featured__category {
     font-family: 'Inter', sans-serif;
-    font-size: 0.6875rem;
+    font-size: 0.75rem;
     font-weight: 500;
     letter-spacing: 0.18em;
     text-transform: uppercase;
@@ -199,8 +199,8 @@ export default async function BlogPage({ params }: PageProps) {
 
   .blog-featured__excerpt {
     font-family: 'Inter', sans-serif;
-    font-size: 0.9375rem;
-    font-weight: 300;
+    font-size: 1rem;
+    font-weight: 400;
     line-height: 1.7;
     color: #444;
     margin: 0 0 1.5rem;
@@ -215,14 +215,14 @@ export default async function BlogPage({ params }: PageProps) {
 
   .blog-featured__date {
     font-family: 'Inter', sans-serif;
-    font-size: 0.9375rem;
-    font-weight: 300;
+    font-size: 1rem;
+    font-weight: 400;
     color: #444;
   }
 
   .blog-featured__link {
     font-family: 'Inter', sans-serif;
-    font-size: 0.9375rem;
+    font-size: 1rem;
     font-weight: 400;
     color: #444;
     text-decoration: none;
@@ -244,10 +244,6 @@ export default async function BlogPage({ params }: PageProps) {
   /* ─────────────────────────────
      GRID
   ───────────────────────────── */
-
-  .blog-grid-section {
-    padding-bottom: var(--space-section);
-  }
 
   .blog-grid {
     display: grid;
@@ -283,7 +279,7 @@ export default async function BlogPage({ params }: PageProps) {
 
   .blog-card__category {
     font-family: 'Inter', sans-serif;
-    font-size: 0.6875rem;
+    font-size: 0.75rem;
     font-weight: 500;
     letter-spacing: 0.18em;
     text-transform: uppercase;
@@ -308,7 +304,7 @@ export default async function BlogPage({ params }: PageProps) {
 
   .blog-card__excerpt {
     font-family: 'Inter', sans-serif;
-    font-size: 0.9375rem;
+    font-size: 1rem;
     font-weight: 300;
     line-height: 1.7;
     color: #444;
@@ -321,8 +317,8 @@ export default async function BlogPage({ params }: PageProps) {
 
   .blog-card__date {
     font-family: 'Inter', sans-serif;
-    font-size: 0.9375rem;
-    font-weight: 300;
+    font-size: 1rem;
+    font-weight: 400;
     color: #444;
     margin-top: auto;
   }
@@ -335,8 +331,8 @@ export default async function BlogPage({ params }: PageProps) {
     text-align: center;
     padding: 5rem 2rem;
     font-family: 'Inter', sans-serif;
-    font-size: 0.9375rem;
-    font-weight: 300;
+    font-size: 1rem;
+    font-weight: 400;
     color: #888;
     grid-column: 1 / -1;
   }
@@ -348,17 +344,17 @@ export default async function BlogPage({ params }: PageProps) {
   @media (max-width: 900px) {
 
     .blog-container {
-      padding-inline: var(--space-container-tablet);
+      padding-inline: var(--padding-inline-tablet);
     }
 
     .blog-header {
       padding-block:
         8rem
-        var(--space-section-tablet);
+        3rem;
     }
 
     .blog-featured-section {
-      padding-bottom: var(--space-section-tablet);
+      padding-bottom: var(--padding-block-tablet);
     }
 
     .blog-featured {
@@ -367,7 +363,7 @@ export default async function BlogPage({ params }: PageProps) {
     }
 
     .blog-grid-section {
-      padding-bottom: var(--space-section-tablet);
+      padding-bottom: var(--padding-block-tablet);
     }
 
     .blog-grid {
@@ -383,17 +379,17 @@ export default async function BlogPage({ params }: PageProps) {
   @media (max-width: 580px) {
 
     .blog-container {
-      padding-inline: var(--space-container-mobile);
+      padding-inline: var(--padding-inline-mobile);
     }
 
     .blog-header {
       padding-block:
         7rem
-        var(--space-section-mobile);
+        2rem;
     }
 
     .blog-featured-section {
-      padding-bottom: var(--space-section-mobile);
+      padding-bottom: var(--padding-block-mobile);
     }
 
     .blog-featured {
@@ -401,7 +397,7 @@ export default async function BlogPage({ params }: PageProps) {
     }
 
     .blog-grid-section {
-      padding-bottom: var(--space-section-mobile);
+      padding-bottom: 0;
     }
 
     .blog-grid {
@@ -425,192 +421,192 @@ export default async function BlogPage({ params }: PageProps) {
 
       <main>
 
-  {/* ── HEADER ── */}
-  <section className="blog-header">
+        {/* ── HEADER ── */}
+        <section className="blog-header">
 
-    <div className="blog-container">
+          <div className="blog-container">
 
-      <h1 className="blog-header__title">
-        {isEs ? config?.titleEs : config?.titleEn}
-      </h1>
+            <h1 className="blog-header__title">
+              {isEs ? config?.titleEs : config?.titleEn}
+            </h1>
 
-      {(isEs ? config?.descriptionEs : config?.descriptionEn) && (
-        <p className="blog-header__desc">
-          {isEs ? config.descriptionEs : config.descriptionEn}
-        </p>
-      )}
+            {(isEs ? config?.descriptionEs : config?.descriptionEn) && (
+              <p className="blog-header__desc">
+                {isEs ? config.descriptionEs : config.descriptionEn}
+              </p>
+            )}
 
-    </div>
+          </div>
 
-  </section>
+        </section>
 
-  {/* ── ARTÍCULO DESTACADO ── */}
-  {featured && (() => {
-    const title = isEs ? featured.titleEs : featured.titleEn
-    const category = isEs ? featured.categoryEs : featured.categoryEn
-    const excerpt = isEs ? featured.excerptEs : featured.excerptEn
-    const href = `/${locale}/blog/${featured.slug?.current}`
+        {/* ── ARTÍCULO DESTACADO ── */}
+        {featured && (() => {
+          const title = isEs ? featured.titleEs : featured.titleEn
+          const category = isEs ? featured.categoryEs : featured.categoryEn
+          const excerpt = isEs ? featured.excerptEs : featured.excerptEn
+          const href = `/${locale}/blog/${featured.slug?.current}`
 
-    const imageUrl = featured.coverImage
-      ? urlFor(featured.coverImage).width(800).height(600).fit('crop').url()
-      : null
+          const imageUrl = featured.coverImage
+            ? urlFor(featured.coverImage).width(800).height(600).fit('crop').url()
+            : null
 
-    return (
-      <section className="blog-featured-section">
+          return (
+            <section className="blog-featured-section">
 
-        <div className="blog-container">
+              <div className="blog-container">
 
-          <div className="blog-featured">
+                <div className="blog-featured">
 
-            <Link href={href} className="blog-featured__image">
+                  <Link href={href} className="blog-featured__image">
 
-              {imageUrl && (
-                <Image
-                  src={imageUrl}
-                  alt={title}
-                  fill
-                  sizes="(max-width: 900px) 100vw, 55vw"
-                  priority
-                />
-              )}
+                    {imageUrl && (
+                      <Image
+                        src={imageUrl}
+                        alt={title}
+                        fill
+                        sizes="(max-width: 900px) 100vw, 55vw"
+                        priority
+                      />
+                    )}
 
-            </Link>
+                  </Link>
 
-            <div>
+                  <div>
 
-              {category && (
-                <span className="blog-featured__category">
-                  {category}
-                </span>
-              )}
+                    {category && (
+                      <span className="blog-featured__category">
+                        {category}
+                      </span>
+                    )}
 
-              <h2 className="blog-featured__title">
-                <Link href={href}>
-                  {title}
-                </Link>
-              </h2>
+                    <h2 className="blog-featured__title">
+                      <Link href={href}>
+                        {title}
+                      </Link>
+                    </h2>
 
-              {excerpt && (
-                <p className="blog-featured__excerpt">
-                  {excerpt}
+                    {excerpt && (
+                      <p className="blog-featured__excerpt">
+                        {excerpt}
+                      </p>
+                    )}
+
+                    <div className="blog-featured__footer">
+
+                      {featured.publishedAt && (
+                        <span className="blog-featured__date">
+                          {formatDate(featured.publishedAt, locale)}
+                        </span>
+                      )}
+
+                      <Link href={href} className="blog-featured__link">
+
+                        {readMoreLabel}
+
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                        >
+                          <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+
+                      </Link>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </section>
+          )
+        })()}
+
+        {/* ── GRILLA ── */}
+        <section className="blog-grid-section">
+
+          <div className="blog-container">
+
+            <div className="blog-grid">
+
+              {rest.length === 0 && posts.length === 0 && (
+                <p className="blog-empty">
+                  {isEs
+                    ? 'Próximamente artículos en el blog.'
+                    : 'Blog posts coming soon.'}
                 </p>
               )}
 
-              <div className="blog-featured__footer">
+              {rest.map((post: any) => {
 
-                {featured.publishedAt && (
-                  <span className="blog-featured__date">
-                    {formatDate(featured.publishedAt, locale)}
-                  </span>
-                )}
+                const title = isEs ? post.titleEs : post.titleEn
+                const category = isEs ? post.categoryEs : post.categoryEn
+                const excerpt = isEs ? post.excerptEs : post.excerptEn
 
-                <Link href={href} className="blog-featured__link">
+                const href = `/${locale}/blog/${post.slug?.current}`
 
-                  {readMoreLabel}
+                const imageUrl = post.coverImage
+                  ? urlFor(post.coverImage).width(600).height(450).fit('crop').url()
+                  : null
 
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
+                return (
+                  <Link
+                    key={post.slug?.current}
+                    href={href}
+                    className="blog-card"
                   >
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
 
-                </Link>
+                    <div className="blog-card__image">
 
-              </div>
+                      {imageUrl && (
+                        <Image
+                          src={imageUrl}
+                          alt={title}
+                          fill
+                          sizes="(max-width: 580px) 100vw, (max-width: 900px) 50vw, 33vw"
+                        />
+                      )}
+
+                    </div>
+
+                    {category && (
+                      <span className="blog-card__category">
+                        {category}
+                      </span>
+                    )}
+
+                    <h3 className="blog-card__title">
+                      {title}
+                    </h3>
+
+                    {excerpt && (
+                      <p className="blog-card__excerpt">
+                        {excerpt}
+                      </p>
+                    )}
+
+                    {post.publishedAt && (
+                      <span className="blog-card__date">
+                        {formatDate(post.publishedAt, locale)}
+                      </span>
+                    )}
+
+                  </Link>
+                )
+              })}
 
             </div>
 
           </div>
 
-        </div>
+        </section>
 
-      </section>
-    )
-  })()}
-
-  {/* ── GRILLA ── */}
-  <section className="blog-grid-section">
-
-    <div className="blog-container">
-
-      <div className="blog-grid">
-
-        {rest.length === 0 && posts.length === 0 && (
-          <p className="blog-empty">
-            {isEs
-              ? 'Próximamente artículos en el blog.'
-              : 'Blog posts coming soon.'}
-          </p>
-        )}
-
-        {rest.map((post: any) => {
-
-          const title = isEs ? post.titleEs : post.titleEn
-          const category = isEs ? post.categoryEs : post.categoryEn
-          const excerpt = isEs ? post.excerptEs : post.excerptEn
-
-          const href = `/${locale}/blog/${post.slug?.current}`
-
-          const imageUrl = post.coverImage
-            ? urlFor(post.coverImage).width(600).height(450).fit('crop').url()
-            : null
-
-          return (
-            <Link
-              key={post.slug?.current}
-              href={href}
-              className="blog-card"
-            >
-
-              <div className="blog-card__image">
-
-                {imageUrl && (
-                  <Image
-                    src={imageUrl}
-                    alt={title}
-                    fill
-                    sizes="(max-width: 580px) 100vw, (max-width: 900px) 50vw, 33vw"
-                  />
-                )}
-
-              </div>
-
-              {category && (
-                <span className="blog-card__category">
-                  {category}
-                </span>
-              )}
-
-              <h3 className="blog-card__title">
-                {title}
-              </h3>
-
-              {excerpt && (
-                <p className="blog-card__excerpt">
-                  {excerpt}
-                </p>
-              )}
-
-              {post.publishedAt && (
-                <span className="blog-card__date">
-                  {formatDate(post.publishedAt, locale)}
-                </span>
-              )}
-
-            </Link>
-          )
-        })}
-
-      </div>
-
-    </div>
-
-  </section>
-
-</main>
+      </main>
 
       <Footer
         bookNowLabel={bookNowLabel}
