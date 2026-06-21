@@ -224,7 +224,7 @@ export const propertiesByDestinationQuery = groq`
     baths,
     pricePerNight,
     rating,
-    hostifyUrl,
+    idPropertyHostify,
     "mainImage": images[0],
   }
 `

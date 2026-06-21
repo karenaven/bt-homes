@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 
 interface FooterProps {
   experienceTxt: string
@@ -264,8 +265,8 @@ export default function Footer({
       `}</style>
 
       {/* BOOK NOW */}
-      <a
-        href={hostifyUrl ?? 'https://bthomes.hostify.club/listings'}
+      <Link
+        href={`/${locale}/properties`}
         target="_blank"
         rel="noopener noreferrer"
         className="booknow"
@@ -279,7 +280,7 @@ export default function Footer({
             priority
           />
         </div>
-      </a>
+      </Link>
 
       {/* FOOTER */}
       <footer className="footer">

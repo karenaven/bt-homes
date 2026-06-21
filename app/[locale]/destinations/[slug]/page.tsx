@@ -6,6 +6,7 @@ import { destinationBySlugQuery, otherDestinationsQuery, homePageQuery, commonTr
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import OtherDestinationsCarousel from '@/components/destinations/OtherDestinationsCarousel'
+import Link from 'next/link'
 
 interface PageProps {
   params: Promise<{ locale: string; slug: string }>
@@ -600,14 +601,13 @@ export default async function DestinationPage({ params }: PageProps) {
                           ${prop.pricePerNight} <span>/{nightLabel}</span>
                         </p>
                       )}
-                      <a
-                        href={prop.hostifyUrl}
-                        target="_blank"
+                      <Link
+                        href={`/${locale}/properties/${prop.idPropertyHostify}`}
                         rel="noopener noreferrer"
                         className="dest-card__btn"
                       >
                         {bookNowLabel}
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 )

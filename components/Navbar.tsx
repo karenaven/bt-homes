@@ -70,6 +70,9 @@ export default function Navbar({
     }
   }, [])
 
+  const handleCTAClick = () => {
+    window.location.href = `/${locale}/properties`
+  }
   return (
     <nav
       className={`
@@ -404,16 +407,9 @@ export default function Navbar({
           {otherLocale.toUpperCase()}
         </Link>
 
-        {ctaUrl && (
-          <a
-            href={ctaUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="navbar__cta"
-          >
-            {ctaLabel}
-          </a>
-        )}
+        <button onClick={handleCTAClick} className="navbar__cta">
+          {ctaLabel}
+        </button>
 
         <button
           className="navbar__burger"

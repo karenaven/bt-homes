@@ -92,6 +92,11 @@ interface ListingsAvailableParams {
     ids?: string
     with_photos?: boolean
     longTermMode?: boolean
+    bedrooms?: number
+    bathrooms?: number
+    price_min?: number
+    price_max?: number
+    amenities?: string // comma separated amenity IDs
 }
 
 interface ListingCard {
@@ -144,11 +149,6 @@ interface ListingDetailResponse {
     currency: string
     currency_symbol: string
     city_id: number
-    // city_name: string
-    // listing_type: string
-    // bedroom_count: number
-    // bathroom_count: number
-    // guest_count: number
     price: number
     final_price: number
     rating: number
@@ -215,6 +215,12 @@ interface PricingResponse {
     }>
 }
 
+interface AmenityResponse {
+    id: number
+    name: string
+    group_name?: string
+}
+
 async function fetchHostify<T extends HostifyResponse>(
     endpoint: string,
     params?: Record<string, any>
@@ -258,6 +264,7 @@ export const hostifyClient = {
             lang: params.lang || 'es',
             with_photos: params.with_photos !== false,
             guests: params.guests || 1,
+            city_id: params.city_id,
             ...params,
         })
         console.log('Hostify listings_available response:', response)
@@ -277,7 +284,7 @@ export const hostifyClient = {
     /**
      * Get listing detail by ID
      */
-    async listingDetail(id: number, guests: number, lang: 'es' | 'en' = 'es') {
+    async listingDetail(id: number, guests: number, lang: string = 'es') {
         const response = await fetchHostify<HostifyDetailResponse>(`listings_view/${id}`, {
             lang,
             guests
@@ -327,6 +334,33 @@ export const hostifyClient = {
         }
 
         return response
+    },
+
+    /**
+     * Get all available amenities
+     */
+    async getAmenities() {
+        try {
+            const url = new URL('amenities', HOSTIFY_BASE)
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'accept': 'application/json',
+                    ...(API_KEY ? { 'x-api-key': String(API_KEY) } : {}),
+                    ...(INTEGRATION_ID ? { 'integration-id': String(INTEGRATION_ID) } : {}),
+                },
+            })
+
+            if (!response.ok) {
+                throw new Error(`Failed to fetch amenities: ${response.status}`)
+            }
+
+            const data = await response.json()
+            return data.amenities || []
+        } catch (error) {
+            console.error('Error fetching amenities:', error)
+            return []
+        }
     },
 }
 
