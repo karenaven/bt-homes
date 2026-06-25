@@ -4,9 +4,11 @@ import { hostifyClient } from '@/lib/hostify/client'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { client } from '@/lib/sanity.client'
-import { commonTranslationsQuery } from '@/lib/sanity.queries'
+import { commonTranslationsQuery, homePageQuery } from '@/lib/sanity.queries'
 import PropertyImageCarousel from '@/components/property/PropertyImageCarousel'
 import PropertyMap from '@/components/property/LocationMap'
+import PropertySidebar from '@/components/property/PropertySidebar'
+import { HomePage } from '@/lib/types'
 
 interface PageProps {
     params: Promise<{ locale: string; id: string }>
@@ -29,10 +31,47 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     }
 }
 
+//  HELPER: Detectar si se permiten mascotas
+function detectPetsAllowed(amenities: any[], houseRules: string | undefined): boolean {
+    const petsNotAllowedAmenities = amenities?.some(amenity =>
+        amenity.name?.toLowerCase().includes('no pets') ||
+        amenity.name?.toLowerCase().includes('no mascotas') ||
+        amenity.name?.toLowerCase().includes('sin mascotas')
+    )
+
+    if (petsNotAllowedAmenities) {
+        return false
+    }
+
+    if (houseRules) {
+        const rulesLower = houseRules.toLowerCase()
+        if (rulesLower.includes('no pets') || rulesLower.includes('no mascotas') || rulesLower.includes('sin mascotas')) {
+            return false
+        }
+    }
+
+    return true
+}
+
+//  NUEVO: Fetch amenities con traducciones de Sanity
+async function fetchAmenitiesWithTranslations() {
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/properties/amenities`)
+        if (!response.ok) throw new Error('Failed to fetch amenities')
+        const data = await response.json()
+        return data.amenities || []
+    } catch (err) {
+        console.error('Error fetching amenities:', err)
+        return []
+    }
+}
+
 export default async function PropertyDetailPage({ params }: PageProps) {
     const { locale, id } = await params
-    const [commonTranslations]: [any] = await Promise.all([
+    const [commonTranslations, enrichedAmenities, homeData]: [any, any[], HomePage] = await Promise.all([
         client.fetch(commonTranslationsQuery, {}, { next: { revalidate: 60 } }),
+        fetchAmenitiesWithTranslations(),
+        client.fetch(homePageQuery, {}, { next: { revalidate: 60 } })
     ])
 
     if (!['es', 'en'].includes(locale)) notFound()
@@ -65,6 +104,30 @@ export default async function PropertyDetailPage({ params }: PageProps) {
         url: img.original_file,
         title: img.description || property.listing?.name || (isEs ? 'Fotografía' : 'Photo')
     })) || []
+
+    const currencyData = property.currency_data || {
+        iso_code: 'USD',
+        symbol: '$',
+        unicode: '&#36;',
+        position: 'before' as const,
+    }
+
+    const petsAllowed = detectPetsAllowed(
+        property.amenities || [],
+        property.listing?.house_rules
+    )
+
+    //  NUEVO: Mapear amenities de Hostify con traducciones de Sanity
+    const amenitiesMap = new Map(enrichedAmenities.map((a: any) => [a.id, a]))
+    const propertyAmenitiesWithTranslations = property.amenities?.map((amenity: any) => {
+        const enriched = amenitiesMap.get(amenity.id)
+        return {
+            id: amenity.id,
+            name_en: amenity.name,
+            name_es: enriched?.name_es || amenity.name, // Fallback al inglés si no hay traducción
+            icon: enriched?.icon || '✓',
+        }
+    }) || []
 
     return (
         <>
@@ -358,7 +421,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
             <main>
                 {/* ── CAROUSEL HERO ── */}
                 {images.length > 0 && (
-                    <PropertyImageCarousel images={images} title={property.listing?.name || isEs ? 'Fotografía' : 'Photo'} />
+                    <PropertyImageCarousel images={images} title={property.listing?.name || (isEs ? 'Fotografía' : 'Photo')} />
                 )}
 
                 <div className="pd-wrapper">
@@ -392,16 +455,16 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                             )}
 
                             {/* ── AMENITIES ── */}
-                            {property.amenities && property.amenities.length > 0 && (
+                            {propertyAmenitiesWithTranslations && propertyAmenitiesWithTranslations.length > 0 && (
                                 <div className="pd-amenities">
                                     <h2 className="pd-section-title">
                                         {isEs ? 'Comodidades' : 'Amenities'}
                                     </h2>
                                     <div className="pd-amenities__list">
-                                        {property.amenities.map((amenity) => (
+                                        {propertyAmenitiesWithTranslations.map((amenity: any) => (
                                             <div key={amenity.id} className="pd-amenity">
-                                                <div className="pd-amenity__icon">✓</div>
-                                                <span>{amenity.name}</span>
+                                                <div className="pd-amenity__icon">{amenity.icon}</div>
+                                                <span>{isEs ? amenity.name_es : amenity.name_en}</span>
                                             </div>
                                         ))}
                                     </div>
@@ -432,6 +495,10 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                                             <span>{property.listing?.guests_included} {isEs ? 'huéspedes' : 'guests'}</span>
                                         </div>
                                     )}
+                                    <div className="pd-characteristic">
+                                        <span className="pd-characteristic__icon">🐾</span>
+                                        <span>{petsAllowed ? (isEs ? 'Mascotas permitidas' : 'Pets allowed') : (isEs ? 'No mascotas' : 'No pets')}</span>
+                                    </div>
                                     {property.listing?.checkin_start && (
                                         <div className="pd-characteristic">
                                             <span className="pd-characteristic__icon">🕐</span>
@@ -471,66 +538,24 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                             )}
                         </div>
 
-                        {/* ── SIDEBAR ── */}
-                        <div className="pd-sidebar">
-                            <div className="pd-price">
-                                <span className="pd-price__amount">
-                                    ${property.price}
-                                </span>
-                                <span className="pd-price__label">
-                                    {isEs ? 'por noche' : 'per night'}
-                                </span>
-                            </div>
-
-                            {/* Check-in */}
-                            <div className="pd-form-group">
-                                <label className="pd-form-label">
-                                    {isEs ? 'Check-in' : 'Check-in'}
-                                </label>
-                                <input
-                                    type="date"
-                                    className="pd-form-input"
-                                    placeholder="Seleccionar fecha"
-                                />
-                            </div>
-
-                            {/* Check-out */}
-                            <div className="pd-form-group">
-                                <label className="pd-form-label">
-                                    {isEs ? 'Check-out' : 'Check-out'}
-                                </label>
-                                <input
-                                    type="date"
-                                    className="pd-form-input"
-                                    placeholder="Seleccionar fecha"
-                                />
-                            </div>
-
-                            {/* Guests */}
-                            <div className="pd-form-group">
-                                <label className="pd-form-label">
-                                    {isEs ? 'Huéspedes' : 'Guests'}
-                                </label>
-                                <input
-                                    type="number"
-                                    className="pd-form-input"
-                                    placeholder="1"
-                                    min="1"
-                                    max={property.listing?.guests_included || 10}
-                                    defaultValue="1"
-                                />
-                            </div>
-
-                            {/* CTA Button */}
-                            <button className="pd-cta">
-                                {isEs ? 'Reservar' : 'Book'}
-                            </button>
-                        </div>
+                        <PropertySidebar
+                            listingId={parseInt(id)}
+                            currency={currencyData.iso_code}
+                            symbol={currencyData.symbol}
+                            position={currencyData.position as 'before' | 'after'}
+                            maxGuests={property.listing?.guests_included || 10}
+                            propertyName={property.listing?.name || ''}
+                            locale={locale}
+                            isEs={isEs}
+                            calendar={property.calendar_v2}
+                            petsAllowed={petsAllowed}
+                        />
                     </div>
                 </div>
             </main>
 
             <Footer
+
                 bookNowLabel={bookNowLabel}
                 experienceTxt={experienceLabel}
                 aboutUsTxt={aboutUsLabel}
@@ -538,6 +563,15 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                 contactTxt={contactLabel}
                 blogTxt={blogLabel}
                 socialTxt={socialLabel}
+                tagline={isEs ? homeData?.footerTaglineEs : homeData?.footerTaglineEn}
+                emailPrimary={homeData?.footerEmailPrimary}
+                emailSecondary={homeData?.footerEmailSecondary}
+                phoneArg={homeData?.footerPhoneArg}
+                phoneMex={homeData?.footerPhoneMex}
+                website={homeData?.footerWebsite}
+                siteArg={homeData?.footerSiteArg}
+                siteMex={homeData?.footerSiteMex}
+                copyright={isEs ? homeData?.footerCopyrightEs : homeData?.footerCopyrightEn}
                 locale={locale}
             />
         </>

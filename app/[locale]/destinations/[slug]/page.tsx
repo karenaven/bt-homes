@@ -189,6 +189,7 @@ export default async function DestinationPage({ params }: PageProps) {
           line-height: 1.7;
           color: #444;
           margin: 0;
+          white-space: pre-line;
         }
         
 

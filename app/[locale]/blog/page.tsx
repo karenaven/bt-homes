@@ -249,6 +249,7 @@ export default async function BlogPage({ params }: PageProps) {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 3rem 1.75rem;
+    padding-bottom: var(--padding-block);
   }
 
   .blog-card {
@@ -305,7 +306,7 @@ export default async function BlogPage({ params }: PageProps) {
   .blog-card__excerpt {
     font-family: 'Inter', sans-serif;
     font-size: 1rem;
-    font-weight: 300;
+    font-weight: 400;
     line-height: 1.7;
     color: #444;
     margin: 0 0 0.75rem;
@@ -336,6 +337,31 @@ export default async function BlogPage({ params }: PageProps) {
     color: #888;
     grid-column: 1 / -1;
   }
+
+    /* ─────────────────────────────
+   DIVIDER
+───────────────────────────── */
+
+.exp-divider {
+  width: 100%;
+}
+
+.exp-container {
+  width: 100%;
+  max-width: calc(
+    var(--container-width) +
+    (var(--padding-block) * 2)
+  );
+  margin: 0 auto;
+  padding-inline: var(--padding-inline);
+}
+
+.exp-divider__line {
+  width: 100%;
+  height: 1px;
+  background: #000;
+}
+
 
   /* ─────────────────────────────
      TABLET
@@ -370,6 +396,10 @@ export default async function BlogPage({ params }: PageProps) {
       grid-template-columns: repeat(2, 1fr);
       gap: 2.5rem 1.5rem;
     }
+
+    .exp-container {
+    padding-inline: var(--padding-inline-tablet);
+  }
   }
 
   /* ─────────────────────────────
@@ -403,7 +433,12 @@ export default async function BlogPage({ params }: PageProps) {
     .blog-grid {
       grid-template-columns: 1fr;
       gap: 2.5rem;
+      padding-bottom: 3rem;
     }
+
+    .exp-container {
+    padding-inline: var(--padding-inline-mobile);
+  }
   }
 `}</style>
 
@@ -605,6 +640,12 @@ export default async function BlogPage({ params }: PageProps) {
           </div>
 
         </section>
+
+        <div className="exp-divider">
+        <div className="exp-container">
+          <div className="exp-divider__line"></div>
+        </div>
+      </div>
 
       </main>
 

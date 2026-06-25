@@ -173,6 +173,7 @@ export default function FeaturedProperties({
           color: #0a0a0c;
           margin: 0;
           transition: opacity 0.2s;
+                    white-space: pre-line;
         }
 
         .featured__description {

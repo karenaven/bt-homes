@@ -32,11 +32,16 @@ interface HostifyListingsResponse extends HostifyResponse {
     }
 }
 
-// Extensión para respuestas de detail
 interface HostifyDetailResponse extends HostifyResponse {
     listing: ListingDetailResponse
     description: DescriptionResponse
     rating: RatingResponse
+    currency_data: {
+        iso_code: string,
+        unicode: string,
+        symbol: string,
+        position: string
+    },
     photos: Array<{
         description: string
         id: number
@@ -57,6 +62,12 @@ interface HostifyDetailResponse extends HostifyResponse {
         id: number
         name: string
         rating: number
+    }>
+    calendar_v2?: Record<string, {
+        avail: 0 | 1  // 0 = no disponible, 1 = disponible
+        min: number   // mínima noches requeridas
+        cta: number
+        ctd: number
     }>
 }
 
@@ -149,6 +160,11 @@ interface ListingDetailResponse {
     currency: string
     currency_symbol: string
     city_id: number
+    // city_name: string
+    // listing_type: string
+    // bedroom_count: number
+    // bathroom_count: number
+    // guest_count: number
     price: number
     final_price: number
     rating: number
@@ -215,12 +231,6 @@ interface PricingResponse {
     }>
 }
 
-interface AmenityResponse {
-    id: number
-    name: string
-    group_name?: string
-}
-
 async function fetchHostify<T extends HostifyResponse>(
     endpoint: string,
     params?: Record<string, any>
@@ -264,7 +274,6 @@ export const hostifyClient = {
             lang: params.lang || 'es',
             with_photos: params.with_photos !== false,
             guests: params.guests || 1,
-            city_id: params.city_id,
             ...params,
         })
         console.log('Hostify listings_available response:', response)
@@ -361,6 +370,150 @@ export const hostifyClient = {
             console.error('Error fetching amenities:', error)
             return []
         }
+    },
+
+    /**
+     * Get pricing with detailed breakdown
+     */
+    async getListingPrice(
+        listing_id: number,
+        start_date: string,
+        end_date: string,
+        guests: number = 1,
+        adults: number = 1,
+        children: number = 0,
+        infants: number = 0,
+        pets: number = 0
+    ) {
+        const url = new URL('listings_price', HOSTIFY_BASE)
+        //const response = await fetch(url,
+        //const url = new URL('https://am-pmsapi.hostify.com/websitesv3/listings_price')
+        url.searchParams.append('listing_id', String(listing_id))
+        url.searchParams.append('start_date', start_date)
+        url.searchParams.append('end_date', end_date)
+        url.searchParams.append('guests', String(guests))
+        // url.searchParams.append('adults', String(adults))
+        // url.searchParams.append('children', String(children))
+        // url.searchParams.append('infants', String(infants))
+        // url.searchParams.append('pets', String(pets))
+        // url.searchParams.append('payment', '0')
+
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'accept': 'application/json',
+                ...(API_KEY ? { 'x-api-key': String(API_KEY) } : {}),
+                ...(INTEGRATION_ID ? { 'integration-id': String(INTEGRATION_ID) } : {}),
+            }
+        })
+        console.log('Hostify getListingPrice response:', response)
+        if (!response.ok) {
+            throw new Error(`Failed to fetch listing price: ${response.status}`)
+        }
+
+        const data = await response.json()
+        if (!data.success) {
+            throw new Error(data.message || 'Failed to get pricing')
+        }
+
+        return data.price
+    },
+
+    /**
+     * Create a reservation in Hostify
+     */
+    async createReservation(reservationData: {
+        listing_id: string
+        start_date: string // DD-MM-YYYY format
+        end_date: string   // DD-MM-YYYY format
+        guests: string
+        adults: string
+        children: string
+        infants: number
+        pets: string
+        total_price: string
+        name: string
+        email: string
+        phone: string
+        note?: string
+        source?: string
+        status?: string
+        website_id: number
+        discount_id?: string
+        discount_code?: string
+    }) {
+        const url = new URL('reservations', HOSTIFY_BASE)
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+                ...(API_KEY ? { 'x-api-key': String(API_KEY) } : {}),
+                ...(INTEGRATION_ID ? { 'integration-id': String(INTEGRATION_ID) } : {}),
+            },
+            body: JSON.stringify({
+                ...reservationData,
+                source: reservationData.source || 'DirectBooking',
+                status: reservationData.status || 'new',
+            }),
+        })
+        console.log('Hostify createReservation response:', response)
+        if (!response.ok) {
+            const error = await response.text()
+            throw new Error(`Failed to create reservation: ${response.status} ${error}`)
+        }
+
+        const data = await response.json()
+        if (!data.success) {
+            throw new Error(data.message || 'Failed to create reservation')
+        }
+
+        return data.reservation
+    },
+
+    /**
+     * Confirm a reservation after payment
+     */
+    async confirmReservation(confirmData: {
+        reservation_id: string
+        status: 'accepted' | 'declined'
+        transaction_fee: string
+        transaction_data: {
+            reservation_id: string
+            amount: string
+            charge_date: string // YYYY-MM-DD
+            arrival_date: string // YYYY-MM-DD
+            is_completed: number
+            details: string
+            payment_integration_id: number
+            channel_transactionId: string
+            customerId: string
+            is3ds: number
+        }
+    }) {
+        const url = new URL('confirm_reservation', HOSTIFY_BASE)
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+                ...(API_KEY ? { 'x-api-key': String(API_KEY) } : {}),
+                ...(INTEGRATION_ID ? { 'integration-id': String(INTEGRATION_ID) } : {}),
+            },
+            body: JSON.stringify(confirmData),
+        })
+        console.log('Hostify confirmReservation response:', response)
+        if (!response.ok) {
+            const error = await response.text()
+            throw new Error(`Failed to confirm reservation: ${response.status} ${error}`)
+        }
+
+        const data = await response.json()
+        if (!data.success) {
+            throw new Error(data.message || 'Failed to confirm reservation')
+        }
+
+        return data.reservation
     },
 }
 

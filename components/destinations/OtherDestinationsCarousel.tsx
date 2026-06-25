@@ -222,11 +222,10 @@ export default function OtherDestinationsCarousel({
 ───────────────────────────── */
 
         .dest-others__header {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 2rem;
+          display: flex;
+          justify-content: space-between;
           align-items: start;
-          margin-bottom: 3.5rem;
+          margin-bottom: 3rem;
         }
 
         .dest-others__eyebrow {
@@ -245,6 +244,7 @@ export default function OtherDestinationsCarousel({
           color: #0a0a0c;
           margin: 0;
           line-height: 1.2;
+          white-space: pre-line;
         }
 
         /* ─────────────────────────────
@@ -417,7 +417,7 @@ export default function OtherDestinationsCarousel({
  @media (max-width: 992px) { 
 
  .dest-others__header {
-            grid-template-columns: 1fr;
+            flex-direction: column;
             gap: 1rem;
             margin-bottom: 2.5rem;
           }

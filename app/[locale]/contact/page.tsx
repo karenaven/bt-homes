@@ -20,6 +20,7 @@ const contactPageQuery = groq`
     submitLabelEs, submitLabelEn,
     successMessageEs, successMessageEn,
     mapEmbedUrl,
+    mapEmbedUrl2,
     seoTitleEs, seoTitleEn,
   }
 `
@@ -148,7 +149,6 @@ body {
   line-height: 1.7;
   color: #444;
   margin: 0 0 2.5rem;
-  max-width: 700px;
 }
 
 .contact-main__image {
@@ -213,7 +213,8 @@ body {
   }
 
   .contact-map-wrapper {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
   }
 
   .contact-main {
@@ -340,16 +341,15 @@ body {
             referrerPolicy="no-referrer-when-downgrade"
             title="BT Homes ubicación"
           />
-
+                {data?.mapEmbedUrl2 && (
           <iframe
             className="contact-map"
-            src={data.mapEmbedUrl}
+                    src={data.mapEmbedUrl2}
             allowFullScreen
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            title="BT Homes ubicación"
-          />
-
+                    title="BT Homes ubicación 2"
+                  />)}
         </div>
 
       </div>

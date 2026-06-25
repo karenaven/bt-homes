@@ -23,6 +23,7 @@ export default function OwnersFaq({ title, items, locale }: OwnersFaqProps) {
       <style>{`
         .faq {
           padding-block: var(--padding-block);
+          padding-bottom: 3rem;
         }
 
         .exp-container {
@@ -59,6 +60,11 @@ export default function OwnersFaq({ title, items, locale }: OwnersFaqProps) {
         .faq__item {
           border-bottom: 1px solid #e0ddd6;
         }
+
+        .faq__item:last-child {
+  border-bottom: none;
+}
+
         .faq__item:first-child {
           border-top: 1px solid #e0ddd6;
         }

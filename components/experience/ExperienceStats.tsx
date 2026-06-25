@@ -55,8 +55,6 @@ export default function ExperienceStats({ stats, locale }: ExperienceStatsProps)
         .estats__image-container {
           height: 5rem;
           display: flex;
-          align-items: center;
-          justify-content: center;
         }
 
         .estats__image {
@@ -136,6 +134,11 @@ export default function ExperienceStats({ stats, locale }: ExperienceStatsProps)
  .estats__grid {
     grid-template-columns: 1fr;
   }
+
+  .estats__card {
+          align-items: start;
+          text-align: start;
+        }
 
   .estats__image-container {
     height: 60px;

@@ -104,6 +104,7 @@ export default async function BlogPostPage({ params }: PageProps) {
   const title = isEs ? post.titleEs : post.titleEn
   const category = isEs ? post.categoryEs : post.categoryEn
   const body = isEs ? post.bodyEs : post.bodyEn
+  const body2 = isEs ? post.bodyEs2 : post.bodyEn2
   const minutes = readingTime(body ?? [])
   const minLabel = isEs ? 'min de lectura' : 'min read'
   const byLabel = isEs ? 'Por BT Homes' : 'By BT Homes'
@@ -118,6 +119,18 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   const coverImageUrl = post.coverImage
     ? urlFor(post.coverImage).width(1100).height(580).fit('crop').url()
+    : null
+  const coverImageUrl2 = post.coverImage2
+  ? urlFor(post.coverImage2).width(1100).height(580).fit('crop').url()
+    : null
+  const coverImageUrl3 = post.coverImage3
+  ? urlFor(post.coverImage3).width(1100).height(580).fit('crop').url()
+    : null
+  const coverImageUrl4 = post.coverImage4
+  ? urlFor(post.coverImage4).width(1100).height(580).fit('crop').url()
+    : null
+  const coverImageUrl5 = post.coverImage5
+    ? urlFor(post.coverImage5).width(1100).height(580).fit('crop').url()
     : null
 
   return (
@@ -472,8 +485,8 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   .bp-related__excerpt {
     font-family: 'Inter', sans-serif;
-    font-size: 0.8125rem;
-    font-weight: 300;
+    font-size: 1rem;
+    font-weight: 400;
     line-height: 1.7;
     color: #444;
     margin-bottom: 0.5rem;
@@ -485,8 +498,8 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   .bp-related__date {
     font-family: 'Inter', sans-serif;
-    font-size: 0.75rem;
-    font-weight: 300;
+    font-size: 1rem;
+    font-weight: 400;
     color: #444;
   }
 
@@ -574,6 +587,10 @@ export default async function BlogPostPage({ params }: PageProps) {
       padding-top: 4rem;
       padding-bottom: 0;
     }
+
+    .bp-cover {
+        aspect-ratio: 4/3;
+}
 
     .gallery-grid {
     grid-template-columns: 1.5fr 1fr;
@@ -687,7 +704,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
               <div className="gallery-grid__main">
                 <Image
-                  src={coverImageUrl!}
+                  src={coverImageUrl2!}
                   alt={title}
                   fill
                   priority
@@ -699,7 +716,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
                 <div className="gallery-grid__card">
                   <Image
-                    src={coverImageUrl!}
+                    src={coverImageUrl3!}
                     alt={title}
                     fill
                     priority
@@ -709,7 +726,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
                 <div className="gallery-grid__card">
                   <Image
-                    src={coverImageUrl!}
+                    src={coverImageUrl4!}
                     alt={title}
                     fill
                     priority
@@ -726,17 +743,17 @@ export default async function BlogPostPage({ params }: PageProps) {
             {body && (
               <div className="bp-body">
                 <PortableText
-                  value={body}
+                  value={body2}
                   components={ptComponents}
                 />
               </div>
             )}
 
             {/* Cover image */}
-            {coverImageUrl && (
+            {coverImageUrl5 && (
               <div className="bp-cover">
                 <Image
-                  src={coverImageUrl}
+                  src={coverImageUrl5}
                   alt={title}
                   fill
                   priority

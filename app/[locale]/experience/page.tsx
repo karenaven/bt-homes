@@ -124,10 +124,8 @@ export default async function ExperiencePage({ params }: PageProps) {
 }
 
 .exp-hero__inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  align-items: start;
+display: flex;
+justify-content: space-between;
 }
 
   .exp-hero__eyebrow {
@@ -147,6 +145,7 @@ export default async function ExperiencePage({ params }: PageProps) {
     line-height: 1.15;
     color: #0a0a0c;
     margin-bottom: 1.25rem;
+    white-space: pre-line;
   }
 
   .exp-hero__subtitle {
@@ -155,6 +154,7 @@ export default async function ExperiencePage({ params }: PageProps) {
     font-weight: 400;
     line-height: 1.5;
     color: #444;
+    max-width: 500px;
   }
 
   /* ─────────────────────────────
@@ -248,6 +248,7 @@ export default async function ExperiencePage({ params }: PageProps) {
     line-height: 1.2;
     color: #0a0a0c;
     margin-bottom: 1rem;
+        white-space: pre-line;
   }
 
   .exp-includes__desc {
@@ -337,13 +338,10 @@ export default async function ExperiencePage({ params }: PageProps) {
     font-weight: 400;
     color: #444;
     line-height: 1.5;
-
-    max-width: 500px;
     margin: 0 auto 6rem;
-
-  max-width: 500px;
   margin: 0 auto 6rem;
   text-align: center;
+  max-width: 600px;
   }
 
   .exp-partners__logos {
@@ -432,7 +430,7 @@ export default async function ExperiencePage({ params }: PageProps) {
 }
 
 .exp-hero__inner {
-  grid-template-columns: 1fr;
+  flex-direction: column;
   gap: 2rem;
 }
 
@@ -483,6 +481,8 @@ export default async function ExperiencePage({ params }: PageProps) {
 }
 
 .exp-hero__inner {
+  flex-direction: column;
+  justify-content: space-between;
   gap: 1.5rem;
 }
 
@@ -631,7 +631,15 @@ export default async function ExperiencePage({ params }: PageProps) {
                     <ul className="exp-includes__list">
                       {data.includesItems.map((item: any, i: number) => (
                         <li key={i} className="exp-includes__item">
-                          <div className="ab-services__icon">✳</div>
+                          <div className="ab-services__icon">
+                            <Image
+                              src={`/images/stats/asterisco-2.svg`}
+                              alt="asterisco"
+                              width={20}
+                              height={20}
+                              className="asterisk__image"
+                            />
+                          </div>
                           {isEs ? item.textEs : item.textEn}
                         </li>
                       ))}

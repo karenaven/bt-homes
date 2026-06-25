@@ -17,7 +17,7 @@ interface PageProps {
 const ptHighlight: PortableTextComponents = {
   marks: {
     highlight: ({ children }) => (
-      <span style={{ color: '#b8e04a' }}>{children}</span>
+      <span style={{ color: '#d7fe91' }}>{children}</span>
     ),
   },
   block: {
@@ -143,7 +143,7 @@ export default async function AboutPage({ params }: PageProps) {
     line-height: 1.12;
     color: #0a0a0c;
     margin: 0 0 3rem;
-    max-width: 900px;
+    white-space: pre-line;
   }
 
   .ab-hero__image {
@@ -266,8 +266,8 @@ export default async function AboutPage({ params }: PageProps) {
     font-weight: 400;
     line-height: 1.7;
     color: #444;
-    max-width: 1000px;
     margin: 0 auto;
+      white-space: pre-line;
   }
 
   .ab-services__grid {
@@ -404,6 +404,7 @@ export default async function AboutPage({ params }: PageProps) {
     line-height: 1.2;
     color: #0a0a0c;
     margin: 0 0 1.75rem;
+      white-space: pre-line;
   }
 
   .ab-diff__image {
@@ -417,6 +418,31 @@ export default async function AboutPage({ params }: PageProps) {
   .ab-diff__image img {
     object-fit: cover;
   }
+
+    /* ─────────────────────────────
+   DIVIDER
+───────────────────────────── */
+
+.exp-divider {
+  width: 100%;
+}
+
+.exp-container {
+  width: 100%;
+  max-width: calc(
+    var(--container-width) +
+    (var(--padding-block) * 2)
+  );
+  margin: 0 auto;
+  padding-inline: var(--padding-inline);
+}
+
+.exp-divider__line {
+  width: 100%;
+  height: 1px;
+  background: #000;
+}
+
 
   
  
@@ -557,8 +583,9 @@ export default async function AboutPage({ params }: PageProps) {
   ───────────────────────────── */
 
   .ab-hero {
-      padding-block: 8rem var(--padding-block-mobile)
+      padding-block: 8rem var(--padding-block-mobile);
     }
+
 
  /* ─────────────────────────────
      ABOUT
@@ -871,6 +898,12 @@ font-size: clamp(2.25rem, 4vw, 4rem);
             </div>
           </div>
         )}
+
+        <div className="exp-divider">
+        <div className="exp-container">
+          <div className="exp-divider__line"></div>
+        </div>
+      </div>
 
       </main>
 

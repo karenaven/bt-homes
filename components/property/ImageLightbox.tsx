@@ -4,35 +4,35 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 
 interface ImageLightboxProps {
-    images: Array<{ url: string; title: string }>
-    initialIndex: number
-    onClose: () => void
+  images: Array<{ url: string; title: string }>
+  initialIndex: number
+  onClose: () => void
 }
 
 export default function ImageLightbox({ images, initialIndex, onClose }: ImageLightboxProps) {
-    const [current, setCurrent] = useState(initialIndex)
+  const [current, setCurrent] = useState(initialIndex)
 
-    useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === 'ArrowLeft') prev()
-            if (e.key === 'ArrowRight') next()
-            if (e.key === 'Escape') onClose()
-        }
-        window.addEventListener('keydown', handleKeyDown)
-        return () => window.removeEventListener('keydown', handleKeyDown)
-    }, [current, onClose])
-
-    const prev = () => {
-        setCurrent((c) => (c === 0 ? images.length - 1 : c - 1))
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') prev()
+      if (e.key === 'ArrowRight') next()
+      if (e.key === 'Escape') onClose()
     }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [current, onClose])
 
-    const next = () => {
-        setCurrent((c) => (c === images.length - 1 ? 0 : c + 1))
-    }
+  const prev = () => {
+    setCurrent((c) => (c === 0 ? images.length - 1 : c - 1))
+  }
 
-    return (
-        <>
-            <style>{`
+  const next = () => {
+    setCurrent((c) => (c === images.length - 1 ? 0 : c + 1))
+  }
+
+  return (
+    <>
+      <style>{`
         .lightbox {
           position: fixed;
           inset: 0;
@@ -199,77 +199,77 @@ export default function ImageLightbox({ images, initialIndex, onClose }: ImageLi
         }
       `}</style>
 
-            <div className="lightbox" onClick={onClose}>
-                <button
-                    className="lightbox__close"
-                    onClick={onClose}
-                    aria-label="Close"
-                >
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M18 6L6 18M6 6l12 12" />
-                    </svg>
-                </button>
+      <div className="lightbox" onClick={onClose}>
+        <button
+          className="lightbox__close"
+          onClick={onClose}
+          aria-label="Close"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
+        </button>
 
-                <div
-                    className="lightbox__container"
-                    onClick={(e) => e.stopPropagation()}
-                >
-                    <div className="lightbox__nav">
-                        <button
-                            className="lightbox__btn"
-                            onClick={prev}
-                            aria-label="Previous"
-                        >
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M15 18l-6-6 6-6" />
-                            </svg>
-                        </button>
-                        <button
-                            className="lightbox__btn"
-                            onClick={next}
-                            aria-label="Next"
-                        >
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M9 18l6-6-6-6" />
-                            </svg>
-                        </button>
-                    </div>
+        <div
+          className="lightbox__container"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="lightbox__nav">
+            <button
+              className="lightbox__btn"
+              onClick={prev}
+              aria-label="Previous"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
+            </button>
+            <button
+              className="lightbox__btn"
+              onClick={next}
+              aria-label="Next"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </button>
+          </div>
 
-                    <div className="lightbox__image">
-                        <Image
-                            src={images[current].url}
-                            alt={images[current].title}
-                            fill
-                            quality={75}
-                            priority
-                            sizes="(max-width: 768px) 95vw, (max-width: 480px) 95vw, 80vw"
-                        />
-                    </div>
+          <div className="lightbox__image">
+            <Image
+              src={images[current].url}
+              alt={images[current].title}
+              fill
+              quality={75}
+              priority
+              sizes="(max-width: 768px) 95vw, (max-width: 480px) 95vw, 80vw"
+            />
+          </div>
 
-                    <div className="lightbox__footer">
-                        <div className="lightbox__counter">
-                            {current + 1} / {images.length}
-                        </div>
-                        <div className="lightbox__dots">
-                            {images.map((_, i) => (
-                                <button
-                                    key={i}
-                                    className={`lightbox__dot${i === current ? ' lightbox__dot--active' : ''}`}
-                                    onClick={(e) => {
-                                        e.stopPropagation()
-                                        setCurrent(i)
-                                    }}
-                                    aria-label={`Go to image ${i + 1}`}
-                                />
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="lightbox__info">
-                        {images[current].title}
-                    </div>
-                </div>
+          <div className="lightbox__footer">
+            <div className="lightbox__counter">
+              {current + 1} / {images.length}
             </div>
-        </>
-    )
+            <div className="lightbox__dots">
+              {images.map((_, i) => (
+                <button
+                  key={i}
+                  className={`lightbox__dot${i === current ? ' lightbox__dot--active' : ''}`}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setCurrent(i)
+                  }}
+                  aria-label={`Go to image ${i + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className="lightbox__info">
+            {images[current].title}
+          </div>
+        </div>
+      </div>
+    </>
+  )
 }

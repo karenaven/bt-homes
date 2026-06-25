@@ -16,7 +16,7 @@ interface PageProps {
 const ptHighlight: PortableTextComponents = {
   marks: {
     highlight: ({ children }) => (
-      <span style={{ color: '#b8e04a', }}>{children}</span>
+      <span style={{ color: '#d7fe91', }}>{children}</span>
     ),
   },
   block: {
@@ -128,8 +128,8 @@ body {
 }
 
 .own-hero__inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+justify-content: space-between;
   gap: 3rem;
   align-items: start;
 }
@@ -151,6 +151,7 @@ body {
     line-height: 1.15;
     color: #0a0a0c;
     margin-bottom: 1.25rem;
+          white-space: pre-line;
   }
 
   .own-hero__subtitle {
@@ -159,6 +160,7 @@ body {
     font-weight: 400;
     line-height: 1.5;
     color: #444;
+          white-space: pre-line;
   }
 
 /* ─────────────────────────────
@@ -211,7 +213,6 @@ body {
   color: #0a0a0c;
   margin: 0 auto;
   max-width: 1000px;
-
 }
 
 .own-diff__grid {
@@ -281,6 +282,7 @@ body {
   line-height: 1.2;
   color: #0a0a0c;
   margin: 0 0 1.5rem;
+            white-space: pre-line;
 }
 
 /* ───────────────────────────── */
@@ -310,7 +312,6 @@ body {
 }
 
 .own-phil__inner {
-  max-width: 1000px;
   margin: 0 auto;
   text-align: center;
 }
@@ -333,6 +334,7 @@ body {
   line-height: 1.3;
   color: #0a0a0c;
   margin: 0;
+            white-space: pre-line;
 }
 
 /* ───────────────────────────── */
@@ -405,6 +407,7 @@ display: grid;
   line-height: 1.2;
   color: #0a0a0c;
   margin: 0;
+  white-space: pre-line;
 }
 
 .own-feat__desc {
@@ -452,9 +455,9 @@ display: grid;
   line-height: 1.2;
   color: #0a0a0c;
   margin: 0 0 6rem;
-  max-width: 700px;
   margin-left: auto;
   margin-right: auto;
+  max-width: 800px;
 }
 
 .own-pricelabs__features {
@@ -534,6 +537,7 @@ display: grid;
   line-height: 1.2;
   color: #0a0a0c;
   margin: 0 0 1.5rem;
+            white-space: pre-line;
 }
 
 .own-revenue__image {
@@ -581,7 +585,7 @@ display: grid;
   line-height: 1.2;
   color: #0a0a0c;
   margin: 0 auto;
-  max-width: 700px;
+  max-width: 800px;
 }
 
 .own-services__grid {
@@ -658,8 +662,8 @@ display: grid;
 
 .own-pt__highlight {
   font-family: 'Helvetica', Georgia, serif;
-  font-size: clamp(2rem, 4.5vw, 4.5rem);
-  font-weight: 300;
+  font-size: clamp(2.5rem, 4.4vw, 5rem);  
+  font-weight: 500;
   line-height: 1.2;
   color: #fff;
   margin: 0 0 6rem;
@@ -693,8 +697,32 @@ display: grid;
   color: #fff;
   text-align: right;
   margin: 0;
+            white-space: pre-line;
 }
 
+    /* ─────────────────────────────
+   DIVIDER
+───────────────────────────── */
+
+.exp-divider {
+  width: 100%;
+}
+
+.exp-container {
+  width: 100%;
+  max-width: calc(
+    var(--container-width) +
+    (var(--padding-block) * 2)
+  );
+  margin: 0 auto;
+  padding-inline: var(--padding-inline);
+}
+
+.exp-divider__line {
+  width: 100%;
+  height: 1px;
+  background: #000;
+}
 
 
 
@@ -888,6 +916,7 @@ display: grid;
 
 .own-hero__inner {
   gap: 1.5rem;
+  flex-direction: column;
 }
 
 .own-hero__image,
@@ -1367,6 +1396,12 @@ display: grid;
             locale={locale}
           />
         )}
+
+        <div className="exp-divider">
+          <div className="exp-container">
+            <div className="exp-divider__line"></div>
+          </div>
+        </div>
 
       </main>
 

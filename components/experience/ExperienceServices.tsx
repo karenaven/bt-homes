@@ -88,9 +88,9 @@ export default function ExperienceServices({
            HEADER
         ───────────────────────────── */
 
-        .esvc__header {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+.esvc__header {
+  display: flex;
+  justify-content: space-between;
   gap: 3rem;
   align-items: start;
   margin-bottom: 2.5rem;
@@ -113,6 +113,7 @@ export default function ExperienceServices({
           line-height: 1.2;
           color: #0a0a0c;
           margin: 0;
+                  white-space: pre-line;
         }
 
         /* ─────────────────────────────
@@ -264,7 +265,7 @@ export default function ExperienceServices({
           }
 
           .esvc__header {
-            grid-template-columns: 1fr;
+            flex-direction: column;
             gap: 2rem;
           }
 

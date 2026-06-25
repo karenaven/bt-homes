@@ -81,9 +81,9 @@ export default function ExperienceSection({
           line-height: 1.2;
           color: #0a0a0c;
           margin: 0;
-          max-width: 560px;
           margin-left: auto;
           margin-right: auto;
+          white-space: pre-line;
         }
 
 /* ─────────────────────────────
@@ -288,8 +288,8 @@ export default function ExperienceSection({
               <div
                 key={cell._key ?? i}
                 className={`experience__cell experience__cell--${i} ${isText
-                    ? `experience__cell--${textVariant}`
-                    : 'experience__cell--img'
+                  ? `experience__cell--${textVariant}`
+                  : 'experience__cell--img'
                   }`}
               >
                 {isText ? (

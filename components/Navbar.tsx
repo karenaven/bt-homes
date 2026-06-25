@@ -269,11 +269,11 @@ export default function Navbar({
         /* LIGHT CTA */
         .navbar--light .navbar__cta {
           color: #fff;
-          background: #1e3a2f;
+          background: #01281C;
         }
 
         .navbar--light .navbar__cta:hover {
-          background: #2a5040;
+          background: #01281C;
         }
 
         .navbar__burger {
@@ -362,12 +362,12 @@ export default function Navbar({
 /* CTA SIEMPRE VERDE CUANDO EL MENU ESTA ABIERTO */
 
 .navbar--open .navbar__cta {
-  background: #1e3a2f;
+  background: #01281C;
   color: #fff;
 }
 
 .navbar--open .navbar__cta:hover {
-  background: #2a5040;
+  background: #01281C;
 }
         }
 

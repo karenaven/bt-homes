@@ -5,7 +5,9 @@ import { useRouter, useSearchParams } from 'next/navigation'
 
 interface Amenity {
     id: number
-    name: string
+    name_en: string
+    name_es: string
+    icon: string
 }
 
 interface PropertiesFiltersProps {
@@ -38,10 +40,12 @@ export default function PropertiesFilters({ locale, isEs }: PropertiesFiltersPro
         const fetchAmenities = async () => {
             try {
                 const response = await fetch('/api/properties/amenities')
+                if (!response.ok) throw new Error('Failed to fetch')
                 const data = await response.json()
                 setAmenities(data.amenities || [])
             } catch (error) {
                 console.error('Error fetching amenities:', error)
+                setAmenities([])
             } finally {
                 setLoadingAmenities(false)
             }
@@ -114,6 +118,11 @@ export default function PropertiesFilters({ locale, isEs }: PropertiesFiltersPro
                 ? prev.filter(id => id !== amenityId)
                 : [...prev, amenityId]
         )
+    }
+
+    //  NUEVO: Obtener nombre del amenity en el idioma correcto
+    const getAmenityName = (amenity: Amenity) => {
+        return isEs ? amenity.name_es : amenity.name_en
     }
 
     const getPriceLabel = () => {
@@ -486,7 +495,10 @@ export default function PropertiesFilters({ locale, isEs }: PropertiesFiltersPro
                                                 checked={selectedAmenities.includes(amenity.id)}
                                                 onChange={() => toggleAmenity(amenity.id)}
                                             />
-                                            <label>{amenity.name}</label>
+                                            <label>
+                                                <span style={{ marginRight: '0.5rem' }}>{amenity.icon}</span>
+                                                {getAmenityName(amenity)}
+                                            </label>
                                         </div>
                                     ))}
                                 </div>

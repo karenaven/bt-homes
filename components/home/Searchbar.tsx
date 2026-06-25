@@ -110,27 +110,29 @@ Search bar
         }
 
         .searchbar {
-          display: flex;
-          align-items: stretch;
-          gap: 0;
-          width: 100%;
-          max-width: 1000px;
-          background: #fff;
-          border: 1px solid #ddd;
-        }
+  display: flex;
+  align-items: stretch;
+  gap: 12px; /* separación entre campos */
+  width: 100%;
+  max-width: 1100px;
+  background: transparent; /* quitar fondo único */
+  border: none; /* quitar borde único */
+}
 
         .searchbar__field {
-          flex: 1;
-          display: flex;
-          align-items: center;
-          gap: 0.6rem;
-          padding: 0 1.25rem;
-          border-right: 1px solid #e0e0e0;
-          min-height: 60px;
-          position: relative;
-        }
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0 1.25rem;
+  min-height: 60px;
+  position: relative;
 
-        .searchbar__field:last-of-type { border-right: none; }
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
 
         .searchbar__icon {
           color: #888;
@@ -262,24 +264,28 @@ Search bar
           text-align: center;
         }
         .searchbar__btn {
-          font-family: 'Inter', sans-serif;
-          font-size: 0.8125rem;
-          font-weight: 500;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-          color: #fff;
-          background: #0a0a0c;
-          border: none;
-          padding: 0 2.5rem;
-          cursor: pointer;
-          white-space: nowrap;
-          transition: background 0.2s;
-          min-height: 60px;
-        }
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+  background: #0a0a0c;
+  border: none;
+  border-radius: 8px;
+  padding: 0 2.5rem;
+  cursor: pointer;
+  white-space: nowrap;
+  min-height: 60px;
+}
+
         .searchbar__btn:hover { background: #2a2a2e; }
         @media (max-width: 768px) {
-          .searchbar { flex-direction: column; border: 1px solid #ddd; }
-          .searchbar__field { border-right: none; border-bottom: 1px solid #e0e0e0; }
+.searchbar {
+    flex-direction: column;
+    gap: 12px;
+  }
+              .searchbar__field { border-bottom: none; }
           .searchbar__btn { min-height: 52px; }
         }
         @media (max-width: 480px) {

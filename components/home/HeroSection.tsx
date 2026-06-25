@@ -99,7 +99,7 @@ export default function HeroSection({
 
         .hero__title {
           font-family: 'Helvetica', sans serif;
-          font-size: clamp(2.2rem, 5vw, 5rem);          
+          font-size: clamp(2.5rem, 5.5vw, 5.5rem);          
           font-weight: 500;
           line-height: 1.05;
           color: #fff;

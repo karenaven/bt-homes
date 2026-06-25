@@ -104,13 +104,15 @@ export default function Footer({
 
         /* ── FOOTER ── */
         .footer {
-          background: #1e3a2f;
+          background: #01281C;
           padding: 4rem 6rem 0;
         }
+
         .footer__inner {
           max-width: 1400px;
           margin: 0 auto;
         }
+
         .footer__grid {
           display: grid;
           grid-template-columns: 1.5fr 1fr 1fr 1fr;
@@ -126,11 +128,13 @@ export default function Footer({
           position: relative;
           margin-bottom: 1rem;
         }
+
         .footer__logo-img {
           width: 100%;
           height: 100%;
           object-fit: contain;
         }
+
         .footer__brand-name {
           font-family: 'Inter', sans-serif;
           font-size: 1.2rem;
@@ -138,10 +142,11 @@ export default function Footer({
           color: #fff;
           margin: 0 0 1rem;
         }
+          
         .footer__tagline {
           font-family: 'Inter', sans-serif;
-          font-size: 0.8125rem;
-          font-weight: 300;
+          font-size: 1rem;
+          font-weight: 400;
           line-height: 1.7;
           color: #fff;
           margin: 0;
@@ -151,13 +156,14 @@ export default function Footer({
         /* Columnas */
         .footer__col-title {
           font-family: 'Inter', sans-serif;
-          font-size: 0.625rem;
+          font-size: 0.75rem;
           font-weight: 500;
           letter-spacing: 0.2em;
           text-transform: uppercase;
           color: #fff;
           margin: 0 0 1.5rem;
         }
+
         .footer__nav {
           list-style: none;
           margin: 0;
@@ -166,14 +172,16 @@ export default function Footer({
           flex-direction: column;
           gap: 0.875rem;
         }
+
         .footer__nav a {
           font-family: 'Inter', sans-serif;
-          font-size: 0.875rem;
-          font-weight: 300;
+          font-size: 1rem;
+          font-weight: 400;
           color: #fff;
           text-decoration: none;
           transition: color 0.2s;
         }
+
         .footer__nav a:hover { color: #fff; }
 
         /* Contacto */
@@ -182,14 +190,16 @@ export default function Footer({
           flex-direction: column;
           gap: 0.5rem;
         }
+
         .footer__contact-item {
           font-family: 'Inter', sans-serif;
-          font-size: 0.875rem;
-          font-weight: 300;
+          font-size: 1rem;
+          font-weight: 400;
           color: #fff;
           text-decoration: none;
           transition: color 0.2s;
         }
+          
         .footer__contact-item:hover { color: #fff; }
         .footer__contact-divider {
           height: 1rem;
@@ -206,8 +216,8 @@ export default function Footer({
           align-items: center;
           gap: 0.625rem;
           font-family: 'Inter', sans-serif;
-          font-size: 0.875rem;
-          font-weight: 300;
+          font-size: 1rem;
+          font-weight: 400;
           color: #fff;
         }
         .footer__social-sep {
@@ -229,7 +239,7 @@ export default function Footer({
         .footer__copyright {
           font-family: 'Inter', sans-serif;
           font-size: 0.75rem;
-          font-weight: 300;
+          font-weight: 400;
           color: #fff;
           margin: 0;
         }
