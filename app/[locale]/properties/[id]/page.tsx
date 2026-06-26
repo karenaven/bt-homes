@@ -135,7 +135,32 @@ export default async function PropertyDetailPage({ params }: PageProps) {
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
 
-        .pd-hero {
+
+  /* ─────────────────────────────
+     GLOBAL SPACING SYSTEM
+  ───────────────────────────── */
+
+ :root {
+   --container-width: 1400px;
+
+  /* Desktop */
+  --padding-block: 6rem;   /* top + bottom */
+  --padding-inline: 6rem;  /* left + right */
+
+  /* Tablet */
+  --padding-block-tablet: 5rem;
+  --padding-inline-tablet: 2rem;
+
+  /* Mobile */
+  --padding-block-mobile: 4rem;
+  --padding-inline-mobile: 1.25rem;
+}
+
+a.booknow {
+display: none;
+}
+
+  .pd-hero {
           position: relative;
           width: 100%;
           height: 500px;
@@ -144,11 +169,13 @@ export default async function PropertyDetailPage({ params }: PageProps) {
           margin-bottom: 3rem;
         }
 
-        .pd-wrapper {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 0 2.5rem 4rem;
-        }
+  .pd-wrapper {
+    width: 100%;
+    max-width: calc(var(--container-width) + (var(--padding-block) * 2));
+    margin: 0 auto;
+    padding-inline: var(--padding-inline);
+    padding-bottom: var(--padding-block);
+  }
 
         .pd-layout {
           display: grid;
@@ -160,17 +187,11 @@ export default async function PropertyDetailPage({ params }: PageProps) {
         .pd-main {
           display: flex;
           flex-direction: column;
-          gap: 3rem;
-        }
-
-        .pd-header {
-          border-bottom: 1px solid #eee;
-          padding-bottom: 2rem;
         }
 
         .pd-title {
-          font-family: 'Cormorant Garamond', Georgia, serif;
-          font-size: clamp(2rem, 4vw, 3.5rem);
+          font-family: 'Helvetica', Georgia, serif;
+          font-size: clamp(1.75rem, 3vw, 2.75rem);
           font-weight: 400;
           color: #0a0a0c;
           margin: 0 0 1rem;
@@ -189,17 +210,18 @@ export default async function PropertyDetailPage({ params }: PageProps) {
           display: flex;
           align-items: center;
           gap: 0.5rem;
-          font-family: 'Jost', sans-serif;
-          font-size: 0.9rem;
-          color: #555;
+          font-family: 'Inter', sans-serif;
+          font-size: 1rem;
+          color: #444;
         }
 
         .pd-rating {
           display: flex;
           align-items: center;
           gap: 0.5rem;
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
         }
+
         .pd-rating__stars {
           color: #f59e0b;
           font-size: 1rem;
@@ -207,20 +229,22 @@ export default async function PropertyDetailPage({ params }: PageProps) {
 
         /* ── DESCRIPTION ── */
         .pd-description {
-          font-family: 'Jost', sans-serif;
-          font-size: 0.95rem;
+          font-family: 'Inter', sans-serif;
+          font-size: 1rem;
           line-height: 1.75;
-          color: #555;
+          color: #444;
+          border-bottom: 1px solid #E5E7EB;
+          padding-block: 3rem;
         }
 
         /* ── AMENITIES ── */
         .pd-amenities {
-          padding: 2rem 0;
-          border-bottom: 1px solid #eee;
+          padding: 3rem 0;
+          border-bottom: 1px solid #E5E7EB;
         }
 
         .pd-section-title {
-          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-family: 'Helvetica', Georgia, serif;
           font-size: 1.5rem;
           font-weight: 400;
           color: #0a0a0c;
@@ -237,15 +261,14 @@ export default async function PropertyDetailPage({ params }: PageProps) {
           display: flex;
           align-items: center;
           gap: 0.75rem;
-          font-family: 'Jost', sans-serif;
-          font-size: 0.9rem;
-          color: #555;
+          font-family: 'Inter', sans-serif;
+          font-size: 1rem;
+          color: #444;
         }
 
         .pd-amenity__icon {
           width: 20px;
           height: 20px;
-          background: #1e3a2f;
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -257,8 +280,8 @@ export default async function PropertyDetailPage({ params }: PageProps) {
 
         /* ── CHARACTERISTICS ── */
         .pd-characteristics {
-          padding: 2rem 0;
-          border-bottom: 1px solid #eee;
+          padding: 3rem 0;
+          border-bottom: 1px solid #E5E7EB;
         }
 
         .pd-characteristics__grid {
@@ -271,9 +294,9 @@ export default async function PropertyDetailPage({ params }: PageProps) {
           display: flex;
           align-items: center;
           gap: 0.75rem;
-          font-family: 'Jost', sans-serif;
-          font-size: 0.9rem;
-          color: #555;
+          font-family: 'Inter', sans-serif;
+          font-size: 1rem;
+          color: #444;
         }
 
         .pd-characteristic__icon {
@@ -284,15 +307,14 @@ export default async function PropertyDetailPage({ params }: PageProps) {
 
         /* ── CHECK-IN/OUT ── */
         .pd-checkin-section {
-          padding: 2rem 0;
-          border-bottom: 1px solid #eee;
+          padding: 3rem 0;
+          border-bottom: 1px solid #E5E7EB;
         }
 
         .pd-checkin-section p {
-          font-family: 'Jost', sans-serif;
-          font-size: 0.9rem;
-          color: #555;
-          margin: 0.5rem 0;
+          font-family: 'Inter', sans-serif;
+          font-size: 1rem;
+          color: #444;
           line-height: 1.6;
         }
 
@@ -302,7 +324,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
 
         /* ── LOCATION ── */
         .pd-location {
-          padding: 2rem 0;
+          padding-top: 3rem;
         }
 
         /* ── SIDEBAR ── */
@@ -325,14 +347,14 @@ export default async function PropertyDetailPage({ params }: PageProps) {
         }
 
         .pd-price__amount {
-          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-family: 'Helvetica', Georgia, serif;
           font-size: 2.5rem;
           font-weight: 400;
           color: #0a0a0c;
         }
 
         .pd-price__label {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.9rem;
           color: #999;
         }

@@ -449,7 +449,6 @@ export default async function BlogPage({ params }: PageProps) {
         experienceTxt={experienceLabel}
         ownerTxt={ownerLabel}
         locale={locale}
-        ctaUrl={homeData?.heroCtaUrl}
         ctaLabel={bookLabel}
         variant="light"
       />
@@ -657,7 +656,6 @@ export default async function BlogPage({ params }: PageProps) {
         contactTxt={contactLabel}
         blogTxt={blogLabel}
         socialTxt={socialLabel}
-        hostifyUrl={homeData?.heroCtaUrl}
         tagline={isEs ? homeData?.footerTaglineEs : homeData?.footerTaglineEn}
         emailPrimary={homeData?.footerEmailPrimary}
         emailSecondary={homeData?.footerEmailSecondary}

@@ -8,7 +8,6 @@ export interface HomePage {
   heroSubtitleEs?: string
   heroSubtitleEn?: string
   heroCtaLabel?: string
-  heroCtaUrl?: string
   seoTitleEs?: string
   seoTitleEn?: string
   seoDescriptionEs?: string

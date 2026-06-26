@@ -9,7 +9,6 @@ interface FooterProps {
   blogTxt: string
   socialTxt: string
   bookNowLabel?: string
-  hostifyUrl?: string
   tagline?: string
   emailPrimary?: string
   emailSecondary?: string
@@ -30,7 +29,6 @@ export default function Footer({
   contactTxt,
   blogTxt,
   socialTxt,
-  hostifyUrl,
   tagline,
   emailPrimary,
   emailSecondary,

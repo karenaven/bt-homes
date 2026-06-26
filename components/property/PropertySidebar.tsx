@@ -226,14 +226,12 @@ export default function PropertySidebar({
                 <style>{`
           .pd-sidebar {
             position: sticky;
-            top: 2rem;
-            background: #fff;
-            border: 1px solid #eee;
+            top: 6rem;
+            background: #ecebe9;
             border-radius: 8px;
             padding: 2rem;
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
             height: fit-content;
           }
 
@@ -245,7 +243,7 @@ export default function PropertySidebar({
 
           .pd-price__amount {
             display: block;
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'Inter', sans-serif;
             font-size: 2.5rem;
             font-weight: 400;
             color: #0a0a0c;
@@ -253,9 +251,9 @@ export default function PropertySidebar({
           }
 
           .pd-price__label {
-            font-family: 'Jost', sans-serif;
+            font-family: 'Inter', sans-serif;
             font-size: 0.9rem;
-            color: #999;
+            color: #444;
           }
 
           .pd-form-group {
@@ -265,12 +263,11 @@ export default function PropertySidebar({
           }
 
           .pd-form-label {
-            font-family: 'Jost', sans-serif;
+            font-family: 'Inter', sans-serif;
             font-size: 0.85rem;
             font-weight: 600;
             color: #0a0a0c;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
           }
 
           .pd-error {
@@ -278,7 +275,7 @@ export default function PropertySidebar({
             background: #fee;
             border: 1px solid #fcc;
             border-radius: 4px;
-            font-family: 'Jost', sans-serif;
+            font-family: 'Inter', sans-serif;
             font-size: 0.85rem;
             color: #c33;
             text-align: center;
@@ -290,7 +287,7 @@ export default function PropertySidebar({
             color: #fff;
             border: none;
             border-radius: 4px;
-            font-family: 'Jost', sans-serif;
+            font-family: 'Inter', sans-serif;
             font-size: 0.95rem;
             font-weight: 600;
             text-transform: uppercase;

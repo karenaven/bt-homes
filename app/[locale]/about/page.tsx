@@ -691,7 +691,6 @@ font-size: clamp(2.25rem, 4vw, 4rem);
         experienceTxt={experienceLabel}
         ownerTxt={ownerLabel}
         locale={locale}
-        ctaUrl={homeData?.heroCtaUrl}
         ctaLabel={bookLabel}
         variant="light"
       />
@@ -915,7 +914,6 @@ font-size: clamp(2.25rem, 4vw, 4rem);
         contactTxt={contactLabel}
         blogTxt={blogLabel}
         socialTxt={socialLabel}
-        hostifyUrl={homeData?.heroCtaUrl}
         tagline={isEs ? homeData?.footerTaglineEs : homeData?.footerTaglineEn}
         emailPrimary={homeData?.footerEmailPrimary}
         emailSecondary={homeData?.footerEmailSecondary}

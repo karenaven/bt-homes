@@ -11,14 +11,12 @@ interface NavbarProps {
   ownerTxt: string
   contactTxt: string
   blogTxt: string
-  ctaUrl?: string
   ctaLabel?: string
   variant?: 'dark' | 'light'
 }
 
 export default function Navbar({
   locale,
-  ctaUrl,
   ctaLabel,
   experienceTxt,
   aboutUsTxt,

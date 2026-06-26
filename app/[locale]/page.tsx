@@ -81,7 +81,6 @@ export default async function HomePage({ params }: PageProps) {
 
       <Navbar
         locale={locale}
-        ctaUrl={data.heroCtaUrl}
         ctaLabel={bookLabel}
         aboutUsTxt={aboutUsLabel}
         blogTxt={blogLabel}
@@ -97,8 +96,6 @@ export default async function HomePage({ params }: PageProps) {
             image={data.heroImage}
             title={heroTitle}
             subtitle={heroSubtitle}
-            ctaLabel={data.heroCtaLabel}
-            ctaUrl={data.heroCtaUrl}
           />
         )}
 
@@ -154,7 +151,6 @@ export default async function HomePage({ params }: PageProps) {
         contactTxt={contactLabel}
         blogTxt={blogLabel}
         socialTxt={socialLabel}
-        hostifyUrl={data.heroCtaUrl}
         tagline={isEs ? data.footerTaglineEs : data.footerTaglineEn}
         emailPrimary={data.footerEmailPrimary}
         emailSecondary={data.footerEmailSecondary}

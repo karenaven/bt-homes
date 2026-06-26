@@ -48,10 +48,30 @@ export default async function BookingConfirmationPage({ params, searchParams }: 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
 
+
+/* ─────────────────────────────
+     LAYOUT TOKENS
+  ───────────────────────────── */
+
+  :root {
+   --container-width: 1400px;
+
+  /* Desktop */
+  --padding-block: 6rem;   /* top + bottom */
+  --padding-inline: 6rem;  /* left + right */
+
+  /* Tablet */
+  --padding-block-tablet: 5rem;
+  --padding-inline-tablet: 2rem;
+
+  /* Mobile */
+  --padding-block-mobile: 4rem;
+  --padding-inline-mobile: 1.25rem;
+}
+
         .bc-wrapper {
           max-width: 900px;
-          margin: 0 auto;
-          padding: 4rem 2.5rem;
+          margin: 10rem auto 6rem;
           min-height: calc(100vh - 400px);
           display: flex;
           flex-direction: column;
@@ -59,7 +79,7 @@ export default async function BookingConfirmationPage({ params, searchParams }: 
         }
 
         .bc-container {
-          background: #fff;
+          background: #ECEBE9;
           border: 1px solid #eee;
           border-radius: 12px;
           padding: 3rem;
@@ -68,9 +88,9 @@ export default async function BookingConfirmationPage({ params, searchParams }: 
 
         .bc-header {
           text-align: center;
-          margin-bottom: 3rem;
+          margin-bottom: 2rem;
           padding-bottom: 2rem;
-          border-bottom: 2px solid #1e3a2f;
+          border-bottom: 1px solid #000;
         }
 
         .bc-success-icon {
@@ -86,38 +106,38 @@ export default async function BookingConfirmationPage({ params, searchParams }: 
         }
 
         .bc-title {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 2.5rem;
+          font-family: 'Helvetica', serif;
+          font-size: clamp(1.75rem, 3vw, 2.75rem);
           font-weight: 400;
           color: #0a0a0c;
-          margin-bottom: 0.5rem;
+          margin-bottom: 1rem;
         }
 
         .bc-subtitle {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 1rem;
-          color: #666;
+          color: #444;
         }
 
         .bc-confirmation-number {
-          background: #f0ebe3;
-          border-left: 4px solid #1e3a2f;
+          background: #fff;
+          border-left: 4px solid #2e7d32;
           padding: 1rem;
           margin-bottom: 2rem;
           border-radius: 4px;
         }
 
         .bc-confirmation-label {
-          font-family: 'Jost', sans-serif;
-          font-size: 0.8rem;
-          color: #999;
+          font-family: 'Inter', sans-serif;
+          font-size: 0.75rem;
+          color: #444;
           text-transform: uppercase;
           letter-spacing: 0.05em;
           margin-bottom: 0.5rem;
         }
 
         .bc-confirmation-value {
-          font-family: 'Cormorant Garamond', serif;
+          font-family: 'Helvetica', serif;
           font-size: 1.8rem;
           color: #0a0a0c;
           font-weight: 400;
@@ -126,8 +146,8 @@ export default async function BookingConfirmationPage({ params, searchParams }: 
 
         .bc-content {
           display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 2rem;
+          grid-template-columns: 1fr;
+          gap: 3rem;
           margin-bottom: 2rem;
         }
 
@@ -138,22 +158,23 @@ export default async function BookingConfirmationPage({ params, searchParams }: 
         }
 
         .bc-section-title {
-          font-family: 'Jost', sans-serif;
-          font-size: 0.85rem;
+          font-family: 'Inter', sans-serif;
+          font-size: 0.75rem;
           font-weight: 600;
           color: #0a0a0c;
           text-transform: uppercase;
           letter-spacing: 0.05em;
+          border-bottom: 1px solid #000;
+          padding-bottom: 1rem;
+
         }
 
         .bc-item {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 0.75rem 0;
-          border-bottom: 1px solid #f0f0f0;
-          font-family: 'Jost', sans-serif;
-          font-size: 0.95rem;
+          font-family: 'Inter', sans-serif;
+          font-size: 1rem;
         }
 
         .bc-item:last-child {
@@ -161,7 +182,7 @@ export default async function BookingConfirmationPage({ params, searchParams }: 
         }
 
         .bc-item__label {
-          color: #666;
+          color: #0a0a0c;
         }
 
         .bc-item__value {
@@ -192,7 +213,7 @@ export default async function BookingConfirmationPage({ params, searchParams }: 
         }
 
         .bc-total-amount {
-          font-family: 'Cormorant Garamond', serif;
+          font-family: 'Helvetica', serif;
           font-size: 1.5rem;
           color: #0a0a0c;
         }
@@ -201,8 +222,6 @@ export default async function BookingConfirmationPage({ params, searchParams }: 
           display: flex;
           gap: 1rem;
           margin-top: 2rem;
-          padding-top: 2rem;
-          border-top: 1px solid #eee;
         }
 
         .bc-btn {
@@ -210,8 +229,8 @@ export default async function BookingConfirmationPage({ params, searchParams }: 
           padding: 1rem 1.5rem;
           border: none;
           border-radius: 4px;
-          font-family: 'Jost', sans-serif;
-          font-size: 0.95rem;
+          font-family: 'Inter', sans-serif;
+          font-size: 1rem;
           font-weight: 600;
           text-transform: uppercase;
           letter-spacing: 0.05em;
@@ -234,7 +253,7 @@ export default async function BookingConfirmationPage({ params, searchParams }: 
         }
 
         .bc-btn--secondary {
-          background: #f5f5f5;
+          background: #fff;
           color: #0a0a0c;
           border: 1px solid #ddd;
         }
@@ -248,16 +267,21 @@ export default async function BookingConfirmationPage({ params, searchParams }: 
           border-left: 4px solid #4caf50;
           padding: 1rem;
           border-radius: 4px;
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.9rem;
           color: #2e7d32;
           line-height: 1.6;
           margin-top: 2rem;
         }
 
+        a.booknow {
+        display: none;
+        }
+
         @media (max-width: 768px) {
           .bc-wrapper {
-            padding: 2rem 1.5rem;
+            padding: 0 1.5rem;
+            margin-block: 8rem var(--padding-block-mobile);
           }
 
           .bc-container {
@@ -270,7 +294,7 @@ export default async function BookingConfirmationPage({ params, searchParams }: 
 
           .bc-content {
             grid-template-columns: 1fr;
-            gap: 1.5rem;
+            gap: 2rem;
           }
 
           .bc-actions {

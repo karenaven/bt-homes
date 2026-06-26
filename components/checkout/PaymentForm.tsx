@@ -127,7 +127,7 @@ export default function PaymentForm({
         }
 
         .payment-section__title {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.85rem;
           font-weight: 600;
           color: #0a0a0c;
@@ -148,7 +148,7 @@ export default function PaymentForm({
         }
 
         .payment-form-label {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.8rem;
           font-weight: 600;
           color: #0a0a0c;
@@ -161,7 +161,7 @@ export default function PaymentForm({
           background: #fff;
           border: 1px solid #ddd;
           border-radius: 4px;
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.9rem;
           color: #0a0a0c;
           transition: all 0.2s;
@@ -169,7 +169,7 @@ export default function PaymentForm({
 
         .payment-form-input:focus {
           outline: none;
-          border-color: #1e3a2f;
+          border-color: #01281C;
           box-shadow: 0 0 0 3px rgba(30, 58, 47, 0.1);
         }
 
@@ -188,7 +188,7 @@ export default function PaymentForm({
           background: #fff;
           border: 1px solid #ddd;
           border-radius: 4px;
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           transition: all 0.2s;
         }
 
@@ -209,7 +209,7 @@ export default function PaymentForm({
           border: 1px solid #fcc;
           border-radius: 4px;
           color: #c33;
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.85rem;
           animation: slideIn 0.3s ease-out;
         }
@@ -229,18 +229,18 @@ export default function PaymentForm({
           padding: 1rem;
           background: #f0ebe3;
           border-radius: 4px;
-          border-left: 4px solid #1e3a2f;
+          border-left: 4px solid #01281C;
         }
 
         .payment-amount__label {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.85rem;
-          color: #666;
+          color: #444;
           margin-bottom: 0.25rem;
         }
 
         .payment-amount__value {
-          font-family: 'Cormorant Garamond', serif;
+          font-family: 'Helvetica', serif;
           font-size: 1.8rem;
           color: #0a0a0c;
           font-weight: 400;
@@ -252,7 +252,7 @@ export default function PaymentForm({
           color: #fff;
           border: none;
           border-radius: 4px;
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.95rem;
           font-weight: 600;
           text-transform: uppercase;

@@ -105,8 +105,8 @@ export default function BookingSummaryModal({
         }
 
         .bsm-title {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 1.75rem;
+          font-family: 'Helvetica', serif;
+          font-size: 1.2rem;
           font-weight: 400;
           color: #0a0a0c;
           margin: 0;
@@ -115,9 +115,9 @@ export default function BookingSummaryModal({
         .bsm-close {
           background: none;
           border: none;
-          font-size: 1.5rem;
+          font-size: 1rem;
           cursor: pointer;
-          color: #999;
+          color: #444;
           padding: 0;
           width: 32px;
           height: 32px;
@@ -144,21 +144,23 @@ export default function BookingSummaryModal({
         }
 
         .bsm-section-title {
-          font-family: 'Jost', sans-serif;
-          font-size: 0.8rem;
+          font-family: 'Inter', sans-serif;
+          font-size: 0.75rem;
           font-weight: 600;
-          color: #999;
+          color: #0a0a0c;
           text-transform: uppercase;
           letter-spacing: 0.05em;
+          padding-bottom: 1rem;
           margin-bottom: 1rem;
+          border-bottom: 1px solid #E5E7EB;
         }
 
         .bsm-property-name {
-          font-family: 'Jost', sans-serif;
-          font-size: 1.1rem;
+          font-family: 'Inter', sans-serif;
+          font-size: 1.2rem;
           font-weight: 600;
           color: #0a0a0c;
-          margin-bottom: 1rem;
+          margin-bottom: 2rem;
         }
 
         .bsm-details {
@@ -168,13 +170,13 @@ export default function BookingSummaryModal({
         }
 
         .bsm-detail {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.9rem;
         }
 
         .bsm-detail__label {
           display: block;
-          color: #999;
+          color: #444;
           font-size: 0.8rem;
           margin-bottom: 0.25rem;
           text-transform: uppercase;
@@ -190,9 +192,6 @@ export default function BookingSummaryModal({
 
         /*  NUEVO: Estilos para guests breakdown */
         .bsm-guests-breakdown {
-          background: #f9f9f9;
-          padding: 1rem;
-          border-radius: 4px;
           margin-bottom: 1rem;
         }
 
@@ -201,9 +200,11 @@ export default function BookingSummaryModal({
           justify-content: space-between;
           align-items: center;
           padding: 0.5rem 0;
-          font-family: 'Jost', sans-serif;
-          font-size: 0.9rem;
-          color: #555;
+          font-family: 'Inter', sans-serif;
+          font-size: 1rem;
+          color: #444;
+          font-weight: 400;
+          
         }
 
         .bsm-guests-row:first-child {
@@ -211,17 +212,11 @@ export default function BookingSummaryModal({
         }
 
         .bsm-guests-row--total {
-          border-top: 1px solid #ddd;
+          border-top: 1px solid #E5E7EB;
           padding-top: 0.75rem;
           margin-top: 0.75rem;
           font-weight: 600;
           color: #0a0a0c;
-        }
-
-        .bsm-price-breakdown {
-          border-top: 1px solid #eee;
-          border-bottom: 1px solid #eee;
-          padding: 1.5rem 0;
         }
 
         .bsm-price-row {
@@ -229,9 +224,10 @@ export default function BookingSummaryModal({
           justify-content: space-between;
           align-items: center;
           margin-bottom: 0.75rem;
-          font-family: 'Jost', sans-serif;
-          font-size: 0.9rem;
-          color: #555;
+          font-family: 'Inter', sans-serif;
+          font-size: 1rem;
+          color: #444;
+          font-weight: 400;
         }
 
         .bsm-price-row:last-child {
@@ -241,12 +237,12 @@ export default function BookingSummaryModal({
         .bsm-price-row--total {
           margin-top: 1rem;
           padding-top: 1rem;
-          border-top: 1px solid #eee;
+          border-top: 1px solid #E5E7EB;
           font-size: 1.1rem;
           font-weight: 600;
           color: #0a0a0c;
         }
-
+ 
         .bsm-price-amount {
           text-align: right;
           font-weight: 500;
@@ -255,8 +251,6 @@ export default function BookingSummaryModal({
         .bsm-actions {
           display: flex;
           gap: 1rem;
-          padding-top: 2rem;
-          border-top: 1px solid #eee;
         }
 
         .bsm-btn {
@@ -264,9 +258,9 @@ export default function BookingSummaryModal({
           padding: 0.9rem 1.5rem;
           border: none;
           border-radius: 4px;
-          font-family: 'Jost', sans-serif;
-          font-size: 0.9rem;
-          font-weight: 600;
+          font-family: 'Inter', sans-serif;
+          font-size: 1rem;
+          font-weight: 400;
           text-transform: uppercase;
           letter-spacing: 0.05em;
           cursor: pointer;

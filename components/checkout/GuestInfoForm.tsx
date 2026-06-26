@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 
 interface GuestInfo {
     firstName: string
@@ -15,12 +16,14 @@ interface GuestInfoFormProps {
     onSubmit: (data: GuestInfo) => Promise<void>
     isEs: boolean
     loading?: boolean
+    locale: string
 }
 
 export default function GuestInfoForm({
     onSubmit,
     isEs,
     loading = false,
+    locale, 
 }: GuestInfoFormProps) {
     const [formData, setFormData] = useState<GuestInfo>({
         firstName: '',
@@ -87,6 +90,9 @@ export default function GuestInfoForm({
         }
     }
 
+    const privacyLink = `/${locale}/privacy-policy`
+    const termsLink = `/${locale}/terms-conditions`
+
     return (
         <form onSubmit={handleSubmit} className="guest-form">
             <style>{`
@@ -103,7 +109,7 @@ export default function GuestInfoForm({
         }
 
         .guest-form__section-title {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.85rem;
           font-weight: 600;
           color: #0a0a0c;
@@ -118,7 +124,7 @@ export default function GuestInfoForm({
         }
 
         .form-label {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.85rem;
           font-weight: 600;
           color: #0a0a0c;
@@ -131,7 +137,7 @@ export default function GuestInfoForm({
           padding: 0.75rem;
           border: 1px solid #ddd;
           border-radius: 4px;
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.9rem;
           color: #0a0a0c;
           transition: all 0.2s;
@@ -141,7 +147,7 @@ export default function GuestInfoForm({
         .form-input:focus,
         .form-textarea:focus {
           outline: none;
-          border-color: #1e3a2f;
+          border-color: #01281C;
           box-shadow: 0 0 0 3px rgba(30, 58, 47, 0.1);
         }
 
@@ -152,7 +158,7 @@ export default function GuestInfoForm({
         }
 
         .form-error {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.8rem;
           color: #c33;
           margin-top: 0.25rem;
@@ -180,20 +186,20 @@ export default function GuestInfoForm({
           height: 20px;
           margin-top: 0.1rem;
           cursor: pointer;
-          accent-color: #1e3a2f;
+          accent-color: #01281C;
         }
 
         .form-checkbox-label {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.85rem;
-          color: #555;
+          color: #444;
           line-height: 1.5;
           cursor: pointer;
           flex: 1;
         }
 
         .form-checkbox-label a {
-          color: #1e3a2f;
+          color: #01281C;
           text-decoration: underline;
           transition: color 0.2s;
         }
@@ -208,7 +214,7 @@ export default function GuestInfoForm({
           color: #fff;
           border: none;
           border-radius: 4px;
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.95rem;
           font-weight: 600;
           text-transform: uppercase;
@@ -343,11 +349,27 @@ export default function GuestInfoForm({
                     <label htmlFor="agreeToTerms" className="form-checkbox-label">
                         {isEs ? (
                             <>
-                                Acepto la <a href="/politica-privacidad">Política de Privacidad</a> y <a href="/terminos">Términos y Condiciones</a> *
+                                Acepto la{' '}
+                                <Link href={privacyLink} target="_blank" rel="noopener noreferrer">
+                                    Política de Privacidad
+                                </Link>
+                                {' '}y{' '}
+                                <Link href={termsLink} target="_blank" rel="noopener noreferrer">
+                                    Términos y Condiciones
+                                </Link>
+                                {' '}*
                             </>
                         ) : (
                             <>
-                                I agree to the <a href="/privacy-policy">Privacy Policy</a> and <a href="/terms">Terms and Conditions</a> *
+                                I agree to the{' '}
+                                <Link href={privacyLink} target="_blank" rel="noopener noreferrer">
+                                    Privacy Policy
+                                </Link>
+                                {' '}and{' '}
+                                <Link href={termsLink} target="_blank" rel="noopener noreferrer">
+                                    Terms and Conditions
+                                </Link>
+                                {' '}*
                             </>
                         )}
                     </label>

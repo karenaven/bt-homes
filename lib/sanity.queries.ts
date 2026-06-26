@@ -165,6 +165,7 @@ export const ownersPageQuery = groq`
     philosophyTextEs, 
     philosophyTextEn,
     philosophyVideo { asset->{ url } },
+    HostifyEyebrow,
     featuredPropertyTitleEs, 
     featuredPropertyTitleEn,
     featuredPropertyDescEs, 
@@ -344,5 +345,30 @@ export const commonTranslationsQuery = groq`
     bookNowEs,
     bookNowEn,
     hostifyBookingUrl
+  }
+`
+
+export const legalPoliciesQuery = groq`
+  *[_type == "legalPolicies" && active == true] {
+    _id,
+    policyType,
+    title_es,
+    title_en,
+    content_es,
+    content_en,
+    lastUpdated,
+  }
+`
+ 
+// Query específica por tipo
+export const legalPoliciesByTypeQuery = groq`
+  *[_type == "legalPolicies" && policyType == $policyType && active == true][0] {
+    _id,
+    policyType,
+    title_es,
+    title_en,
+    content_es,
+    content_en,
+    lastUpdated,
   }
 `

@@ -244,7 +244,6 @@ body {
         experienceTxt={experienceLabel}
         ownerTxt={ownerLabel}
         locale={locale}
-        ctaUrl={homeData?.heroCtaUrl}
         ctaLabel={bookLabel}
         variant="light"
       />
@@ -366,7 +365,6 @@ body {
         contactTxt={contactLabel}
         blogTxt={blogLabel}
         socialTxt={socialLabel}
-        hostifyUrl={homeData?.heroCtaUrl}
         tagline={isEs ? homeData?.footerTaglineEs : homeData?.footerTaglineEn}
         emailPrimary={homeData?.footerEmailPrimary}
         emailSecondary={homeData?.footerEmailSecondary}

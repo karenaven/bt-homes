@@ -126,14 +126,43 @@ export default function CheckoutClient({
     <main>
       <div className="checkout-container">
         <style>{`
-          .checkout-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 3rem 2.5rem;
-            display: grid;
-            grid-template-columns: 1fr 350px;
-            gap: 3rem;
-          }
+
+
+/* ─────────────────────────────
+     LAYOUT TOKENS
+  ───────────────────────────── */
+
+  :root {
+   --container-width: 1400px;
+
+  /* Desktop */
+  --padding-block: 6rem;   /* top + bottom */
+  --padding-inline: 6rem;  /* left + right */
+
+  /* Tablet */
+  --padding-block-tablet: 5rem;
+  --padding-inline-tablet: 2rem;
+
+  /* Mobile */
+  --padding-block-mobile: 4rem;
+  --padding-inline-mobile: 1.25rem;
+}
+
+.checkout-container {
+  padding-top: 10rem;
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 3rem;
+
+  width: 100%;
+  max-width: calc(
+    var(--container-width) +
+    (var(--padding-block) * 2)
+  );
+  margin: 0 auto;
+  padding-inline: var(--padding-inline);
+}
+  
 
           .checkout-main {
             display: flex;
@@ -142,22 +171,22 @@ export default function CheckoutClient({
           }
 
           .checkout-header {
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #E5E7EB;
             padding-bottom: 2rem;
           }
 
           .checkout-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2.5rem;
+            font-family: 'Helvetica', serif;
+            font-size: clamp(1.75rem, 3vw, 2.75rem);
             font-weight: 400;
             color: #0a0a0c;
             margin: 0 0 1rem;
           }
 
           .checkout-subtitle {
-            font-family: 'Jost', sans-serif;
-            font-size: 0.95rem;
-            color: #666;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            color: #444;
             margin: 0;
           }
 
@@ -172,7 +201,7 @@ export default function CheckoutClient({
             display: flex;
             gap: 1rem;
             margin-bottom: 2rem;
-            font-family: 'Jost', sans-serif;
+            font-family: 'Inter', sans-serif;
             font-size: 0.9rem;
           }
 
@@ -183,7 +212,7 @@ export default function CheckoutClient({
             padding: 0.75rem 1rem;
             background: #f5f5f5;
             border-radius: 4px;
-            color: #999;
+            color: #444;
             transition: all 0.2s;
           }
 
@@ -284,6 +313,7 @@ export default function CheckoutClient({
                 onSubmit={handleGuestInfoSubmit}
                 isEs={isEs}
                 loading={loading}
+                locale={locale}
               />
             </div>
           )}

@@ -6,16 +6,12 @@ interface HeroSectionProps {
   image: SanityImageSource
   title: string
   subtitle?: string
-  ctaLabel?: string
-  ctaUrl?: string
 }
 
 export default function HeroSection({
   image,
   title,
-  subtitle,
-  ctaLabel,
-  ctaUrl,
+  subtitle
 }: HeroSectionProps) {
   const imageUrl = urlFor(image).width(1920).height(1080).fit('crop').url()
 

@@ -9,7 +9,10 @@ interface PropertyImageCarouselProps {
     title: string
 }
 
-export default function PropertyImageCarousel({ images, title }: PropertyImageCarouselProps) {
+export default function PropertyImageCarousel({
+    images,
+    title,
+}: PropertyImageCarouselProps) {
     const [lightboxOpen, setLightboxOpen] = useState(false)
     const [lightboxIndex, setLightboxIndex] = useState(0)
 
@@ -30,20 +33,23 @@ export default function PropertyImageCarousel({ images, title }: PropertyImageCa
           position: relative;
           width: 100%;
           margin-bottom: 3rem;
+          margin-top: 10rem;
         }
 
         .carousel__grid {
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
+          grid-template-columns: 2fr 1fr;
+          grid-template-rows: repeat(2, 1fr);
           gap: 1rem;
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 0 2.5rem;
+          height: 600px;
+          width: 100%;
+    max-width: calc(var(--container-width) + (var(--padding-block) * 2));
+    margin: 0 auto;
+    padding-inline: var(--padding-inline);
         }
 
         .carousel__item {
           position: relative;
-          aspect-ratio: 4/3;
           border-radius: 8px;
           overflow: hidden;
           background: #e8e4dc;
@@ -63,8 +69,18 @@ export default function PropertyImageCarousel({ images, title }: PropertyImageCa
         }
 
         .carousel__item--main {
-          grid-column: span 2;
-          aspect-ratio: 8/4;
+          grid-column: 1;
+          grid-row: 1 / 3;
+        }
+
+        .carousel__item--top {
+          grid-column: 2;
+          grid-row: 1;
+        }
+
+        .carousel__item--bottom {
+          grid-column: 2;
+          grid-row: 2;
         }
 
         .carousel__overlay {
@@ -97,10 +113,7 @@ export default function PropertyImageCarousel({ images, title }: PropertyImageCa
 
         .carousel__more {
           position: absolute;
-          bottom: 0;
-          right: 0;
-          width: 100%;
-          height: 100%;
+          inset: 0;
           background: rgba(0, 0, 0, 0.5);
           display: flex;
           align-items: center;
@@ -113,52 +126,65 @@ export default function PropertyImageCarousel({ images, title }: PropertyImageCa
 
         @media (max-width: 900px) {
           .carousel__grid {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: 1fr;
+            grid-template-rows: auto;
+            height: auto;
             padding: 0 1.5rem;
           }
-          .carousel__item--main {
-            grid-column: span 1;
-            aspect-ratio: 4/3;
+
+          .carousel__item--main,
+          .carousel__item--top,
+          .carousel__item--bottom {
+            grid-column: auto;
+            grid-row: auto;
+            aspect-ratio: 4 / 3;
           }
         }
 
         @media (max-width: 580px) {
           .carousel__grid {
-            grid-template-columns: 1fr;
             padding: 0 1rem;
-          }
-          .carousel__item--main {
-            grid-column: span 1;
           }
         }
       `}</style>
 
             <div className="carousel">
                 <div className="carousel__grid">
-                    {displayImages.map((image, i) => (
-                        <div
-                            key={i}
-                            className={`carousel__item${i === 0 ? ' carousel__item--main' : ''}`}
-                            onClick={() => handleImageClick(i)}
-                        >
-                            <Image
-                                src={image.url}
-                                alt={image.title}
-                                fill
-                                priority={i === 0}
-                                quality={75}
-                                sizes="(max-width: 900px) 100vw, (max-width: 580px) 100vw, 50vw"
-                            />
-                            <div className="carousel__overlay">
-                                <div className="carousel__icon">🔍</div>
-                            </div>
-                            {hasMore && i === 2 && (
-                                <div className="carousel__more">
-                                    +{images.length - 3}
+                    {displayImages.map((image, i) => {
+                        const itemClass =
+                            i === 0
+                                ? 'carousel__item carousel__item--main'
+                                : i === 1
+                                ? 'carousel__item carousel__item--top'
+                                : 'carousel__item carousel__item--bottom'
+
+                        return (
+                            <div
+                                key={i}
+                                className={itemClass}
+                                onClick={() => handleImageClick(i)}
+                            >
+                                <Image
+                                    src={image.url}
+                                    alt={image.title || title}
+                                    fill
+                                    priority={i === 0}
+                                    quality={75}
+                                    sizes="(max-width: 900px) 100vw, 50vw"
+                                />
+
+                                <div className="carousel__overlay">
+                                    <div className="carousel__icon">🔍</div>
                                 </div>
-                            )}
-                        </div>
-                    ))}
+
+                                {hasMore && i === 2 && (
+                                    <div className="carousel__more">
+                                        +{images.length - 3}
+                                    </div>
+                                )}
+                            </div>
+                        )
+                    })}
                 </div>
             </div>
 

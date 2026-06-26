@@ -108,21 +108,60 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
           padding: 0;
         }
 
-        .prop-wrapper {
-          padding: 3rem 2.5rem;
-          max-width: 1400px;
-          margin: 0 auto;
+        /* ─────────────────────────────
+     GLOBAL SPACING SYSTEM
+  ───────────────────────────── */
+
+ :root {
+   --container-width: 1400px;
+
+  /* Desktop */
+  --padding-block: 6rem;   /* top + bottom */
+  --padding-inline: 6rem;  /* left + right */
+
+  /* Tablet */
+  --padding-block-tablet: 5rem;
+  --padding-inline-tablet: 2rem;
+
+  /* Mobile */
+  --padding-block-mobile: 4rem;
+  --padding-inline-mobile: 1.25rem;
+}
+
+/* ─────────────────────────────
+     GLOBAL CONTAINER
+  ───────────────────────────── */
+
+  .prop-wrapper {
+    width: 100%;
+    max-width: calc(var(--container-width) + (var(--padding-block) * 2));
+    margin: 0 auto;
+    padding-inline: var(--padding-inline);
+  }
+
+  /* ─────────────────────────────
+     BUSCADOR
+  ───────────────────────────── */
+       
+        .prop-search {
+        padding-block: 10rem 2rem;
         }
 
-        .prop-search {
-          margin-bottom: 2rem;
+        .searchbar-section {
+        border-radius: 16px;
         }
+
+
+ /* ─────────────────────────────
+     GRID
+  ───────────────────────────── */
 
         .prop-grid {
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
           gap: 2rem;
-          margin: 3rem 0;
+          padding-top: 2rem;
+          padding-bottom: var(--padding-block);
         }
 
         .prop-card {
@@ -147,6 +186,7 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
           background: #e8e4dc;
           overflow: hidden;
         }
+
         .prop-card__image img {
           object-fit: cover;
         }
@@ -167,8 +207,8 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
         }
 
         .prop-card__title {
-          font-family: 'Cormorant Garamond', Georgia, serif;
-          font-size: 1.1rem;
+          font-family: 'Helvetica', Georgia, serif;
+          font-size: 1.2rem;
           font-weight: 400;
           color: #0a0a0c;
           margin: 0;
@@ -190,9 +230,9 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
         }
 
         .prop-card__city {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.75rem;
-          color: #999;
+          color: #444;
           margin-bottom: 0.75rem;
           text-transform: uppercase;
           letter-spacing: 0.05em;
@@ -201,9 +241,9 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
         .prop-card__details {
           display: flex;
           gap: 1.5rem;
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.85rem;
-          color: #666;
+          color: #444;
           margin-bottom: 1rem;
           padding-bottom: 1rem;
           border-bottom: 1px solid #f0f0f0;
@@ -223,9 +263,9 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
         }
 
         .prop-card__price-label {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.75rem;
-          color: #999;
+          color: #444;
           text-transform: uppercase;
           letter-spacing: 0.05em;
           display: block;
@@ -233,7 +273,7 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
         }
 
         .prop-card__price {
-          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-family: 'Helvetica', Georgia, serif;
           font-size: 1.5rem;
           font-weight: 400;
           color: #0a0a0c;
@@ -245,7 +285,7 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
           border: none;
           padding: 0.6rem 1.25rem;
           border-radius: 4px;
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.75rem;
           font-weight: 500;
           cursor: pointer;
@@ -255,6 +295,7 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
           display: inline-block;
           transition: background 0.2s ease;
         }
+
         .prop-card__cta:hover {
           background: #333;
         }
@@ -262,12 +303,22 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
         .prop-empty {
           text-align: center;
           padding: 4rem 2rem;
-          color: #666;
+          color: #444;
         }
+
         .prop-empty h2 {
-          font-family: 'Cormorant Garamond', Georgia, serif;
           font-size: 1.75rem;
           margin-bottom: 0.5rem;
+          font-family: 'Helvetica', Georgia, serif;
+          font-weight: 400;
+          color: #0a0a0c;
+        }
+
+        .prop-empty p {
+          font-size: 1rem;
+          font-family: 'Inter', sans-serif;
+          font-weight: 400;
+          color: #444;
         }
 
         .prop-pagination {
@@ -276,6 +327,7 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
           gap: 0.5rem;
           margin: 3rem 0;
         }
+
         .prop-pagination button,
         .prop-pagination a {
           padding: 0.65rem 1rem;
@@ -301,9 +353,15 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
           .prop-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem; }
         }
         @media (max-width: 580px) {
-          .prop-wrapper { padding: 1.5rem 1rem; }
-          .prop-grid { grid-template-columns: 1fr; }
+          .prop-wrapper { padding: var(--padding-block-mobile) var(--padding-inline-mobile) }
+          .prop-grid { grid-template-columns: 1fr; padding-bottom: 0;}
           .prop-card__header { flex-direction: column; }
+
+          .prop-search {
+        padding-block: 3rem 2rem;
+        }
+
+
         }
       `}</style>
 
@@ -339,10 +397,10 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
                     <PropertiesFilters locale={locale} isEs={isEs} />
 
                     {/* Title - Third (no background) */}
-                    <div style={{ marginBottom: '1.5rem', paddingTop: '0.5rem' }}>
+                    <div>
                         <h1 style={{
-                            fontFamily: "'Cormorant Garamond', Georgia, serif",
-                            fontSize: 'clamp(2rem, 4vw, 3.5rem)',
+                            fontFamily: "'Helvetica', Georgia, serif",
+                            fontSize: 'clamp(1.75rem, 3vw, 2.5rem)',
                             fontWeight: 400,
                             color: '#0a0a0c',
                             margin: 0
@@ -460,7 +518,6 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
                 contactTxt={contactLabel}
                 blogTxt={blogLabel}
                 socialTxt={socialLabel}
-                hostifyUrl={homeData?.heroCtaUrl}
                 tagline={isEs ? homeData?.footerTaglineEs : homeData?.footerTaglineEn}
                 emailPrimary={homeData?.footerEmailPrimary}
                 emailSecondary={homeData?.footerEmailSecondary}

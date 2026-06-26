@@ -66,7 +66,6 @@ export default async function CheckoutPage({
                     contactTxt={contactLabel}
                     blogTxt={blogLabel}
                     socialTxt={socialLabel}
-                    hostifyUrl={homeData?.heroCtaUrl}
                     tagline={isEs ? homeData?.footerTaglineEs : homeData?.footerTaglineEn}
                     emailPrimary={homeData?.footerEmailPrimary}
                     emailSecondary={homeData?.footerEmailSecondary}
@@ -113,7 +112,6 @@ export default async function CheckoutPage({
                 contactTxt={contactLabel}
                 blogTxt={blogLabel}
                 socialTxt={socialLabel}
-                hostifyUrl={homeData?.heroCtaUrl}
                 tagline={isEs ? homeData?.footerTaglineEs : homeData?.footerTaglineEn}
                 emailPrimary={homeData?.footerEmailPrimary}
                 emailSecondary={homeData?.footerEmailSecondary}

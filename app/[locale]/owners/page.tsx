@@ -54,9 +54,8 @@ export default async function OwnersPage({ params }: PageProps) {
   const differentialEyebrow = isEs ? commonTranslations.ourDifferentiatorEs : commonTranslations.ourDifferentiatorEn
   const ownersEyebrow = isEs ? commonTranslations.ownersEs : commonTranslations.ownersEn
   const ourPhilosophyEyebrow = isEs ? commonTranslations.ourPhilosophyEs : commonTranslations.ourPhilosophyEn
-  const featuredPropertiesEyebrow = isEs ? commonTranslations.featuredPropertiesEs : commonTranslations.featuredPropertiesEn
   const activeRevenueManagementEyebrow = isEs ? commonTranslations.activeRevenueManagementEs : commonTranslations.activeRevenueManagementEn
-  const servicesEyebrow = isEs ? commonTranslations.experienceEs : commonTranslations.experienceEn
+  const servicesEyebrow = isEs ? commonTranslations.servicesEs : commonTranslations.servicesEn
   const bookNowLabel = isEs ? commonTranslations.bookNowEs : commonTranslations.bookNowEn
   const experienceLabel = isEs ? commonTranslations.experienceEs : commonTranslations.experienceEn
   const ownerLabel = isEs ? commonTranslations.ownersEs : commonTranslations.ownersEn
@@ -1038,7 +1037,6 @@ display: grid;
 
       <Navbar
         locale={locale}
-        ctaUrl={homeData?.heroCtaUrl}
         ctaLabel={bookLabel}
         variant="light"
         experienceTxt={experienceLabel}
@@ -1199,7 +1197,7 @@ display: grid;
               <div className="own-feat">
                 <div>
                   <span className="own-feat__eyebrow">
-                    {featuredPropertiesEyebrow}
+                    {data?.HostifyEyebrow}
                   </span>
                 </div>
                 <div className='container-title-own-feat'>
@@ -1250,10 +1248,12 @@ display: grid;
                     {data.pricelabsFeatures.map((f: any, i: number) => (
                       <div key={i} className="own-pricelabs__feature">
                         <div className="own-pricelabs__icon">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                            <path d="M12 2a10 10 0 100 20A10 10 0 0012 2z" />
-                            <path d="M12 8v4l3 3" />
-                          </svg>
+                          <Image
+                            src={`/images/pricelabs/${i + 1}.svg`}
+                            alt={isEs ? f.labelEs : f.labelEn}
+                            width={24}
+                            height={24}
+                          />
                         </div>
                         <p className="own-pricelabs__label">
                           {isEs ? f.labelEs : f.labelEn}
@@ -1413,7 +1413,6 @@ display: grid;
         contactTxt={contactLabel}
         blogTxt={blogLabel}
         socialTxt={socialLabel}
-        hostifyUrl={homeData?.heroCtaUrl}
         tagline={isEs ? homeData?.footerTaglineEs : homeData?.footerTaglineEn}
         emailPrimary={homeData?.footerEmailPrimary}
         emailSecondary={homeData?.footerEmailSecondary}

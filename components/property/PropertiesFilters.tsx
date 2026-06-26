@@ -154,9 +154,7 @@ export default function PropertiesFilters({ locale, isEs }: PropertiesFiltersPro
             <style>{`
         .filters {
           background: transparent;
-          padding: 1.5rem 0;
-          margin-bottom: 2rem;
-          border-bottom: 1px solid #eee;
+          padding-bottom: 4rem;
         }
 
         .filters__container {
@@ -168,7 +166,7 @@ export default function PropertiesFilters({ locale, isEs }: PropertiesFiltersPro
 
         .filter-selector {
           position: relative;
-          min-width: 180px;
+          min-width: 200px;
         }
 
         .filter-selector__button {
@@ -177,8 +175,8 @@ export default function PropertiesFilters({ locale, isEs }: PropertiesFiltersPro
           border: 1px solid #ddd;
           border-radius: 4px;
           background: #fff;
-          font-family: 'Jost', sans-serif;
-          font-size: 0.9rem;
+          font-family: 'Inter', sans-serif;
+          font-size: 1rem;
           color: #0a0a0c;
           cursor: pointer;
           display: flex;
@@ -217,9 +215,9 @@ export default function PropertiesFilters({ locale, isEs }: PropertiesFiltersPro
           border-bottom: 1px solid #f0f0f0;
           cursor: pointer;
           transition: background 0.15s;
-          font-family: 'Jost', sans-serif;
-          font-size: 0.9rem;
-          color: #555;
+          font-family: 'Inter', sans-serif;
+          font-size: 1rem;
+          color: #444;
         }
 
         .filter-option:last-child {
@@ -248,7 +246,7 @@ export default function PropertiesFilters({ locale, isEs }: PropertiesFiltersPro
           padding: 0.5rem;
           border: 1px solid #ddd;
           border-radius: 4px;
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.85rem;
         }
 
@@ -270,9 +268,9 @@ export default function PropertiesFilters({ locale, isEs }: PropertiesFiltersPro
           gap: 0.75rem;
           cursor: pointer;
           transition: background 0.15s;
-          font-family: 'Jost', sans-serif;
-          font-size: 0.9rem;
-          color: #555;
+          font-family: 'Inter', sans-serif;
+          font-size: 1rem;
+          color: #444;
         }
 
         .amenity-item:hover {
@@ -299,9 +297,8 @@ export default function PropertiesFilters({ locale, isEs }: PropertiesFiltersPro
           padding: 0.7rem 1.5rem;
           border: none;
           border-radius: 4px;
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.85rem;
-          font-weight: 600;
           cursor: pointer;
           transition: all 0.2s;
           text-transform: uppercase;
@@ -327,6 +324,10 @@ export default function PropertiesFilters({ locale, isEs }: PropertiesFiltersPro
         .filters__btn--clear:hover {
           background: #f5f5f5;
           border-color: #0a0a0c;
+        }
+
+        a.booknow {
+        display: none;
         }
 
         @media (max-width: 1200px) {
@@ -364,6 +365,10 @@ export default function PropertiesFilters({ locale, isEs }: PropertiesFiltersPro
         }
 
         @media (max-width: 580px) {
+        .filters {
+            padding: 1rem 0 3rem;
+          }
+            
           .filters__container {
             flex-direction: column;
             gap: 0.5rem;

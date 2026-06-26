@@ -48,8 +48,7 @@ export default function OrderSummary({
         <div className="order-summary">
             <style>{`
         .order-summary {
-          background: #f9f8f6;
-          border: 1px solid #eee;
+          background: #ecebe9;
           border-radius: 8px;
           padding: 1.5rem;
           position: sticky;
@@ -58,7 +57,7 @@ export default function OrderSummary({
         }
 
         .order-summary__title {
-          font-family: 'Cormorant Garamond', serif;
+          font-family: 'Helvetica', serif;
           font-size: 1.5rem;
           font-weight: 400;
           color: #0a0a0c;
@@ -66,11 +65,11 @@ export default function OrderSummary({
         }
 
         .order-summary__property {
-          font-family: 'Jost', sans-serif;
-          font-size: 0.95rem;
+          font-family: 'Inter', sans-serif;
+          font-size: 1rem;
           font-weight: 600;
           color: #0a0a0c;
-          margin-bottom: 1rem;
+          margin-bottom: 1.5rem;
           line-height: 1.4;
         }
 
@@ -80,17 +79,17 @@ export default function OrderSummary({
           gap: 1rem;
           margin-bottom: 1.5rem;
           padding-bottom: 1.5rem;
-          border-bottom: 1px solid #e8e4dc;
+          border-bottom: 1px solid #000;
         }
 
         .order-summary__detail {
-          font-family: 'Jost', sans-serif;
-          font-size: 0.85rem;
+          font-family: 'Inter', sans-serif;
+          font-size: 1rem;
         }
 
         .order-summary__detail-label {
           display: block;
-          color: #999;
+          color: #444;
           font-size: 0.75rem;
           text-transform: uppercase;
           letter-spacing: 0.05em;
@@ -101,20 +100,20 @@ export default function OrderSummary({
           display: block;
           color: #0a0a0c;
           font-weight: 500;
-          font-size: 0.95rem;
+          font-size: 1rem;
         }
 
         .order-summary__breakdown {
           margin-bottom: 1.5rem;
           padding-bottom: 1.5rem;
-          border-bottom: 1px solid #e8e4dc;
+          border-bottom: 1px solid #000;
         }
 
         .order-summary__breakdown-title {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.75rem;
-          font-weight: 600;
-          color: #999;
+          font-weight: 500;
+          color: #0a0a0c;
           text-transform: uppercase;
           letter-spacing: 0.05em;
           margin-bottom: 1rem;
@@ -125,9 +124,9 @@ export default function OrderSummary({
           justify-content: space-between;
           align-items: center;
           margin-bottom: 0.75rem;
-          font-family: 'Jost', sans-serif;
-          font-size: 0.9rem;
-          color: #555;
+          font-family: 'Inter', sans-serif;
+          font-size: 1rem;
+          color: #444;
         }
 
         .order-summary__row:last-child {
@@ -149,7 +148,7 @@ export default function OrderSummary({
         }
 
         .order-summary__total-amount {
-          font-family: 'Cormorant Garamond', serif;
+          font-family: 'Helvetica', serif;
           font-size: 1.5rem;
           text-align: right;
         }
