@@ -52,7 +52,7 @@ export default async function PrivacyPolicyPage({ params }: PageProps) {
         html { scroll-behavior: smooth; }
 
         body {
-          font-family: 'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
           background: #fff;
           color: #333;
         }
@@ -60,17 +60,17 @@ export default async function PrivacyPolicyPage({ params }: PageProps) {
         .policy-container {
           max-width: 900px;
           margin: 0 auto;
-          padding: 3rem 2.5rem;
+          padding: 10rem 0 6rem;
         }
 
         .policy-header {
           margin-bottom: 3rem;
-          border-bottom: 2px solid #eee;
+          border-bottom: 1px solid #000;
           padding-bottom: 2rem;
         }
 
         .policy-header h1 {
-          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-family: 'Helvetica', Georgia, serif;
           font-size: 2.5rem;
           font-weight: 400;
           color: #0a0a0c;
@@ -78,18 +78,18 @@ export default async function PrivacyPolicyPage({ params }: PageProps) {
         }
 
         .policy-header p {
-          color: #999;
-          font-size: 0.9rem;
+          color: #444;
+          font-size: 1rem;
         }
 
         /*  PortableText styles */
         .portable-text {
           line-height: 1.8;
-          color: #555;
+          color: #444;
         }
 
         .portable-text h2 {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 1.3rem;
           font-weight: 600;
           color: #0a0a0c;
@@ -99,10 +99,10 @@ export default async function PrivacyPolicyPage({ params }: PageProps) {
         }
 
         .portable-text h3 {
-          font-family: 'Jost', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 1rem;
           font-weight: 600;
-          color: #1e3a2f;
+          color: #01281C;
           margin: 1.5rem 0 0.5rem 0;
         }
 
@@ -120,8 +120,8 @@ export default async function PrivacyPolicyPage({ params }: PageProps) {
         .portable-text li {
           margin-bottom: 0.5rem;
           line-height: 1.6;
-          color: #555;
-          font-size: 0.95rem;
+          color: #444;
+          font-size: 1rem;
         }
 
         .portable-text strong {
@@ -130,7 +130,7 @@ export default async function PrivacyPolicyPage({ params }: PageProps) {
         }
 
         .portable-text a {
-          color: #1e3a2f;
+          color: #01281C;
           text-decoration: underline;
           transition: color 0.2s;
         }
@@ -143,7 +143,7 @@ export default async function PrivacyPolicyPage({ params }: PageProps) {
           background: #f9f8f6;
           padding: 1.5rem;
           border-radius: 8px;
-          border-left: 4px solid #1e3a2f;
+          border-left: 4px solid #01281C;
           margin-top: 2rem;
         }
 
@@ -153,7 +153,7 @@ export default async function PrivacyPolicyPage({ params }: PageProps) {
 
         @media (max-width: 768px) {
           .policy-container {
-            padding: 2rem 1.5rem;
+            padding: 8rem 1.5rem;
           }
 
           .policy-header h1 {

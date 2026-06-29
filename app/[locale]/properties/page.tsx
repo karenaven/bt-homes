@@ -354,13 +354,12 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
         }
         @media (max-width: 580px) {
           .prop-wrapper { padding: var(--padding-block-mobile) var(--padding-inline-mobile) }
-          .prop-grid { grid-template-columns: 1fr; padding-bottom: 0;}
+          .prop-grid { grid-template-columns: 1fr; padding-bottom: 0; padding-top: 1rem;}
           .prop-card__header { flex-direction: column; }
 
           .prop-search {
         padding-block: 3rem 2rem;
         }
-
 
         }
       `}</style>

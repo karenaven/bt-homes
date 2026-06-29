@@ -361,17 +361,19 @@ export default function Footer({
                     </a>
                   </div>
                 )}
+
+                {/* INSTAGRAM LINKS - Mostrar como texto amigable */}
                 {(siteArg || siteMex) && (
                   <div className="footer__social-row">
                     {siteArg && (
-                      <a href={`https://${siteArg}`} target="_blank" rel="noopener noreferrer">
-                        {siteArg}
+                      <a href={siteArg} target="_blank" rel="noopener noreferrer">
+                        {locale === 'es' ? 'Instagram Arg' : 'Instagram Arg'}
                       </a>
                     )}
-                    {siteArg && siteMex && <span className="footer__social-sep">|</span>}
+                    {siteMex && <span className="footer__social-sep">|</span>}
                     {siteMex && (
-                      <a href={`https://${siteMex}`} target="_blank" rel="noopener noreferrer">
-                        {siteMex}
+                      <a href={siteMex} target="_blank" rel="noopener noreferrer">
+                        {locale === 'es' ? 'Instagram Mex' : 'Instagram Mex'}
                       </a>
                     )}
                   </div>

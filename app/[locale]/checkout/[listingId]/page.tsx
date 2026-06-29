@@ -85,6 +85,10 @@ export default async function CheckoutPage({
             <style>{`
         * { box-sizing: border-box; }
         body { margin: 0; }
+
+        a.booknow {
+        display: none;
+        }
       `}</style>
 
             <Navbar locale={locale}

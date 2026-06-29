@@ -125,27 +125,46 @@ export default function PropertyImageCarousel({
         }
 
         @media (max-width: 900px) {
-          .carousel__grid {
-            grid-template-columns: 1fr;
-            grid-template-rows: auto;
-            height: auto;
-            padding: 0 1.5rem;
-          }
+  .carousel__grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto auto;
+    gap: 0.75rem;
+    height: auto;
+    padding: 0 1.5rem;
+  }
 
-          .carousel__item--main,
-          .carousel__item--top,
-          .carousel__item--bottom {
-            grid-column: auto;
-            grid-row: auto;
-            aspect-ratio: 4 / 3;
-          }
+  /* Imagen grande arriba */
+  .carousel__item--main {
+    grid-column: 1 / 3;
+    grid-row: 1;
+    aspect-ratio: 16 / 10;
+  }
+
+  /* Dos imágenes pequeñas abajo */
+  .carousel__item--top {
+    grid-column: 1;
+    grid-row: 2;
+    aspect-ratio: 1 / 1;
+  }
+
+  .carousel__item--bottom {
+    grid-column: 2;
+    grid-row: 2;
+    aspect-ratio: 1 / 1;
+  }
+}
+
+@media (max-width: 580px) {
+
+.carousel {
+          margin-top: 8rem;
         }
 
-        @media (max-width: 580px) {
-          .carousel__grid {
-            padding: 0 1rem;
-          }
-        }
+  .carousel__grid {
+    padding: 0 1rem;
+    gap: 0.5rem;
+  }
+}
       `}</style>
 
             <div className="carousel">

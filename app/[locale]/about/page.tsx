@@ -295,6 +295,7 @@ export default async function AboutPage({ params }: PageProps) {
     color: #d7fe91;
   }
 
+
   .ab-services__card-title {
     font-family: 'Helvetica', sans-serif;
     font-size: 1.2rem;
@@ -797,7 +798,13 @@ font-size: clamp(2.25rem, 4vw, 4rem);
                     <div key={i} className="ab-services__card">
 
                       <div className="ab-services__icon">
-                        ✳
+                        <Image
+                          src={`/images/stats/asterisco-2.svg`}
+                          alt="asterisco"
+                          width={32}
+                          height={32}
+                          className="asterisk__image"
+                        />
                       </div>
 
                       <h3 className="ab-services__card-title">
@@ -899,10 +906,10 @@ font-size: clamp(2.25rem, 4vw, 4rem);
         )}
 
         <div className="exp-divider">
-        <div className="exp-container">
-          <div className="exp-divider__line"></div>
+          <div className="exp-container">
+            <div className="exp-divider__line"></div>
+          </div>
         </div>
-      </div>
 
       </main>
 

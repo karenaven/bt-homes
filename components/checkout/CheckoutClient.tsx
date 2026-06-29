@@ -150,6 +150,7 @@ export default function CheckoutClient({
 
 .checkout-container {
   padding-top: 10rem;
+  padding-bottom: var(--padding-block); 
   display: grid;
   grid-template-columns: 1fr 350px;
   gap: 3rem;
@@ -257,7 +258,7 @@ export default function CheckoutClient({
 
           @media (max-width: 600px) {
             .checkout-container {
-              padding: 1.5rem 1rem;
+              padding: 8rem var(--padding-inline-mobile) var(--padding-block-mobile);
               gap: 1.5rem;
             }
 

@@ -159,7 +159,6 @@ justify-content: space-between;
     font-weight: 400;
     line-height: 1.5;
     color: #444;
-          white-space: pre-line;
   }
 
 /* ─────────────────────────────
