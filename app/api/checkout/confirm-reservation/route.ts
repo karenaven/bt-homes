@@ -325,7 +325,7 @@ async function sendConfirmationEmail(
         `
 
         const { error } = await resend.emails.send({
-            from: `BT Homes <onboarding@resend.dev>`,
+            from: `BT Homes <noreply@bthomes.world>`,
             to: userEmail,
             subject: `¡Reserva Confirmada! - ${bookingData.propertyName}`,
             html: emailHtml,

@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
     const resend = new Resend(process.env.RESEND_API_KEY)
 
     await resend.emails.send({
-      from: 'BT Homes <onboarding@resend.dev>', // cambiá por tu dominio verificado
+      from: 'BT Homes <noreply@bthomes.world>', // cambiá por tu dominio verificado
       to: config.adminEmail,
       replyTo: email,
       subject: config.emailSubject ?? 'Nuevo contacto desde BT Homes',
