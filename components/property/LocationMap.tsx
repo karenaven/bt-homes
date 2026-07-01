@@ -4,21 +4,33 @@ import { useEffect, useRef } from 'react'
 
 interface PropertyMapProps {
     address: string
+    city: string
+    lati: number
+    lng: number
+    // country: string
     title: string
     showRadius?: boolean
 }
 
-export default function PropertyMap({ address, title, showRadius = true }: PropertyMapProps) {
+export default function PropertyMap({ address, city, lati, lng, title, showRadius = true }: PropertyMapProps) {
     const mapContainer = useRef<HTMLDivElement>(null)
     const map = useRef<any>(null)
+    const leafletLoaded = useRef(false)
     const RADIUS_KM = 2
-
     useEffect(() => {
         // Evitar cargar Leaflet en server-side
         if (typeof window === 'undefined' || !mapContainer.current) return
 
+        // Si el mapa ya está inicializado, no hacer nada
+        if (map.current) return
+
         // Cargar Leaflet dinámicamente
         const loadLeaflet = async () => {
+            if (leafletLoaded.current && (window as any).L) {
+                initializeMap()
+                return
+            }
+
             // Cargar CSS de Leaflet
             const link = document.createElement('link')
             link.rel = 'stylesheet'
@@ -30,29 +42,54 @@ export default function PropertyMap({ address, title, showRadius = true }: Prope
             script.src = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js'
             script.async = true
             script.onload = () => {
+                leafletLoaded.current = true
                 initializeMap()
+            }
+            script.onerror = () => {
+                console.error('Error al cargar Leaflet')
             }
             document.body.appendChild(script)
         }
 
         const initializeMap = async () => {
-            // Geocodificar la dirección
+            if (!mapContainer.current || !(window as any).L) {
+                console.error('Contenedor o Leaflet no disponible')
+                return
+            }
+
+            if (map.current) {
+                return
+            }
+
             try {
+                let results: any
+                address = `${address}, ${city}`
+                // Geocodificar la dirección
                 const response = await fetch(
                     `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`
                 )
-                const results = await response.json()
+                results = await response.json()
 
                 if (!results || results.length === 0) {
-                    console.error('No se pudo geocodificar la dirección')
-                    return
+                    const stateCountry = lati && lng ? `${lati}, ${lng}` : ''
+                    const response = await fetch(
+                        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(stateCountry)}`
+                    )
+                    results = await response.json()
+                    if (!results || results.length === 0) {
+                        console.error('No se pudo geocodificar la dirección')
+                        return
+                    }
                 }
 
                 const { lat, lon } = results[0]
                 const centerLat = parseFloat(lat)
                 const centerLon = parseFloat(lon)
 
-                // Inicializar mapa
+                if (!mapContainer.current || map.current) {
+                    return
+                }
+
                 const L = (window as any).L
 
                 map.current = L.map(mapContainer.current).setView([centerLat, centerLon], 13)
@@ -63,29 +100,18 @@ export default function PropertyMap({ address, title, showRadius = true }: Prope
                     maxZoom: 19,
                 }).addTo(map.current)
 
-                
+                // Mostrar solo el círculo de radio (sin marcador puntual)
                 if (showRadius) {
+                    // Círculo de cobertura
                     L.circle([centerLat, centerLon], {
                         color: '#1e3a2f',
                         fillColor: '#c8e6c9',
                         fillOpacity: 0.2,
                         weight: 2,
-                        radius: RADIUS_KM * 1000, 
+                        radius: RADIUS_KM * 1000,
                     }).addTo(map.current)
-
-                    // Agregar marcador en el centro (sin revelar ubicación exacta)
-                    L.circleMarker([centerLat, centerLon], {
-                        radius: 6,
-                        fillColor: '#1e3a2f',
-                        color: '#fff',
-                        weight: 2,
-                        opacity: 1,
-                        fillOpacity: 0.8,
-                    })
-                        .bindPopup(`${title}<br>Área de cobertura`)
-                        .addTo(map.current)
                 } else {
-                    // Si no mostrar radio, solo mostrar marcador en ubicación exacta
+                    // Sin radio, mostrar marcador exacto
                     L.marker([centerLat, centerLon])
                         .bindPopup(`${title}`)
                         .addTo(map.current)
@@ -96,6 +122,13 @@ export default function PropertyMap({ address, title, showRadius = true }: Prope
         }
 
         loadLeaflet()
+
+        return () => {
+            if (map.current) {
+                map.current.remove()
+                map.current = null
+            }
+        }
     }, [address, title, showRadius])
 
     return (

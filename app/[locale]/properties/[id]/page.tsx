@@ -452,7 +452,7 @@ display: none;
                         <div className="pd-main">
                             {/* ── HEADER ── */}
                             <div className="pd-header">
-                                <h1 className="pd-title">{property.listing?.name}</h1>
+                                <h1 className="pd-title">{property.description?.name}</h1>
                                 <div className="pd-meta">
                                     {property.rating?.rating > 0 && (
                                         <div className="pd-rating">
@@ -464,7 +464,7 @@ display: none;
                                         </div>
                                     )}
                                     <div className="pd-meta__item">
-                                        📍 {property.listing?.address}
+                                        📍 {property.listing?.city}
                                     </div>
                                 </div>
                             </div>
@@ -555,7 +555,7 @@ display: none;
                                     <h2 className="pd-section-title">
                                         {isEs ? 'Ubicación' : 'Location'}
                                     </h2>
-                                    <PropertyMap address={property.listing?.address} title={property.listing?.name} />
+                                    <PropertyMap address={property.listing?.address} city={property.listing?.city} lati={property.listing?.lat} lng={property.listing?.lng} title={property.listing?.name} />
                                 </div>
                             )}
                         </div>

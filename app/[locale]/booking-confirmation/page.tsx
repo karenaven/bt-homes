@@ -391,7 +391,7 @@ export default async function BookingConfirmationPage({ params, searchParams }: 
               </div>
 
               <div className="bc-item">
-                <span className="bc-item__label">💬</span>
+                <span className="bc-item__label">💬 <strong>ARG:</strong> {homeData?.footerPhoneArg} | <strong>MEX:</strong> {homeData?.footerPhoneMex}</span>
                 <span className="bc-item__value">
                   {isEs
                     ? 'Contacta si tienes preguntas'

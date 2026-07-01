@@ -82,7 +82,7 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
             guests,
             page,
             lang: isEs ? 'es' : 'en',
-            per_page: 12,
+            // per_page: 12,
             bedrooms,
             bathrooms,
             price_min: priceMin,
@@ -142,7 +142,7 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
   /* ─────────────────────────────
      BUSCADOR
   ───────────────────────────── */
-       
+
         .prop-search {
         padding-block: 10rem 2rem;
         }

@@ -160,11 +160,11 @@ interface ListingDetailResponse {
     currency: string
     currency_symbol: string
     city_id: number
-    // city_name: string
-    // listing_type: string
-    // bedroom_count: number
-    // bathroom_count: number
-    // guest_count: number
+    city: string
+    country:string
+    state:string
+    lat: number
+    lng: number
     price: number
     final_price: number
     rating: number
@@ -269,8 +269,8 @@ export const hostifyClient = {
      */
     async listingsAvailable(params: ListingsAvailableParams = {}) {
         const response = await fetchHostify<HostifyListingsResponse>('listings_available', {
-            per_page: params.per_page || 20,
-            page: params.page || 1,
+            // per_page: params.per_page || 20,
+            // page: params.page || 1,
             lang: params.lang || 'es',
             with_photos: params.with_photos !== false,
             guests: params.guests || 1,
