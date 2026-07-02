@@ -4,108 +4,102 @@ import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js'
 import { useState } from 'react'
 
 interface PaymentFormProps {
-    clientSecret: string
-    onSuccess: (paymentIntentId: string) => void
-    onError: (error: string) => void
-    isEs: boolean
-    amount: number
-    symbol: string
+  clientSecret: string
+  onSuccess: (paymentIntentId: string) => void
+  onError: (error: string) => void
+  isEs: boolean
+  amount: number
+  symbol: string
+  wppArg?: string
+  wppMex?: string
 }
 
 export default function PaymentForm({
-    clientSecret,
-    onSuccess,
-    onError,
-    isEs,
-    amount,
-    symbol,
+  clientSecret,
+  onSuccess,
+  onError,
+  isEs,
+  amount,
+  symbol,
+  wppArg,
+  wppMex
 }: PaymentFormProps) {
-    const stripe = useStripe()
-    const elements = useElements()
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState('')
-    const [cardholderName, setCardholderName] = useState('')
-    const [isProcessing, setIsProcessing] = useState(false)
+  const stripe = useStripe()
+  const elements = useElements()
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [cardholderName, setCardholderName] = useState('')
+  const [isProcessing, setIsProcessing] = useState(false)
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
 
-        //  Validar nombre del titular
-        if (!cardholderName.trim()) {
-            setError(isEs ? 'Por favor ingresa el nombre del titular' : 'Please enter cardholder name')
-            return
-        }
-
-        // Validar Stripe cargó
-        if (!stripe || !elements) {
-            setError(isEs ? 'Stripe no cargó correctamente' : 'Stripe did not load')
-            return
-        }
-
-        // Activar isProcessing ANTES de setLoading
-        // Esto asegura que el botón se deshabilite inmediatamente
-        setIsProcessing(true)
-        setLoading(true)
-        setError('')
-
-        try {
-            const cardElement = elements.getElement(CardElement)
-            if (!cardElement) {
-                throw new Error('Card element not found')
-            }
-
-            console.log('Iniciando pago...')
-            console.log('Titular:', cardholderName.trim())
-            console.log('Monto:', amount)
-
-            // Confirmar el pago CON nombre del titular
-            const { error: confirmError, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-                payment_method: {
-                    card: cardElement,
-                    billing_details: {
-                        name: cardholderName.trim(),
-                    },
-                },
-            })
-
-            if (confirmError) {
-                console.error(' Error en pago:', confirmError.message)
-                setError(confirmError.message || (isEs ? 'Error al procesar el pago' : 'Payment processing error'))
-                setLoading(false)
-                setIsProcessing(false)
-                onError(confirmError.message || 'Payment failed')
-                return
-            }
-
-            if (paymentIntent?.status === 'succeeded') {
-                console.log('Pago exitoso:', paymentIntent.id)
-                console.log('Titular:', cardholderName)
-
-                // Mantener botón deshabilitado mientras se completa
-                onSuccess(paymentIntent.id)
-
-                // No resetear loading/isProcessing aquí
-                // El componente padre redirigirá después
-            } else {
-                console.error('Pago incompleto. Estado:', paymentIntent?.status)
-                setError(isEs ? 'El pago no se completó' : 'Payment incomplete')
-                setLoading(false)
-                setIsProcessing(false)
-                onError('Payment incomplete')
-            }
-        } catch (err) {
-            const message = err instanceof Error ? err.message : 'Unknown error'
-            console.error(' Error:', message)
-            setError(message)
-            setLoading(false)
-            setIsProcessing(false)
-            onError(message)
-        }
+    if (!cardholderName.trim()) {
+      setError(isEs ? 'Por favor ingresa el nombre del titular' : 'Please enter cardholder name')
+      return
     }
 
-    return (
-        <form onSubmit={handleSubmit} className="payment-form">
-            <style>{`
+    if (!stripe || !elements) {
+      setError(isEs ? 'Stripe no cargó correctamente' : 'Stripe did not load')
+      return
+    }
+
+    setIsProcessing(true)
+    setLoading(true)
+    setError('')
+
+    try {
+      const cardElement = elements.getElement(CardElement)
+      if (!cardElement) {
+        throw new Error('Card element not found')
+      }
+
+      console.log('Iniciando pago...')
+      console.log('Titular:', cardholderName.trim())
+      console.log('Monto:', amount)
+
+      const { error: confirmError, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: cardElement,
+          billing_details: {
+            name: cardholderName.trim(),
+          },
+        },
+      })
+
+      if (confirmError) {
+        console.error('Error en pago:', confirmError.message)
+        setError(confirmError.message || (isEs ? 'Error al procesar el pago' : 'Payment processing error'))
+        setLoading(false)
+        setIsProcessing(false)
+        onError(confirmError.message || 'Payment failed')
+        return
+      }
+
+      if (paymentIntent?.status === 'succeeded') {
+        console.log('Pago exitoso:', paymentIntent.id)
+        console.log('Titular:', cardholderName)
+        onSuccess(paymentIntent.id)
+      } else {
+        console.error('Pago incompleto. Estado:', paymentIntent?.status)
+        setError(isEs ? 'El pago no se completó' : 'Payment incomplete')
+        setLoading(false)
+        setIsProcessing(false)
+        onError('Payment incomplete')
+      }
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Unknown error'
+      console.error('Error:', message)
+      setError(message)
+      setLoading(false)
+      setIsProcessing(false)
+      onError(message)
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="payment-form">
+      <style>{`
         .payment-form {
           display: flex;
           flex-direction: column;
@@ -246,6 +240,56 @@ export default function PaymentForm({
           font-weight: 400;
         }
 
+        /* ✅ BANNER DE TRANSFERENCIA */
+        .transfer-notice {
+          padding: 1.25rem;
+          background: #fff3cd;
+          border: 1px solid #ffc107;
+          border-left: 4px solid #ff9800;
+          border-radius: 4px;
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+        }
+
+        .transfer-notice__icon {
+          font-size: 1.5rem;
+          flex-shrink: 0;
+          margin-top: 0.1rem;
+        }
+
+        .transfer-notice__content {
+          flex: 1;
+        }
+
+        .transfer-notice__title {
+          font-family: 'Inter', sans-serif;
+          font-size: 0.95rem;
+          font-weight: 600;
+          color: #856404;
+          margin-bottom: 0.25rem;
+        }
+
+        .transfer-notice__text {
+          font-family: 'Inter', sans-serif;
+          font-size: 0.85rem;
+          color: #856404;
+          line-height: 1.5;
+          margin-bottom: 0.5rem;
+        }
+
+        .transfer-notice__contact {
+          font-family: 'Courier New', monospace;
+          font-size: 0.9rem;
+          font-weight: 600;
+          color: #856404;
+          background: rgba(255, 255, 255, 0.7);
+          padding: 0.5rem 0.75rem;
+          border-radius: 3px;
+          display: inline-block;
+          margin-top: 0.5rem;
+        }
+
         .payment-submit {
           padding: 0.9rem 1.5rem;
           background: #0a0a0c;
@@ -270,14 +314,12 @@ export default function PaymentForm({
           background: #333;
         }
 
-        /* Estilos cuando está deshabilitado */
         .payment-submit:disabled {
           opacity: 0.6;
           cursor: not-allowed;
           background: #666;
         }
 
-        /* Spinner animado mientras procesa */
         .payment-submit.is-processing::after {
           content: '';
           position: absolute;
@@ -294,7 +336,6 @@ export default function PaymentForm({
           to { transform: rotate(360deg); }
         }
 
-        /* Warning cuando está procesando */
         .payment-processing-warning {
           padding: 1rem;
           background: #fff3cd;
@@ -313,91 +354,121 @@ export default function PaymentForm({
           content: '⏳';
           font-size: 1.2rem;
         }
+
+        @media (max-width: 580px) {
+          .transfer-notice {
+            flex-direction: column;
+          }
+          
+          .transfer-notice__icon {
+            margin-top: 0;
+          }
+        }
       `}</style>
 
-            {/* Monto a pagar */}
-            <div className="payment-amount">
-                <div className="payment-amount__label">
-                    {isEs ? 'Monto a Pagar' : 'Amount to Pay'}
-                </div>
-                <div className="payment-amount__value">
-                    {symbol}{amount.toFixed(2)}
-                </div>
-            </div>
+      {/* Monto a pagar */}
+      <div className="payment-amount">
+        <div className="payment-amount__label">
+          {isEs ? 'Monto a Pagar' : 'Amount to Pay'}
+        </div>
+        <div className="payment-amount__value">
+          {symbol}{amount.toFixed(2)}
+        </div>
+      </div>
 
-            {/* Aviso cuando está procesando */}
-            {isProcessing && (
-                <div className="payment-processing-warning">
-                    {isEs ? 'Procesando tu pago, por favor espera...' : 'Processing your payment, please wait...'}
-                </div>
-            )}
+      {/* ✅ AVISO DE TRANSFERENCIA BANCARIA */}
+      <div className="transfer-notice">
+        <div className="transfer-notice__icon">💰</div>
+        <div className="transfer-notice__content">
+          <div className="transfer-notice__title">
+            {isEs ? 'Pago por Transferencia Bancaria' : 'Bank Transfer Payment'}
+          </div>
+          <div className="transfer-notice__text">
+            {isEs
+              ? 'Si deseas realizar el pago por transferencia bancaria, comunícate con nosotros al siguiente número de WhatsApp:'
+              : 'If you wish to make payment by bank transfer, please contact us at the following WhatsApp number:'}
+          </div>
+          <div className="transfer-notice__contact">
+            📱 Argentina {wppArg}
+          </div>
+          <br></br>
+          <div className="transfer-notice__contact">
+            📱 México {wppMex}
+          </div>
+        </div>
+      </div>
 
-            {/* Nombre del titular */}
-            <div className="payment-section">
-                <h3 className="payment-section__title">
-                    {isEs ? 'Datos del Titular' : 'Cardholder Details'}
-                </h3>
+      {/* Nombre del titular */}
+      <div className="payment-section">
+        <h3 className="payment-section__title">
+          {isEs ? 'Datos del Titular' : 'Cardholder Details'}
+        </h3>
 
-                <div className="payment-form-group">
-                    <label className="payment-form-label">
-                        {isEs ? 'Nombre del Titular' : 'Cardholder Name'}
-                    </label>
-                    <input
-                        type="text"
-                        className="payment-form-input"
-                        value={cardholderName}
-                        onChange={(e) => setCardholderName(e.target.value)}
-                        placeholder={isEs ? 'Ej: Juan Pérez' : 'E.g: John Doe'}
-                        disabled={loading || isProcessing}
-                        required
-                    />
-                </div>
-            </div>
+        <div className="payment-form-group">
+          <label className="payment-form-label">
+            {isEs ? 'Nombre del Titular' : 'Cardholder Name'}
+          </label>
+          <input
+            type="text"
+            className="payment-form-input"
+            value={cardholderName}
+            onChange={(e) => setCardholderName(e.target.value)}
+            placeholder={isEs ? 'Ej: Juan Pérez' : 'E.g: John Doe'}
+            disabled={loading || isProcessing}
+            required
+          />
+        </div>
+      </div>
 
-            {/* Card Element */}
-            <div className="payment-section">
-                <h3 className="payment-section__title">
-                    {isEs ? 'Información de Tarjeta' : 'Card Information'}
-                </h3>
-                <div className={`stripe-element-container ${isProcessing ? 'disabled' : ''}`}>
-                    <CardElement
-                        className="stripe-element"
-                        options={{
-                            hidePostalCode: true,
-                            disabled: isProcessing,
-                            style: {
-                                base: {
-                                    fontSize: '16px',
-                                    color: '#0a0a0c',
-                                    '::placeholder': {
-                                        color: '#ccc',
-                                    },
-                                },
-                            },
-                        }}
-                    />
-                </div>
-            </div>
+      {/* Card Element */}
+      <div className="payment-section">
+        <h3 className="payment-section__title">
+          {isEs ? 'Información de Tarjeta' : 'Card Information'}
+        </h3>
+        <div className={`stripe-element-container ${isProcessing ? 'disabled' : ''}`}>
+          <CardElement
+            className="stripe-element"
+            options={{
+              hidePostalCode: true,
+              disabled: isProcessing,
+              style: {
+                base: {
+                  fontSize: '16px',
+                  color: '#0a0a0c',
+                  '::placeholder': {
+                    color: '#ccc',
+                  },
+                },
+              },
+            }}
+          />
+        </div>
+      </div>
 
-            {/* Error message */}
-            {error && <div className="payment-error">{error}</div>}
+      {/* Processing warning */}
+      {isProcessing && (
+        <div className="payment-processing-warning">
+          {isEs ? 'Procesando tu pago, por favor espera...' : 'Processing your payment, please wait...'}
+        </div>
+      )}
 
-            {/* Submit button */}
-            <button
-                type="submit"
-                className={`payment-submit ${isProcessing ? 'is-processing' : ''}`}
-                disabled={!stripe || loading || !cardholderName.trim() || isProcessing}
-            >
-                {isProcessing ? (
-                    <span>
-                        {isEs ? 'Procesando Pago' : 'Processing Payment'}
-                    </span>
-                ) : loading ? (
-                    <span>{isEs ? 'Confirmando...' : 'Confirming...'}</span>
-                ) : (
-                    <span>{isEs ? 'Confirmar Pago' : 'Confirm Payment'}</span>
-                )}
-            </button>
-        </form>
-    )
+      {/* Error message */}
+      {error && <div className="payment-error">{error}</div>}
+
+      {/* Submit button */}
+      <button
+        type="submit"
+        className={`payment-submit ${isProcessing ? 'is-processing' : ''}`}
+        disabled={!stripe || loading || !cardholderName.trim() || isProcessing}
+      >
+        {isProcessing ? (
+          <span>{isEs ? 'Procesando Pago' : 'Processing Payment'}</span>
+        ) : loading ? (
+          <span>{isEs ? 'Confirmando...' : 'Confirming...'}</span>
+        ) : (
+          <span>{isEs ? 'Confirmar Pago' : 'Confirm Payment'}</span>
+        )}
+      </button>
+    </form>
+  )
 }

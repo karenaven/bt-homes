@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { hostifyClient } from '@/lib/hostify/client'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
-import SearchBar from '@/components/home/Searchbar'
+import PropertiesSearchBar from '@/components/property/PropertiesSearchBar'
 import PropertiesFilters from '@/components/property/PropertiesFilters'
 import { Destination, HomePage } from '@/lib/types'
 import { commonTranslationsQuery, destinationsQuery, homePageQuery } from '@/lib/sanity.queries'
@@ -41,13 +41,16 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
     const { locale } = await params
     const search = await searchParams
 
+    const initialCityId = search.city_id
+    const initialCheckin = search.start_date
+    const initialCheckout = search.end_date
+    const initialGuests = search.guests
+
     if (!['es', 'en'].includes(locale)) notFound()
 
     const isEs = locale === 'es'
-    const cityId = search.city_id
     const startDate = search.start_date
     const endDate = search.end_date
-    const guests = search.guests ? parseInt(search.guests) : 1
     const page = search.page ? parseInt(search.page) : 1
     const priceMin = search.price_min ? parseFloat(search.price_min) : undefined
     const priceMax = search.price_max ? parseFloat(search.price_max) : undefined
@@ -58,6 +61,8 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
     let properties: any[] = []
     let total = 0
     let pages = 0
+    const cityId = search.city_id
+    const guests = search.guests ? parseInt(search.guests) : 1
 
     const destination = isEs ? commonTranslations.destinationEs : commonTranslations.destinationEn
     const checkinTxt = isEs ? commonTranslations.checkInEs : commonTranslations.checkInEn
@@ -80,9 +85,7 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
             start_date: startDate,
             end_date: endDate,
             guests,
-            page,
             lang: isEs ? 'es' : 'en',
-            // per_page: 12,
             bedrooms,
             bathrooms,
             price_min: priceMin,
@@ -92,7 +95,6 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
         let filteredProperties = data?.listings || []
 
         properties = filteredProperties
-
         total = data?.total || 0
         pages = data?.pages || 1
     } catch (error) {
@@ -379,7 +381,7 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
                 <div className="prop-wrapper">
                     {/* SearchBar - First */}
                     <div className="prop-search">
-                        <SearchBar
+                        <PropertiesSearchBar
                             locale={locale}
                             destinations={destinations}
                             destination={destination}
@@ -388,7 +390,10 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
                             guestsTxt={guestsTxt}
                             search={searchLabel}
                             allDestinationsTxt={allDestinations}
-                            hostifyUrl=''
+                            initialCityId={initialCityId}
+                            initialCheckin={initialCheckin}
+                            initialCheckout={initialCheckout}
+                            initialGuests={initialGuests}
                         />
                     </div>
 

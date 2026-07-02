@@ -32,12 +32,16 @@ interface CheckoutClientProps {
     position: string
     priceDetails: any
   }
+  wppArg?: string
+  wppMex?: string
 }
 
 export default function CheckoutClient({
   locale,
   isEs,
   bookingData,
+  wppArg,
+  wppMex
 }: CheckoutClientProps) {
   const router = useRouter()
   const [clientSecret, setClientSecret] = useState('')
@@ -333,6 +337,8 @@ export default function CheckoutClient({
                   isEs={isEs}
                   amount={bookingData.total}
                   symbol={bookingData.symbol}
+                  wppArg={wppArg}
+                  wppMex={wppMex}
                 />
               </Elements>
             </div>

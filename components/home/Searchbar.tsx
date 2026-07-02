@@ -9,10 +9,13 @@ interface SearchBarProps {
   checkoutTxt?: string,
   guestsTxt?: string,
   search?: string,
-  hostifyUrl: string,
   allDestinationsTxt?: string
   locale?: string
   destinations?: Destination[]
+  startDateSelected?: string
+  endDateSelected?: string
+  cityIdSelected?: string
+  guestsSelected?: number
 }
 
 function formatDate(date: string): string {
@@ -29,7 +32,10 @@ export default function SearchBar({
   allDestinationsTxt,
   locale = 'es',
   destinations = [],
-  hostifyUrl
+  startDateSelected,
+  endDateSelected,
+  cityIdSelected,
+  guestsSelected
 }: SearchBarProps) {
 
   const today = new Date()
@@ -40,13 +46,42 @@ export default function SearchBar({
 
   const toInputDate = (d: Date) => d.toISOString().split('T')[0]
 
-  const [checkin, setCheckin] = useState(toInputDate(tomorrow))
-  const [checkout, setCheckout] = useState(toInputDate(nextWeek))
-  const [guests, setGuests] = useState(1)
+  const [checkin, setCheckin] = useState(startDateSelected || toInputDate(tomorrow))
+  const [checkout, setCheckout] = useState(endDateSelected || toInputDate(nextWeek))
+  const [guests, setGuests] = useState(guestsSelected || 1)
 
   const [selectedDestination, setSelectedDestination] = useState<Destination | null>(null)
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (startDateSelected) {
+      setCheckin(startDateSelected)
+    }
+  }, [startDateSelected])
+
+  useEffect(() => {
+    if (endDateSelected) {
+      setCheckout(endDateSelected)
+    }
+  }, [endDateSelected])
+
+  useEffect(() => {
+    if (guestsSelected && guestsSelected > 0) {
+      setGuests(guestsSelected)
+    }
+  }, [guestsSelected])
+
+  useEffect(() => {
+    if (cityIdSelected && destinations.length > 0) {
+      const found = destinations.find(
+        (dest) => dest.cityId === cityIdSelected
+      )
+      if (found) {
+        setSelectedDestination(found)
+      }
+    }
+  }, [cityIdSelected, destinations])
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {

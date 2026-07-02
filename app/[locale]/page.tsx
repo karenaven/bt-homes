@@ -108,7 +108,6 @@ export default async function HomePage({ params }: PageProps) {
           guestsTxt={guestsTxt}
           search={search}
           destinations={destinations}
-          hostifyUrl={hostifyBookingUrl}
           allDestinationsTxt={allDestinations}
         />
 

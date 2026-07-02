@@ -106,6 +106,8 @@ export default async function CheckoutPage({
                 locale={locale}
                 isEs={isEs}
                 bookingData={bookingData}
+                wppArg={homeData?.footerPhoneArg}
+                wppMex={homeData?.footerPhoneMex}
             />
 
             <Footer
