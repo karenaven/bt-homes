@@ -54,10 +54,6 @@ export default function PaymentForm({
         throw new Error('Card element not found')
       }
 
-      console.log('Iniciando pago...')
-      console.log('Titular:', cardholderName.trim())
-      console.log('Monto:', amount)
-
       const { error: confirmError, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: cardElement,
@@ -77,11 +73,8 @@ export default function PaymentForm({
       }
 
       if (paymentIntent?.status === 'succeeded') {
-        console.log('Pago exitoso:', paymentIntent.id)
-        console.log('Titular:', cardholderName)
         onSuccess(paymentIntent.id)
       } else {
-        console.error('Pago incompleto. Estado:', paymentIntent?.status)
         setError(isEs ? 'El pago no se completó' : 'Payment incomplete')
         setLoading(false)
         setIsProcessing(false)

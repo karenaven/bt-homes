@@ -151,24 +151,9 @@ export default function PropertySidebar({
 
         setLoading(true)
         try {
-            console.log('Calculando precio con parámetros:', {
-                listingId,
-                checkIn,
-                checkOut,
-                totalGuests,
-                adults,
-                children,
-                infants,
-                pets,
-            })
-
             const url = `/api/checkout/calculate-price?listing_id=${listingId}&start_date=${checkIn}&end_date=${checkOut}&guests=${totalGuests}&adults=${adults}&children=${children}&infants=${infants}&pets=${pets}`
 
-            console.log('URL:', url)
-
             const response = await fetch(url)
-
-            console.log('Response status:', response.status)
 
             if (!response.ok) {
                 const errorText = await response.text()
@@ -177,7 +162,6 @@ export default function PropertySidebar({
             }
 
             const priceData = await response.json()
-            console.log('Price data:', priceData)
 
             const v3 = priceData.price.v3
 

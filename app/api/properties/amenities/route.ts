@@ -19,12 +19,10 @@ export async function GET(request: Request) {
     try {
         // 1. Obtener amenities de Hostify (en inglés)
         const hostifyAmenities = await hostifyClient.getAmenities()
-        console.log('Amenities de Hostify:', hostifyAmenities?.length || 0)
-
+       
         // 2.  NUEVO: Obtener traducciones de Sanity
         const sanityAmenities = await client.fetch(amenitiesQuery)
-        console.log('Amenities de Sanity:', sanityAmenities?.length || 0)
-
+       
         // 3.  NUEVO: Combinar datos
         // Crear un mapa de Sanity por hostifyId para búsqueda rápida
         const sanityMap = new Map(
@@ -48,8 +46,6 @@ export async function GET(request: Request) {
             }
         })
 
-        console.log(' Amenities enriquecidos:', enrichedAmenities.length)
-        console.log(enrichedAmenities);
         return Response.json({
             success: true,
             amenities: enrichedAmenities || [],

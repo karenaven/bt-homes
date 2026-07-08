@@ -40,7 +40,6 @@ export default function FeaturedProperties({
     : null
 
   const href = `/${locale}/properties/${prop.idPropertyHostify}`
-  console.log(prop.idPropertyHostify)
   function prev() {
     setCurrent((c) =>
       c === 0 ? properties.length - 1 : c - 1

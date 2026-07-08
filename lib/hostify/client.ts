@@ -161,8 +161,8 @@ interface ListingDetailResponse {
     currency_symbol: string
     city_id: number
     city: string
-    country:string
-    state:string
+    country: string
+    state: string
     lat: number
     lng: number
     price: number
@@ -254,8 +254,6 @@ async function fetchHostify<T extends HostifyResponse>(
             'Content-Type': 'application/json',
         },
     })
-    console.log(`Hostify API request: ${url.toString()}`)
-    console.log(`Hostify API response: ${JSON.stringify(response)}`)
     if (!response.ok) {
         throw new Error(`Hostify API error: ${response.status} ${response.statusText}`)
     }
@@ -276,7 +274,6 @@ export const hostifyClient = {
             guests: params.guests || 1,
             ...params,
         })
-        console.log('Hostify listings_available response:', response)
         if (!response.success) {
             throw new Error(response.message || 'Failed to fetch listings')
         }
@@ -299,7 +296,6 @@ export const hostifyClient = {
             guests
         })
 
-        console.log('Hostify listingDetail response:', response)
         if (!response.success) {
             throw new Error(response.message || 'Failed to fetch listing detail')
         }
@@ -406,7 +402,6 @@ export const hostifyClient = {
                 ...(INTEGRATION_ID ? { 'integration-id': String(INTEGRATION_ID) } : {}),
             }
         })
-        console.log('Hostify getListingPrice response:', response)
         if (!response.ok) {
             throw new Error(`Failed to fetch listing price: ${response.status}`)
         }
@@ -457,7 +452,6 @@ export const hostifyClient = {
                 status: reservationData.status || 'new',
             }),
         })
-        console.log('Hostify createReservation response:', response)
         if (!response.ok) {
             const error = await response.text()
             throw new Error(`Failed to create reservation: ${response.status} ${error}`)
@@ -502,7 +496,6 @@ export const hostifyClient = {
             },
             body: JSON.stringify(confirmData),
         })
-        console.log('Hostify confirmReservation response:', response)
         if (!response.ok) {
             const error = await response.text()
             throw new Error(`Failed to confirm reservation: ${response.status} ${error}`)

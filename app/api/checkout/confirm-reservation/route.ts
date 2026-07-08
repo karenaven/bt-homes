@@ -74,20 +74,6 @@ export async function POST(request: NextRequest) {
         const infants = bookingData.infants ?? 0
         const pets = bookingData.pets ?? 0
 
-        console.log('Creando reserva con datos:', {
-            listing_id: bookingData.listingId,
-            start_date: formatDateToDDMMYYYY(bookingData.checkIn),
-            end_date: formatDateToDDMMYYYY(bookingData.checkOut),
-            guests: bookingData.guests,
-            adults,
-            children,
-            infants,
-            pets,
-            total_price: bookingData.total,
-            guest_name: `${guestInfo.firstName} ${guestInfo.lastName}`,
-            guest_email: guestInfo.email,
-        })
-
         //2. Crear reserva en Hostify
         const hostifyReservation = await hostifyClient.createReservation({
             listing_id: String(bookingData.listingId),
@@ -110,11 +96,6 @@ export async function POST(request: NextRequest) {
             website_id: parseInt(process.env.HOSTIFY_INTEGRATION_ID || '400000134'),
         })
 
-        console.log('Reserva creada en Hostify:', {
-            id: hostifyReservation.id,
-            status: hostifyReservation.status,
-        })
-
         // 3. Confirmar reserva en Hostify
         const confirmedReservation = await hostifyClient.confirmReservation({
             reservation_id: String(hostifyReservation.id),
@@ -133,17 +114,6 @@ export async function POST(request: NextRequest) {
                 is3ds: 0,
             },
         })
-
-        console.log('Reserva confirmada en Hostify:', {
-            id: confirmedReservation.id,
-            status: confirmedReservation.status,
-            confirmation_code: confirmedReservation.confirmation_code,
-        })
-
-        // 4. Obtener email del admin de Sanity
-        // const config = await client.fetch(contactConfigQuery)
-        // const adminEmail = config?.adminEmail || 'bthomes@hostify.club'
-        // console.log('Email del admin obtenido de Sanity:', adminEmail)
 
         // Enviar email al usuario
         await sendConfirmationEmail(

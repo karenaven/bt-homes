@@ -23,7 +23,6 @@ export async function GET(request: NextRequest) {
             endDate,
             parseInt(guests)
         )
-        console.log('Calculated price:', price)
         return NextResponse.json({
             success: true,
             price,
