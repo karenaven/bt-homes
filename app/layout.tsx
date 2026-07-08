@@ -2,7 +2,19 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'BT Homes',
-  description: '',
+  description: 'Sentirse en casa, estés donde estés. Propiedades premium en Argentina y México con servicio integral, atención al detalle y oportunidades de inversión.',
+  openGraph: {
+    title: 'BT Homes',
+    description: 'Sentirse en casa, estés donde estés. Propiedades premium en Argentina y México con servicio integral, atención al detalle y oportunidades de inversión.',
+    images: [
+      {
+        url: 'public/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'BT Homes',
+      }
+    ]
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
