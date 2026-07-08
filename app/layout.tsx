@@ -6,14 +6,17 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'BT Homes',
     description: 'Sentirse en casa, estés donde estés. Propiedades premium en Argentina y México con servicio integral, atención al detalle y oportunidades de inversión.',
+    url: 'https://www.bthomes.world',
+    siteName: 'BT Homes',
     images: [
       {
-        url: 'public/og-image.jpg',
+        url: '/og-image.jpg',
         width: 1200,
         height: 630,
         alt: 'BT Homes',
-      }
-    ]
+      },
+    ],
+    type: 'website',
   },
 }
 
