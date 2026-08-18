@@ -104,6 +104,7 @@ interface ListingsAvailableParams {
     with_photos?: boolean
     longTermMode?: boolean
     bedrooms?: number
+    exact_bedrooms?: number
     bathrooms?: number
     price_min?: number
     price_max?: number
@@ -120,6 +121,7 @@ interface ListingCard {
     listing_type: string
     bedroom_count: number
     bathroom_count: number
+    guests_included: number
     price: number
     final_price: number
     rating: number
@@ -174,6 +176,7 @@ interface ListingDetailResponse {
     bedrooms: number
     address: string
     guests_included: number
+    beds: number
     reviews: Array<{
         id: number
         guest: string
@@ -272,12 +275,15 @@ export const hostifyClient = {
             lang: params.lang || 'es',
             with_photos: params.with_photos !== false,
             guests: params.guests || 1,
+            exact_bedrooms: params.exact_bedrooms,
+            bedrooms: params.bedrooms,
+            bathrooms: params.bathrooms,
             ...params,
         })
         if (!response.success) {
             throw new Error(response.message || 'Failed to fetch listings')
         }
-
+        
         // Devolver el objeto completo ya que contiene listings, total, etc.
         return {
             listings: response.listings,

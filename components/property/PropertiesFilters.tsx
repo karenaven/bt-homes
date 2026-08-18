@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
 interface Amenity {
@@ -15,13 +15,15 @@ interface PropertiesFiltersProps {
     isEs: boolean
 }
 
+const RELEVANT_AMENITY_IDS = [55, 214, 39, 60, 59, 46, 2, 47, 5, 56]
+
 export default function PropertiesFilters({ locale, isEs }: PropertiesFiltersProps) {
     const router = useRouter()
     const searchParams = useSearchParams()
 
     const [priceMin, setPriceMin] = useState(searchParams.get('price_min') || '')
     const [priceMax, setPriceMax] = useState(searchParams.get('price_max') || '')
-    const [bedrooms, setBedrooms] = useState(searchParams.get('bedrooms') || '')
+    const [exact_bedrooms, setBedrooms] = useState(searchParams.get('exact_bedrooms') || '')
     const [bathrooms, setBathrooms] = useState(searchParams.get('bathrooms') || '')
     const [selectedAmenities, setSelectedAmenities] = useState<number[]>(
         searchParams.get('amenities')?.split(',').map(Number).filter(Boolean) || []
@@ -35,6 +37,12 @@ export default function PropertiesFilters({ locale, isEs }: PropertiesFiltersPro
     const [showBathroomsDropdown, setShowBathroomsDropdown] = useState(false)
     const [showAmenitiesDropdown, setShowAmenitiesDropdown] = useState(false)
 
+
+    const priceRef = useRef<HTMLDivElement>(null)
+    const bedroomsRef = useRef<HTMLDivElement>(null)
+    const bathroomsRef = useRef<HTMLDivElement>(null)
+    const amenitiesRef = useRef<HTMLDivElement>(null)
+
     // Fetch amenities on mount
     useEffect(() => {
         const fetchAmenities = async () => {
@@ -42,7 +50,15 @@ export default function PropertiesFilters({ locale, isEs }: PropertiesFiltersPro
                 const response = await fetch('/api/properties/amenities')
                 if (!response.ok) throw new Error('Failed to fetch')
                 const data = await response.json()
-                setAmenities(data.amenities || [])
+
+                const allAmenities: Amenity[] = data.amenities || []
+
+                // Filtramos y respetamos el orden definido en RELEVANT_AMENITY_IDS
+                const filtered = RELEVANT_AMENITY_IDS
+                    .map(id => allAmenities.find(a => a.id === id))
+                    .filter((a): a is Amenity => a !== undefined)
+
+                setAmenities(filtered)
             } catch (error) {
                 console.error('Error fetching amenities:', error)
                 setAmenities([])
@@ -51,6 +67,29 @@ export default function PropertiesFilters({ locale, isEs }: PropertiesFiltersPro
             }
         }
         fetchAmenities()
+    }, [])
+
+    // Cerrar dropdowns al hacer click afuera
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            const target = event.target as Node
+
+            if (priceRef.current && !priceRef.current.contains(target)) {
+                setShowPriceDropdown(false)
+            }
+            if (bedroomsRef.current && !bedroomsRef.current.contains(target)) {
+                setShowBedroomsDropdown(false)
+            }
+            if (bathroomsRef.current && !bathroomsRef.current.contains(target)) {
+                setShowBathroomsDropdown(false)
+            }
+            if (amenitiesRef.current && !amenitiesRef.current.contains(target)) {
+                setShowAmenitiesDropdown(false)
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => document.removeEventListener('mousedown', handleClickOutside)
     }, [])
 
     const applyFilters = () => {
@@ -70,14 +109,14 @@ export default function PropertiesFilters({ locale, isEs }: PropertiesFiltersPro
         // Add filters
         if (priceMin) params.append('price_min', priceMin)
         if (priceMax) params.append('price_max', priceMax)
-        if (bedrooms) params.append('bedrooms', bedrooms)
+        if (exact_bedrooms) params.append('exact_bedrooms', exact_bedrooms)
         if (bathrooms) params.append('bathrooms', bathrooms)
         if (selectedAmenities.length > 0) {
             params.append('amenities', selectedAmenities.join(','))
         }
 
         router.push(`/${locale}/properties?${params.toString()}`)
-        
+
         // Close dropdowns
         setShowPriceDropdown(false)
         setShowBedroomsDropdown(false)
@@ -104,7 +143,7 @@ export default function PropertiesFilters({ locale, isEs }: PropertiesFiltersPro
         if (guests) params.append('guests', guests)
 
         router.push(`/${locale}/properties?${params.toString()}`)
-        
+
         // Close dropdowns
         setShowPriceDropdown(false)
         setShowBedroomsDropdown(false)
@@ -142,8 +181,10 @@ export default function PropertiesFilters({ locale, isEs }: PropertiesFiltersPro
     }
 
     const getBedroomsLabel = () => {
-        return bedrooms ? `${bedrooms}` : isEs ? 'Todas' : 'All'
-    }
+        if (!exact_bedrooms) return isEs ? 'Todas' : 'All';
+        if (exact_bedrooms === '0') return isEs ? 'Estudio' : 'Studio';
+        return exact_bedrooms === '4' ? `${exact_bedrooms}+` : exact_bedrooms;
+    };
 
     const getBathroomsLabel = () => {
         return bathrooms ? `${bathrooms}` : isEs ? 'Todas' : 'All'
@@ -242,12 +283,14 @@ export default function PropertiesFilters({ locale, isEs }: PropertiesFiltersPro
         }
 
         .price-inputs input {
-          flex: 1;
-          padding: 0.5rem;
-          border: 1px solid #ddd;
-          border-radius: 4px;
-          font-family: 'Inter', sans-serif;
-          font-size: 0.85rem;
+            flex: 1;
+            min-width: 0;
+            box-sizing: border-box;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
         }
 
         .price-inputs input:focus {
@@ -394,7 +437,7 @@ export default function PropertiesFilters({ locale, isEs }: PropertiesFiltersPro
 
             <div className="filters__container">
                 {/* Price Range */}
-                <div className="filter-selector">
+                <div className="filter-selector" ref={priceRef}>
                     <button
                         className={`filter-selector__button ${priceMin || priceMax ? 'filter-selector__button--active' : ''}`}
                         onClick={() => setShowPriceDropdown(!showPriceDropdown)}
@@ -403,7 +446,7 @@ export default function PropertiesFilters({ locale, isEs }: PropertiesFiltersPro
                         <span style={{ fontSize: '0.8rem' }}>▼</span>
                     </button>
                     {showPriceDropdown && (
-                        <div className="filter-selector__dropdown" style={{ minWidth: '200px' }}>
+                        <div className="filter-selector__dropdown" style={{ minWidth: '320px' }}>
                             <div className="price-inputs">
                                 <input
                                     type="number"
@@ -423,9 +466,9 @@ export default function PropertiesFilters({ locale, isEs }: PropertiesFiltersPro
                 </div>
 
                 {/* Bedrooms */}
-                <div className="filter-selector">
+                <div className="filter-selector" ref={bedroomsRef}>
                     <button
-                        className={`filter-selector__button ${bedrooms ? 'filter-selector__button--active' : ''}`}
+                        className={`filter-selector__button ${exact_bedrooms ? 'filter-selector__button--active' : ''}`}
                         onClick={() => setShowBedroomsDropdown(!showBedroomsDropdown)}
                     >
                         {isEs ? `Habitaciones: ${getBedroomsLabel()}` : `Bedrooms: ${getBedroomsLabel()}`}
@@ -436,10 +479,16 @@ export default function PropertiesFilters({ locale, isEs }: PropertiesFiltersPro
                             <div className="filter-option" onClick={() => { setBedrooms(''); setShowBedroomsDropdown(false); }}>
                                 {isEs ? 'Todas' : 'All'}
                             </div>
+                            <div
+                                className={`filter-option ${exact_bedrooms === '0' ? 'filter-option--active' : ''}`}
+                                onClick={() => { setBedrooms('0'); setShowBedroomsDropdown(false); }}
+                            >
+                                {isEs ? 'Estudio' : 'Studio'}
+                            </div>
                             {[1, 2, 3, 4].map(num => (
                                 <div
                                     key={num}
-                                    className={`filter-option ${bedrooms === String(num) ? 'filter-option--active' : ''}`}
+                                    className={`filter-option ${exact_bedrooms === String(num) ? 'filter-option--active' : ''}`}
                                     onClick={() => { setBedrooms(String(num)); setShowBedroomsDropdown(false); }}
                                 >
                                     {num}{num === 4 ? '+' : ''}
@@ -450,7 +499,7 @@ export default function PropertiesFilters({ locale, isEs }: PropertiesFiltersPro
                 </div>
 
                 {/* Bathrooms */}
-                <div className="filter-selector">
+                <div className="filter-selector" ref={bathroomsRef}>
                     <button
                         className={`filter-selector__button ${bathrooms ? 'filter-selector__button--active' : ''}`}
                         onClick={() => setShowBathroomsDropdown(!showBathroomsDropdown)}
@@ -477,7 +526,7 @@ export default function PropertiesFilters({ locale, isEs }: PropertiesFiltersPro
                 </div>
 
                 {/* Amenities */}
-                <div className="filter-selector">
+                <div className="filter-selector" ref={amenitiesRef}>
                     <button
                         className={`filter-selector__button ${selectedAmenities.length > 0 ? 'filter-selector__button--active' : ''}`}
                         onClick={() => setShowAmenitiesDropdown(!showAmenitiesDropdown)}

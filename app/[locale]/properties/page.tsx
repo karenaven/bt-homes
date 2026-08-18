@@ -10,6 +10,7 @@ import { Destination, HomePage } from '@/lib/types'
 import { commonTranslationsQuery, destinationsQuery, homePageQuery } from '@/lib/sanity.queries'
 import { client } from '@/lib/sanity.client'
 import Link from 'next/link'
+import { formatPrice } from '@/lib/utils/currency'
 
 interface PageProps {
     params: Promise<{ locale: string }>
@@ -21,9 +22,11 @@ interface PageProps {
         page?: string
         price_min?: string
         price_max?: string
+        exact_bedrooms?: string
         bedrooms?: string
         bathrooms?: string
         amenities?: string
+        country?: string
     }>
 }
 
@@ -55,8 +58,10 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
     const priceMin = search.price_min ? parseFloat(search.price_min) : undefined
     const priceMax = search.price_max ? parseFloat(search.price_max) : undefined
     const bedrooms = search.bedrooms ? parseInt(search.bedrooms) : undefined
+    const exact_bedrooms = search.exact_bedrooms ? parseInt(search.exact_bedrooms) : undefined
     const bathrooms = search.bathrooms ? parseInt(search.bathrooms) : undefined
     const amenitiesStr = search.amenities
+    const country = search.country
 
     let properties: any[] = []
     let total = 0
@@ -86,6 +91,7 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
             end_date: endDate,
             guests,
             lang: isEs ? 'es' : 'en',
+            exact_bedrooms,
             bedrooms,
             bathrooms,
             price_min: priceMin,
@@ -93,10 +99,19 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
             amenities: amenitiesStr,
         })
         let filteredProperties = data?.listings || []
+        if (country) {
+            filteredProperties = filteredProperties.filter(
+                (p: any) => p.country?.toLowerCase() === country.toLowerCase()
+            )
+        }
+
+        filteredProperties = filteredProperties.slice().sort((a: any, b: any) =>
+            (a.name || '').localeCompare(b.name || '', isEs ? 'es' : 'en', { sensitivity: 'base' })
+        )
 
         properties = filteredProperties
-        total = data?.total || 0
-        pages = data?.pages || 1
+        total = country ? filteredProperties.length : (data?.total || 0)
+        pages = country ? 1 : (data?.pages || 1)
     } catch (error) {
         console.error('Failed to fetch properties:', error)
     }
@@ -153,6 +168,36 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
         border-radius: 16px;
         }
 
+        .country-tabs {
+          display: flex;
+          gap: 0.75rem;
+          padding-top: 1.5rem;
+          padding-bottom: 0.5rem;
+          flex-wrap: wrap;
+        }
+
+        .country-tab {
+          padding: 0.5rem 1.25rem;
+          border: 1px solid #ddd;
+          border-radius: 999px;
+          font-family: 'Inter', sans-serif;
+          font-size: 0.85rem;
+          color: #444;
+          text-decoration: none;
+          transition: all 0.2s ease;
+          white-space: nowrap;
+        }
+
+        .country-tab:hover {
+          border-color: #1e3a2f;
+          background: #f9f8f6;
+        }
+
+        .country-tab--active {
+          background: #0a0a0c;
+          color: #fff;
+          border-color: #0a0a0c;
+        }
 
  /* ─────────────────────────────
      GRID
@@ -413,6 +458,40 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
                         </h1>
                     </div>
 
+                    {/* Country Tabs */}
+                    <div className="country-tabs">
+                        {[
+                            { code: undefined, label: isEs ? 'Todos' : 'All' },
+                            { code: 'Argentina', label: 'Argentina' },
+                            { code: 'Mexico', label: 'México' },
+                        ].map((opt) => {
+                            const tabParams = new URLSearchParams()
+                            if (cityId) tabParams.append('city_id', cityId)
+                            if (startDate) tabParams.append('start_date', startDate)
+                            if (endDate) tabParams.append('end_date', endDate)
+                            if (guests) tabParams.append('guests', String(guests))
+                            if (priceMin) tabParams.append('price_min', String(priceMin))
+                            if (priceMax) tabParams.append('price_max', String(priceMax))
+                            if (exact_bedrooms) tabParams.append('exact_bedrooms', String(exact_bedrooms))
+                            if (bathrooms) tabParams.append('bathrooms', String(bathrooms))
+                            if (amenitiesStr) tabParams.append('amenities', amenitiesStr)
+                            if (opt.code) tabParams.append('country', opt.code)
+
+                            const href = `/${locale}/properties${tabParams.toString() ? `?${tabParams.toString()}` : ''}`
+                            const isActive = country === opt.code || (!country && !opt.code)
+
+                            return (
+                                <a
+                                    key={opt.label}
+                                    href={href}
+                                    className={`country-tab ${isActive ? 'country-tab--active' : ''}`}
+                                >
+                                    {opt.label}
+                                </a>
+                            )
+                        })}
+                    </div>
+
                     {/* Properties Grid - Fourth */}
                     {properties.length > 0 ? (
                         <>
@@ -423,7 +502,7 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
                                             <div className="prop-card__image">
                                                 <Image
                                                     src={property.photos.split(',')[0] || property.thumbnail_file}
-                                                    alt={property.name}
+                                                    alt={property.name ?? 'Property Image'}
                                                     fill
                                                     sizes="(max-width: 580px) 100vw, (max-width: 900px) 50vw, 33vw"
                                                 />
@@ -444,11 +523,22 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
 
                                             <div className="prop-card__details">
                                                 <div className="prop-card__detail">
-                                                    🛏️ {property.bedrooms} {isEs ? 'hab' : 'bed'}
+                                                    👥 {property.guests_included} {isEs ? 'huésp' : 'guests'}
                                                 </div>
-                                                <div className="prop-card__detail">
-                                                    🚿 {property.bathrooms} {isEs ? 'baño' : 'bath'}
-                                                </div>
+                                                {property.bedrooms === 0 ? (
+                                                    <div className="prop-card__detail">
+                                                        🏠 {isEs ? 'Estudio' : 'Studio'}
+                                                    </div>
+                                                ) : (
+                                                    <>
+                                                        <div className="prop-card__detail">
+                                                            🛏️ {property.bedrooms} {isEs ? 'hab' : 'bed'}
+                                                        </div>
+                                                        <div className="prop-card__detail">
+                                                            🚿 {property.bathrooms} {isEs ? 'baño' : 'bath'}
+                                                        </div>
+                                                    </>
+                                                )}
                                             </div>
 
                                             <div className="prop-card__footer">
@@ -457,12 +547,15 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
                                                         {isEs ? 'Desde' : 'From'}
                                                     </span>
                                                     <div className="prop-card__price">
-                                                        ${property.final_price || property.price}
+
+                                                        {formatPrice(property.final_price || property.price, property.currency)}
                                                         <span style={{ fontSize: '0.65em' }}>/{isEs ? 'noche' : 'night'}</span>
                                                     </div>
                                                 </div>
                                                 <Link
                                                     href={`/${locale}/properties/${property.id}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
                                                     className="prop-card__cta"
                                                 >
                                                     {isEs ? 'Ver' : 'View'}
@@ -483,9 +576,11 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
                                         if (guests) params.append('guests', String(guests))
                                         if (priceMin) params.append('price_min', String(priceMin))
                                         if (priceMax) params.append('price_max', String(priceMax))
+                                        if (exact_bedrooms) params.append('exact_bedrooms', String(exact_bedrooms))
                                         if (bedrooms) params.append('bedrooms', String(bedrooms))
                                         if (bathrooms) params.append('bathrooms', String(bathrooms))
                                         if (amenitiesStr) params.append('amenities', amenitiesStr)
+                                        if (country) params.append('country', country)
                                         params.append('page', String(i + 1))
 
                                         return (

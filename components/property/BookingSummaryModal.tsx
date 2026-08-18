@@ -1,5 +1,6 @@
 'use client'
 
+import { getCurrencyPrefix } from '@/lib/utils/currency'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -41,7 +42,8 @@ export default function BookingSummaryModal({
 
   const formatPrice = (amount: number) => {
     const formatted = amount.toFixed(2)
-    return data.position === 'before' ? `${data.symbol}${formatted}` : `${formatted} ${data.symbol}`
+    const prefix = getCurrencyPrefix(data.currency)
+    return data.position === 'before' ? `${prefix} ${formatted}` : `${formatted} ${prefix}`
   }
 
   const formatDate = (dateStr: string) => {

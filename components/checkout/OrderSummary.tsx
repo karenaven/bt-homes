@@ -1,5 +1,7 @@
 'use client'
 
+import { getCurrencyPrefix } from "@/lib/utils/currency"
+
 interface OrderSummaryProps {
     propertyName: string
     checkIn: string
@@ -29,9 +31,10 @@ export default function OrderSummary({
     position,
     isEs,
 }: OrderSummaryProps) {
-    const formatPrice = (amount: number) => {
+   const formatPrice = (amount: number) => {
         const formatted = amount.toFixed(2)
-        return position === 'before' ? `${symbol}${formatted}` : `${formatted} ${symbol}`
+        const prefix = getCurrencyPrefix(symbol)
+        return position === 'before' ? `${prefix} ${formatted}` : `${formatted} ${prefix}`
     }
 
     const formatDate = (dateStr: string) => {

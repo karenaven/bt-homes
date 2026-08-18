@@ -16,7 +16,7 @@ export default function PropertyMap({ address, city, lati, lng, title, showRadiu
     const mapContainer = useRef<HTMLDivElement>(null)
     const map = useRef<any>(null)
     const leafletLoaded = useRef(false)
-    const RADIUS_KM = 2
+    const RADIUS_KM = 1
     useEffect(() => {
         // Evitar cargar Leaflet en server-side
         if (typeof window === 'undefined' || !mapContainer.current) return

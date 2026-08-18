@@ -499,17 +499,26 @@ display: none;
                                     {isEs ? 'Características' : 'Characteristics'}
                                 </h2>
                                 <div className="pd-characteristics__grid">
-                                    {property.listing?.bedrooms && (
+                                    {property.listing?.bedrooms === 0 ? (
                                         <div className="pd-characteristic">
-                                            <span className="pd-characteristic__icon">🛏️</span>
-                                            <span>{property.listing?.bedrooms} {isEs ? 'hab' : 'bed'}</span>
+                                            <span className="pd-characteristic__icon">🏠</span>
+                                            <span>{isEs ? 'Estudio' : 'Studio'}</span>
                                         </div>
-                                    )}
-                                    {property.listing?.bathrooms && (
-                                        <div className="pd-characteristic">
-                                            <span className="pd-characteristic__icon">🚿</span>
-                                            <span>{property.listing?.bathrooms} {isEs ? 'baño' : 'bath'}</span>
-                                        </div>
+                                    ) : (
+                                        <>
+                                            {property.listing?.bedrooms && (
+                                                <div className="pd-characteristic">
+                                                    <span className="pd-characteristic__icon">🛏️</span>
+                                                    <span>{property.listing?.bedrooms} {isEs ? 'hab' : 'bed'}</span>
+                                                </div>
+                                            )}
+                                            {property.listing?.bathrooms && (
+                                                <div className="pd-characteristic">
+                                                    <span className="pd-characteristic__icon">🚿</span>
+                                                    <span>{property.listing?.bathrooms} {isEs ? 'baño' : 'bath'}</span>
+                                                </div>
+                                            )}
+                                        </>
                                     )}
                                     {property.listing?.guests_included && (
                                         <div className="pd-characteristic">
@@ -517,16 +526,16 @@ display: none;
                                             <span>{property.listing?.guests_included} {isEs ? 'huéspedes' : 'guests'}</span>
                                         </div>
                                     )}
+                                    {property.listing?.beds && (
+                                        <div className="pd-characteristic">
+                                            <span className="pd-characteristic__icon">💤</span>
+                                            <span>{property.listing?.beds} {isEs ? 'camas' : 'beds'}</span>
+                                        </div>
+                                    )}
                                     <div className="pd-characteristic">
                                         <span className="pd-characteristic__icon">🐾</span>
                                         <span>{petsAllowed ? (isEs ? 'Mascotas permitidas' : 'Pets allowed') : (isEs ? 'No mascotas' : 'No pets')}</span>
                                     </div>
-                                    {property.listing?.checkin_start && (
-                                        <div className="pd-characteristic">
-                                            <span className="pd-characteristic__icon">🕐</span>
-                                            <span>{isEs ? 'Check-in' : 'Check-in'} {property.listing?.checkin_start}</span>
-                                        </div>
-                                    )}
                                 </div>
                             </div>
 
@@ -563,7 +572,7 @@ display: none;
                         <PropertySidebar
                             listingId={parseInt(id)}
                             currency={currencyData.iso_code}
-                            symbol={currencyData.symbol}
+                            symbol={currencyData.iso_code}
                             position={currencyData.position as 'before' | 'after'}
                             maxGuests={property.listing?.guests_included || 10}
                             propertyName={property.listing?.name || ''}

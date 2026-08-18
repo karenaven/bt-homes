@@ -1,5 +1,6 @@
 'use client'
 
+import { getCurrencyPrefix } from '@/lib/utils/currency'
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js'
 import { useState } from 'react'
 
@@ -365,7 +366,7 @@ export default function PaymentForm({
           {isEs ? 'Monto a Pagar' : 'Amount to Pay'}
         </div>
         <div className="payment-amount__value">
-          {symbol}{amount.toFixed(2)}
+          {getCurrencyPrefix(symbol)} {amount.toFixed(2)}
         </div>
       </div>
 
