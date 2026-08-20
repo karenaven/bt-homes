@@ -40,6 +40,7 @@ export interface HomePage {
 export interface Destination {
   nameEs: string
   nameEn: string
+  country: string 
   cityId: string
   slug: { current: string }
   image?: SanityImageSource

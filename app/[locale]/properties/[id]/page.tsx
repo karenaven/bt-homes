@@ -469,30 +469,6 @@ display: none;
                                 </div>
                             </div>
 
-                            {/* ── DESCRIPTION ── */}
-                            {property.description && (
-                                <div className="pd-description">
-                                    {property.description.summary}
-                                </div>
-                            )}
-
-                            {/* ── AMENITIES ── */}
-                            {propertyAmenitiesWithTranslations && propertyAmenitiesWithTranslations.length > 0 && (
-                                <div className="pd-amenities">
-                                    <h2 className="pd-section-title">
-                                        {isEs ? 'Comodidades' : 'Amenities'}
-                                    </h2>
-                                    <div className="pd-amenities__list">
-                                        {propertyAmenitiesWithTranslations.map((amenity: any) => (
-                                            <div key={amenity.id} className="pd-amenity">
-                                                <div className="pd-amenity__icon">{amenity.icon}</div>
-                                                <span>{isEs ? amenity.name_es : amenity.name_en}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-
                             {/* ── CHARACTERISTICS ── */}
                             <div className="pd-characteristics">
                                 <h2 className="pd-section-title">
@@ -538,6 +514,32 @@ display: none;
                                     </div>
                                 </div>
                             </div>
+
+                            {/* ── DESCRIPTION ── */}
+                            {property.description && (
+                                <div className="pd-description">
+                                    {property.description.summary}
+                                </div>
+                            )}
+
+                            {/* ── AMENITIES ── */}
+                            {propertyAmenitiesWithTranslations && propertyAmenitiesWithTranslations.length > 0 && (
+                                <div className="pd-amenities">
+                                    <h2 className="pd-section-title">
+                                        {isEs ? 'Comodidades' : 'Amenities'}
+                                    </h2>
+                                    <div className="pd-amenities__list">
+                                        {propertyAmenitiesWithTranslations.map((amenity: any) => (
+                                            <div key={amenity.id} className="pd-amenity">
+                                                <div className="pd-amenity__icon">{amenity.icon}</div>
+                                                <span>{isEs ? amenity.name_es : amenity.name_en}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            
 
                             {/* ── CHECK-IN & CHECK-OUT INFO ── */}
                             {(property.listing?.checkin_start || property.listing?.checkout) && (

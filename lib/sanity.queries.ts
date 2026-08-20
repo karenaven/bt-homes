@@ -4,6 +4,7 @@ export const destinationsQuery = groq`
   *[_type == "destination"] | order(order asc) {
     nameEs,
     nameEn,
+    country,
     cityId,
     slug,
     image,
@@ -201,6 +202,7 @@ export const destinationBySlugQuery = groq`
   *[_type == "destination" && slug.current == $slug][0] {
     nameEs,
     nameEn,
+    country,
     slug,
     cityId,
     heroImage,
@@ -234,10 +236,10 @@ export const otherDestinationsQuery = groq`
   *[_type == "destination" && slug.current != $slug] | order(order asc) {
     nameEs,
     nameEn,
+    country,
     slug,
     image,
   }
-
 `
 
 export const blogPageConfigQuery = groq`
@@ -359,7 +361,7 @@ export const legalPoliciesQuery = groq`
     lastUpdated,
   }
 `
- 
+
 // Query específica por tipo
 export const legalPoliciesByTypeQuery = groq`
   *[_type == "legalPolicies" && policyType == $policyType && active == true][0] {

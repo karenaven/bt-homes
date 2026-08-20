@@ -114,9 +114,7 @@ body {
    HERO / CONTACT
 ───────────────────────────── */
 .contact-map-wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
+  width: 100%;
 }
 
 .contact-main {
@@ -210,11 +208,6 @@ body {
 
   .contact-container {
     padding-inline: var(--padding-inline-mobile);
-  }
-
-  .contact-map-wrapper {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
   }
 
   .contact-main {
@@ -326,35 +319,21 @@ body {
 
   {/* ── MAPA ── */}
   {data?.mapEmbedUrl && (
-    <section className="contact-map-section">
-
-      <div className="contact-container">
-
-        <div className="contact-map-wrapper">
-
-          <iframe
-            className="contact-map"
-            src={data.mapEmbedUrl}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title="BT Homes ubicación"
-          />
-                {data?.mapEmbedUrl2 && (
-          <iframe
-            className="contact-map"
-                    src={data.mapEmbedUrl2}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-                    title="BT Homes ubicación 2"
-                  />)}
-        </div>
-
+  <section className="contact-map-section">
+    <div className="contact-container">
+      <div className="contact-map-wrapper">
+        <iframe
+          className="contact-map"
+          src={data.mapEmbedUrl}
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          title="BT Homes ubicación"
+        />
       </div>
-
-    </section>
-  )}
+    </div>
+  </section>
+)}
 
 </main>
       <Footer

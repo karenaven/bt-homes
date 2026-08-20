@@ -52,6 +52,7 @@ export default function SearchBar({
 
   const [selectedDestination, setSelectedDestination] = useState<Destination | null>(null)
   const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [expandedCountry, setExpandedCountry] = useState<string | null>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -109,6 +110,24 @@ export default function SearchBar({
     ? (locale === 'es' ? selectedDestination.nameEs : selectedDestination.nameEn)
     : allDestinationsTxt
 
+  const destinationsByCountry = destinations.reduce((acc, dest) => {
+    const country = dest.country || 'Otros'
+    if (!acc[country]) acc[country] = []
+    acc[country].push(dest)
+    return acc
+  }, {} as Record<string, Destination[]>)
+
+  const countries = Object.keys(destinationsByCountry).sort()
+
+  const countryLabel = (country: string) => {
+    if (country === 'Mexico') return 'México'
+    return country
+  }
+
+  const toggleCountry = (country: string) => {
+    setExpandedCountry(prev => prev === country ? null : country)
+  }
+
   return (
     <section className="searchbar-section">
       <style>{`
@@ -145,28 +164,29 @@ Search bar
         }
 
         .searchbar {
-  display: flex;
-  align-items: stretch;
-  gap: 12px; /* separación entre campos */
-  width: 100%;
-  max-width: 1100px;
-  background: transparent; /* quitar fondo único */
-  border: none; /* quitar borde único */
-}
+          display: flex;
+          align-items: stretch;
+          gap: 12px; /* separación entre campos */
+          width: 100%;
+          max-width: 1100px;
+          background: transparent; /* quitar fondo único */
+          border: none; /* quitar borde único */
+        }
 
         .searchbar__field {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0 1.25rem;
-  min-height: 60px;
-  position: relative;
+          flex: 1 1 0;
+          min-width: 0;
+          display: flex;
+          align-items: center;
+          gap: 0.6rem;
+          padding: 0 1.25rem;
+          min-height: 60px;
+          position: relative;
 
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-}
+          background: #fff;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+        }
 
 
         .searchbar__icon {
@@ -179,7 +199,8 @@ Search bar
         .searchbar__input-wrap {
           display: flex;
           flex-direction: column;
-          flex: 1;
+          flex: 1 1 0;
+          min-width: 0;
           gap: 1px;
         }
 
@@ -227,10 +248,18 @@ Search bar
           cursor: pointer;
           text-align: left;
           width: 100%;
+          min-width: 0;
           display: flex;
           align-items: center;
           justify-content: space-between;
           gap: 0.5rem;
+        }
+
+        .searchbar__dest-btn span {
+          min-width: 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
 
         .searchbar__dest-btn--placeholder { color: #444; }
@@ -299,30 +328,67 @@ Search bar
           text-align: center;
         }
         .searchbar__btn {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #fff;
-  background: #0a0a0c;
-  border: none;
-  border-radius: 8px;
-  padding: 0 2.5rem;
-  cursor: pointer;
-  white-space: nowrap;
-  min-height: 60px;
-}
-
-        .searchbar__btn:hover { background: #2a2a2e; }
-        @media (max-width: 768px) {
-.searchbar {
-    flex-direction: column;
-    gap: 12px;
-  }
-              .searchbar__field { border-bottom: none; }
-          .searchbar__btn { min-height: 52px; }
+          font-family: 'Inter', sans-serif;
+          font-size: 0.8125rem;
+          font-weight: 500;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: #fff;
+          background: #0a0a0c;
+          border: none;
+          border-radius: 8px;
+          padding: 0 2.5rem;
+          cursor: pointer;
+          white-space: nowrap;
+          min-height: 60px;
         }
+
+        .searchbar__btn:hover { background: #2a2a2e; }     
+          @media (max-width: 768px) {
+          .searchbar {
+            flex-direction: column;
+            width: 100%;
+            gap: 12px;
+          }
+
+          .searchbar__field {
+            width: 100%;
+            flex: none;
+            min-width: 0;
+            border-bottom: none;
+          }
+
+          .searchbar__input-wrap {
+            width: 100%;
+            min-width: 0;
+          }
+
+          .searchbar__btn {
+            width: 100%;
+            min-height: 52px;
+          }
+        }
+
+        .searchbar__dropdown-item--country {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          font-weight: 500;
+          color: #1a1a1a;
+        }
+
+        .searchbar__city-list {
+          background: #fafaf7;
+          border-top: 1px solid #f0f0f0;
+          border-bottom: 1px solid #f0f0f0;
+        }
+
+        .searchbar__dropdown-item--city {
+          padding-left: 2.25rem;
+          font-size: 0.85rem;
+          color: #666;
+        }
+
         @media (max-width: 480px) {
           .searchbar-section { padding: 4rem 1rem; }
         }
@@ -357,28 +423,59 @@ Search bar
             <div className="searchbar__dropdown">
               <button
                 className="searchbar__dropdown-item searchbar__dropdown-item--all"
-                onClick={() => { setSelectedDestination(null); setDropdownOpen(false) }}
+                onClick={() => { setSelectedDestination(null); setDropdownOpen(false); setExpandedCountry(null) }}
                 type="button"
               >
                 {allDestinationsTxt}
               </button>
+
               {destinations.length === 0 && (
                 <div className="searchbar__dropdown-item" style={{ color: '#bbb', cursor: 'default' }}>
                   Sin destinos cargados
                 </div>
               )}
-              {destinations.map((dest) => {
-                const name = locale === 'es' ? dest.nameEs : dest.nameEn
-                const isSelected = selectedDestination?.cityId === dest.cityId
+
+              {countries.map((country) => {
+                const isExpanded = expandedCountry === country
                 return (
-                  <button
-                    key={dest.cityId}
-                    className={`searchbar__dropdown-item${isSelected ? ' searchbar__dropdown-item--selected' : ''}`}
-                    onClick={() => { setSelectedDestination(dest); setDropdownOpen(false) }}
-                    type="button"
-                  >
-                    {name}
-                  </button>
+                  <div key={country} className="searchbar__country-group">
+                    <button
+                      className="searchbar__dropdown-item searchbar__dropdown-item--country"
+                      onClick={() => toggleCountry(country)}
+                      type="button"
+                    >
+                      <span>{countryLabel(country)}</span>
+                      <svg
+                        className={`searchbar__dest-chevron${isExpanded ? ' searchbar__dest-chevron--open' : ''}`}
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+                      >
+                        <path d="M6 9l6 6 6-6" />
+                      </svg>
+                    </button>
+
+                    {isExpanded && (
+                      <div className="searchbar__city-list">
+                        {destinationsByCountry[country].map((dest) => {
+                          const name = locale === 'es' ? dest.nameEs : dest.nameEn
+                          const isSelected = selectedDestination?.cityId === dest.cityId
+                          return (
+                            <button
+                              key={dest.cityId}
+                              className={`searchbar__dropdown-item searchbar__dropdown-item--city${isSelected ? ' searchbar__dropdown-item--selected' : ''}`}
+                              onClick={() => {
+                                setSelectedDestination(dest)
+                                setDropdownOpen(false)
+                                setExpandedCountry(null)
+                              }}
+                              type="button"
+                            >
+                              {name}
+                            </button>
+                          )
+                        })}
+                      </div>
+                    )}
+                  </div>
                 )
               })}
             </div>
