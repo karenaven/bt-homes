@@ -208,6 +208,7 @@ interface ListingDetailResponse {
         name: string
         value: string
     }>
+    pets_allowed?: boolean
 }
 
 interface PricingParams {

@@ -31,28 +31,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     }
 }
 
-//  HELPER: Detectar si se permiten mascotas
-function detectPetsAllowed(amenities: any[], houseRules: string | undefined): boolean {
-    const petsNotAllowedAmenities = amenities?.some(amenity =>
-        amenity.name?.toLowerCase().includes('no pets') ||
-        amenity.name?.toLowerCase().includes('no mascotas') ||
-        amenity.name?.toLowerCase().includes('sin mascotas')
-    )
-
-    if (petsNotAllowedAmenities) {
-        return false
-    }
-
-    if (houseRules) {
-        const rulesLower = houseRules.toLowerCase()
-        if (rulesLower.includes('no pets') || rulesLower.includes('no mascotas') || rulesLower.includes('sin mascotas')) {
-            return false
-        }
-    }
-
-    return true
-}
-
 //  NUEVO: Fetch amenities con traducciones de Sanity
 async function fetchAmenitiesWithTranslations() {
     try {
@@ -111,11 +89,6 @@ export default async function PropertyDetailPage({ params }: PageProps) {
         unicode: '&#36;',
         position: 'before' as const,
     }
-
-    const petsAllowed = detectPetsAllowed(
-        property.amenities || [],
-        property.listing?.house_rules
-    )
 
     //  NUEVO: Mapear amenities de Hostify con traducciones de Sanity
     const amenitiesMap = new Map(enrichedAmenities.map((a: any) => [a.id, a]))
@@ -508,10 +481,12 @@ display: none;
                                             <span>{property.listing?.beds} {isEs ? 'camas' : 'beds'}</span>
                                         </div>
                                     )}
-                                    <div className="pd-characteristic">
-                                        <span className="pd-characteristic__icon">🐾</span>
-                                        <span>{petsAllowed ? (isEs ? 'Mascotas permitidas' : 'Pets allowed') : (isEs ? 'No mascotas' : 'No pets')}</span>
-                                    </div>
+                                    {property.listing?.beds && (
+                                        <div className="pd-characteristic">
+                                            <span className="pd-characteristic__icon">🐾</span>
+                                            <span>{property.listing?.pets_allowed ? (isEs ? 'Mascotas permitidas' : 'Pets allowed') : (isEs ? 'No mascotas' : 'No pets')}</span>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
@@ -539,7 +514,7 @@ display: none;
                                 </div>
                             )}
 
-                            
+
 
                             {/* ── CHECK-IN & CHECK-OUT INFO ── */}
                             {(property.listing?.checkin_start || property.listing?.checkout) && (
@@ -581,7 +556,7 @@ display: none;
                             locale={locale}
                             isEs={isEs}
                             calendar={property.calendar_v2}
-                            petsAllowed={petsAllowed}
+                            petsAllowed={property.listing?.pets_allowed}
                         />
                     </div>
                 </div>
