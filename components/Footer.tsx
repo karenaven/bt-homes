@@ -19,6 +19,8 @@ interface FooterProps {
   siteMex?: string
   copyright?: string
   locale?: string
+  privacyPolicyLabel?: string
+  termsAndConditionsLabel?: string
 }
 
 export default function Footer({
@@ -39,6 +41,8 @@ export default function Footer({
   siteMex,
   copyright,
   locale = 'es',
+  privacyPolicyLabel = locale === 'es' ? 'Política de Privacidad' : 'Privacy Policy',
+  termsAndConditionsLabel = locale === 'es' ? 'Términos y Condiciones' : 'Terms and Conditions',
 }: FooterProps) {
 
   const navLinks = {
@@ -60,6 +64,7 @@ export default function Footer({
 
   const links = navLinks[locale as 'es' | 'en'] ?? navLinks.es
   const menuLabel = locale === 'es' ? 'MENÚ' : 'MENU'
+  const legalLabel = locale === 'es' ? 'LEGAL' : 'LEGAL'
   const contactLabel = contactTxt
   const socialLabel = socialTxt
 
@@ -379,6 +384,22 @@ export default function Footer({
                   </div>
                 )}
               </div>
+            </div>
+
+            <div>
+              <p className="footer__col-title">{legalLabel}</p>
+              <ul className="footer__nav">
+                <li>
+                  <Link href={`/${locale}/privacy-policy`}>
+                    {privacyPolicyLabel}
+                  </Link>
+                </li>
+                <li>
+                  <Link href={`/${locale}/terms-conditions`}>
+                    {termsAndConditionsLabel}
+                  </Link>
+                </li>
+              </ul>
             </div>
 
           </div>

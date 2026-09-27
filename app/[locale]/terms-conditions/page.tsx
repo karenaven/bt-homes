@@ -2,52 +2,54 @@ import { PortableText } from '@portabletext/react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { client } from '@/lib/sanity.client'
-import { commonTranslationsQuery, legalPoliciesByTypeQuery } from '@/lib/sanity.queries'
+import { commonTranslationsQuery, homePageQuery, legalPoliciesByTypeQuery } from '@/lib/sanity.queries'
 import { notFound } from 'next/navigation'
+import { HomePage } from '@/lib/types'
 
 interface PageProps {
-    params: Promise<{ locale: string }>
+  params: Promise<{ locale: string }>
 }
 
 export default async function TermsAndConditionsPage({ params }: PageProps) {
-    const { locale } = await params
+  const { locale } = await params
 
-    if (!['es', 'en'].includes(locale)) notFound()
+  if (!['es', 'en'].includes(locale)) notFound()
 
-    const isEs = locale === 'es'
+  const isEs = locale === 'es'
 
-    // ✅ Fetch de Sanity
-    const [commonTranslations, policy]: [any, any] = await Promise.all([
-        client.fetch(commonTranslationsQuery, {}, { next: { revalidate: 60 } }),
-        client.fetch(
-            legalPoliciesByTypeQuery,
-            { policyType: 'terms' },
-            { next: { revalidate: 60 } }
-        ),
-    ])
+  // ✅ Fetch de Sanity
+  const [commonTranslations, policy, homeData]: [any, any, HomePage] = await Promise.all([
+    client.fetch(commonTranslationsQuery, {}, { next: { revalidate: 60 } }),
+    client.fetch(
+      legalPoliciesByTypeQuery,
+      { policyType: 'terms' },
+      { next: { revalidate: 60 } }
+    ),
+    client.fetch(homePageQuery, {}, { next: { revalidate: 60 } }),
+  ])
 
-    // Si no hay política en Sanity, redirigir
-    if (!policy) {
-        notFound()
-    }
+  // Si no hay política en Sanity, redirigir
+  if (!policy) {
+    notFound()
+  }
 
-    const bookNowLabel = isEs ? commonTranslations?.bookNowEs : commonTranslations?.bookNowEn
-    const experienceLabel = isEs ? commonTranslations?.experienceEs : commonTranslations?.experienceEn
-    const ownerLabel = isEs ? commonTranslations?.ownersEs : commonTranslations?.ownersEn
-    const contactLabel = isEs ? commonTranslations?.contactEs : commonTranslations?.contactEn
-    const blogLabel = isEs ? commonTranslations?.blogEs : commonTranslations?.blogEn
-    const aboutUsLabel = isEs ? commonTranslations?.aboutUsEs : commonTranslations?.aboutUsEn
-    const socialLabel = isEs ? commonTranslations?.socialEs : commonTranslations?.socialEn
-    const bookLabel = isEs ? commonTranslations?.bookLabelEs : commonTranslations?.bookLabelEn
+  const bookNowLabel = isEs ? commonTranslations?.bookNowEs : commonTranslations?.bookNowEn
+  const experienceLabel = isEs ? commonTranslations?.experienceEs : commonTranslations?.experienceEn
+  const ownerLabel = isEs ? commonTranslations?.ownersEs : commonTranslations?.ownersEn
+  const contactLabel = isEs ? commonTranslations?.contactEs : commonTranslations?.contactEn
+  const blogLabel = isEs ? commonTranslations?.blogEs : commonTranslations?.blogEn
+  const aboutUsLabel = isEs ? commonTranslations?.aboutUsEs : commonTranslations?.aboutUsEn
+  const socialLabel = isEs ? commonTranslations?.socialEs : commonTranslations?.socialEn
+  const bookLabel = isEs ? commonTranslations?.bookLabelEs : commonTranslations?.bookLabelEn
 
-    // ✅ Obtener datos del idioma seleccionado
-    const title = isEs ? policy.title_es : policy.title_en
-    const content = isEs ? policy.content_es : policy.content_en
-    const lastUpdated = policy.lastUpdated ? new Date(policy.lastUpdated).toLocaleDateString(isEs ? 'es-ES' : 'en-US') : ''
+  // ✅ Obtener datos del idioma seleccionado
+  const title = isEs ? policy.title_es : policy.title_en
+  const content = isEs ? policy.content_es : policy.content_en
+  const lastUpdated = policy.lastUpdated ? new Date(policy.lastUpdated).toLocaleDateString(isEs ? 'es-ES' : 'en-US') : ''
 
-    return (
-        <>
-            <style>{`
+  return (
+    <>
+      <style>{`
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
 
@@ -176,41 +178,50 @@ export default async function TermsAndConditionsPage({ params }: PageProps) {
         }
       `}</style>
 
-            <Navbar
-                locale={locale}
-                variant="light"
-                aboutUsTxt={aboutUsLabel}
-                blogTxt={blogLabel}
-                contactTxt={contactLabel}
-                experienceTxt={experienceLabel}
-                ownerTxt={ownerLabel}
-                ctaLabel={bookLabel}
-            />
+      <Navbar
+        locale={locale}
+        variant="light"
+        aboutUsTxt={aboutUsLabel}
+        blogTxt={blogLabel}
+        contactTxt={contactLabel}
+        experienceTxt={experienceLabel}
+        ownerTxt={ownerLabel}
+        ctaLabel={bookLabel}
+      />
 
-            <main>
-                <div className="terms-container">
-                    <div className="terms-header">
-                        <h1>{title}</h1>
-                        {lastUpdated && <p>{isEs ? 'Última actualización: ' : 'Last updated: '}{lastUpdated}</p>}
-                    </div>
+      <main>
+        <div className="terms-container">
+          <div className="terms-header">
+            <h1>{title}</h1>
+            {lastUpdated && <p>{isEs ? 'Última actualización: ' : 'Last updated: '}{lastUpdated}</p>}
+          </div>
 
-                    {/* ✅ Renderizar contenido de Sanity */}
-                    <div className="portable-text">
-                        <PortableText value={content} />
-                    </div>
-                </div>
-            </main>
+          {/* ✅ Renderizar contenido de Sanity */}
+          <div className="portable-text">
+            <PortableText value={content} />
+          </div>
+        </div>
+      </main>
 
-            <Footer
-                bookNowLabel={bookNowLabel}
-                experienceTxt={experienceLabel}
-                aboutUsTxt={aboutUsLabel}
-                ownerTxt={ownerLabel}
-                contactTxt={contactLabel}
-                blogTxt={blogLabel}
-                socialTxt={socialLabel}
-                locale={locale}
-            />
-        </>
-    )
+      <Footer
+        bookNowLabel={bookNowLabel}
+        experienceTxt={experienceLabel}
+        aboutUsTxt={aboutUsLabel}
+        ownerTxt={ownerLabel}
+        contactTxt={contactLabel}
+        blogTxt={blogLabel}
+        socialTxt={socialLabel}
+        tagline={isEs ? homeData?.footerTaglineEs : homeData?.footerTaglineEn}
+        emailPrimary={homeData?.footerEmailPrimary}
+        emailSecondary={homeData?.footerEmailSecondary}
+        phoneArg={homeData?.footerPhoneArg}
+        phoneMex={homeData?.footerPhoneMex}
+        website={homeData?.footerWebsite}
+        siteArg={homeData?.footerSiteArg}
+        siteMex={homeData?.footerSiteMex}
+        copyright={isEs ? homeData?.footerCopyrightEs : homeData?.footerCopyrightEn}
+        locale={locale}
+      />
+    </>
+  )
 }

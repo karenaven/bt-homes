@@ -11,6 +11,7 @@ import { commonTranslationsQuery, destinationsQuery, homePageQuery } from '@/lib
 import { client } from '@/lib/sanity.client'
 import Link from 'next/link'
 import { formatPrice } from '@/lib/utils/currency'
+import { calculateNightlyPrice } from '@/lib/utils/PriceCalculations'
 
 interface PageProps {
     params: Promise<{ locale: string }>
@@ -114,6 +115,18 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
         pages = country ? 1 : (data?.pages || 1)
     } catch (error) {
         console.error('Failed to fetch properties:', error)
+    }
+
+    const getDisplayPrice = (property: any) => {
+        const totalPrice = property.final_price || property.price
+        
+        // Si hay ambas fechas, calcular precio por noche
+        if (startDate && endDate) {
+            return calculateNightlyPrice(totalPrice, startDate, endDate)
+        }
+        
+        // Si no hay fechas, mostrar el precio como está
+        return totalPrice
     }
 
     return (
@@ -547,8 +560,8 @@ export default async function PropertiesPage({ params, searchParams }: PageProps
                                                         {isEs ? 'Desde' : 'From'}
                                                     </span>
                                                     <div className="prop-card__price">
-
-                                                        {formatPrice(property.final_price || property.price, property.currency)}
+                                                        
+                                                        {formatPrice(getDisplayPrice(property), property.currency)}
                                                         <span style={{ fontSize: '0.65em' }}>/{isEs ? 'noche' : 'night'}</span>
                                                     </div>
                                                 </div>
